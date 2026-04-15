@@ -1,0 +1,137 @@
+[
+  {
+    "id": "cffi_feature_237",
+    "repo": "python-cffi/cffi",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 237,
+      "pr_title": "Apply ruff/Pylint rules (PLR)",
+      "pr_body": ""
+    },
+    "ground_truth": {
+      "merged_at": "2026-03-25T10:42:17Z",
+      "diff": "diff --git a/demo/_curses.py b/demo/_curses.py\nindex 60a21e8f..0e52f7ed 100644\n--- a/demo/_curses.py\n+++ b/demo/_curses.py\n@@ -329,17 +329,14 @@ def bkgdset(self, ch, attr=None):\n         if attr is None:\n             attr = lib.A_NORMAL\n         lib.wbkgdset(self._win, _chtype(ch) | attr)\n-        return None\n \n     def border(self, ls=0, rs=0, ts=0, bs=0, tl=0, tr=0, bl=0, br=0):\n         lib.wborder(self._win,\n                     _chtype(ls), _chtype(rs), _chtype(ts), _chtype(bs),\n                     _chtype(tl), _chtype(tr), _chtype(bl), _chtype(br))\n-        return None\n \n     def box(self, vertint=0, horint=0):\n         lib.box(self._win, vertint, horint)\n-        return None\n \n     @_argspec(1, 1, 2)\n     def chgat(self, y, x, num, attr=None):\n@@ -650,7 +647,6 @@ def vline(self, y, x, ch, n, attr=None):\n \n def filter():\n     lib.filter()\n-    return None\n \n \n def color_content(color):\n@@ -913,7 +909,6 @@ def qiflush(flag=True):\n         lib.qiflush()\n     else:\n         lib.noqiflush()\n-    return None\n \n \n # XXX: Do something about the following?\n@@ -1016,7 +1011,6 @@ def qiflush(flag=True):\n def setsyx(y, x):\n     _ensure_initialised()\n     lib.setsyx(y, x)\n-    return None\n \n \n def start_color():\n@@ -1024,7 +1018,6 @@ def start_color():\n     globals()[\"COLORS\"] = lib.COLORS\n     globals()[\"COLOR_PAIRS\"] = lib.COLOR_PAIRS\n     globals()[\"_initialised_color\"] = True\n-    return None\n \n \n def tigetflag(capname):\n@@ -1070,7 +1063,6 @@ def ungetch(ch):\n \n def use_env(flag):\n     lib.use_env(flag)\n-    return None\n \n \n if not lib._m_STRICT_SYSV_CURSES:\ndiff --git a/demo/bsdopendirtype.py b/demo/bsdopendirtype.py\nindex 283e33dc..6bfdd3ab 100644\n--- a/demo/bsdopendirtype.py\n+++ b/demo/bsdopendirtype.py\n@@ -33,7 +33,7 @@ def opendir(dir):\n                     raise _posix_error()\n                 return\n             name = ffi.string(dirent.d_name)\n-            if name == b'.' or name == b'..':\n+            if name in {b'.', b'..'}:\n                 continue\n             name = dirname + name\n             try:\ndiff --git a/demo/readdir.py b/demo/readdir.py\nindex fcb2b7d9..77e39a5b 100644\n--- a/demo/readdir.py\n+++ b/demo/readdir.py\n@@ -26,7 +26,7 @@ def walk(basefd, path):\n             break\n         name = ffi.string(dirent.d_name)\n         print('%3d %s' % (dirent.d_type, name))\n-        if dirent.d_type == 4 and name != '.' and name != '..':\n+        if dirent.d_type == 4 and name not in {'.', '..'}:\n             walk(dirfd, name)\n     lib.closedir(dir)\n     print('}')\ndiff --git a/demo/readdir2.py b/demo/readdir2.py\nindex 7aef3289..7ed54087 100644\n--- a/demo/readdir2.py\n+++ b/demo/readdir2.py\n@@ -26,7 +26,7 @@ def walk(basefd, path):\n             break\n         name = ffi.string(dirent.d_name)\n         print('%3d %s' % (dirent.d_type, name))\n-        if dirent.d_type == lib.DT_DIR and name != '.' and name != '..':\n+        if dirent.d_type == lib.DT_DIR and name not in {'.', '..'}:\n             walk(dirfd, name)\n     lib.closedir(dir)\n     print('}')\ndiff --git a/demo/readdir_ctypes.py b/demo/readdir_ctypes.py\nindex 9ceb5298..39025f54 100644\n--- a/demo/readdir_ctypes.py\n+++ b/demo/readdir_ctypes.py\n@@ -60,7 +60,7 @@ def walk(basefd, path):\n             break\n         name = dirent.d_name\n         print('%3d %s' % (dirent.d_type, name))\n-        if dirent.d_type == 4 and name != '.' and name != '..':\n+        if dirent.d_type == 4 and name not in {'.', '..'}:\n             walk(dirfd, name)\n     closedir(dir)\n     print('}')\ndiff --git a/demo/recopendirtype.py b/demo/recopendirtype.py\nindex e22f92e9..aff3ce9a 100644\n--- a/demo/recopendirtype.py\n+++ b/demo/recopendirtype.py\n@@ -35,7 +35,7 @@ def opendir(dir):\n             if result[0] == ffi.NULL:\n                 return    # \n             name = ffi.string(dirent.d_name)\n-            if name == b'.' or name == b'..':\n+            if name in {b'.', b'..'}:\n                 continue\n             name = dirname + name\n             try:\ndiff --git a/src/c/test_c.py b/src/c/test_c.py\nindex 8d2228c1..b953464f 100644\n--- a/src/c/test_c.py\n+++ b/src/c/test_c.py\n@@ -3366,15 +3366,14 @@ def _test_bitfield_details(flag):\n             assert raw == b'A\\xE3\\x9B\\x9D'\n         else:\n             raise AssertionError(\"bad flag\")\n+    elif flag & SF_MSVC_BITFIELDS:\n+        assert raw == b'A\\x00\\x00\\x00\\x00\\x00\\xC77\\x9D\\x00\\x00\\x00'\n+    elif flag & SF_GCC_LITTLE_ENDIAN:\n+        assert raw == b'A\\xC77\\x9D'\n+    elif flag & SF_GCC_BIG_ENDIAN:\n+        assert raw == b'A\\x9B\\xE3\\x9D'\n     else:\n-        if flag & SF_MSVC_BITFIELDS:\n-            assert raw == b'A\\x00\\x00\\x00\\x00\\x00\\xC77\\x9D\\x00\\x00\\x00'\n-        elif flag & SF_GCC_LITTLE_ENDIAN:\n-            assert raw == b'A\\xC77\\x9D'\n-        elif flag & SF_GCC_BIG_ENDIAN:\n-            assert raw == b'A\\x9B\\xE3\\x9D'\n-        else:\n-            raise AssertionError(\"bad flag\")\n+        raise AssertionError(\"bad flag\")\n     #\n     BStruct = new_struct_type(\"struct foo2\")\n     complete_struct_or_union(BStruct, [('a', BChar, -1),\ndiff --git a/src/cffi/backend_ctypes.py b/src/cffi/backend_ctypes.py\nindex 0801fc8e..12cd1625 100644\n--- a/src/cffi/backend_ctypes.py\n+++ b/src/cffi/backend_ctypes.py\n@@ -336,7 +336,6 @@ def _to_ctypes(novalue):\n                 if novalue is not None:\n                     raise TypeError(\"None expected, got %s object\" %\n                                     (type(novalue).__name__,))\n-                return None\n         CTypesVoid._fix_class()\n         return CTypesVoid\n \n@@ -387,7 +386,7 @@ def _create_ctype_obj(init):\n                     return ctype()\n                 return ctype(CTypesPrimitive._to_ctypes(init))\n \n-            if kind == 'int' or kind == 'byte':\n+            if kind in {'int', 'byte'}:\n                 @classmethod\n                 def _cast_from(cls, source):\n                     source = _cast_source_to_int(source)\n@@ -435,7 +434,7 @@ def __float__(self):\n \n             _cast_to_integer = __int__\n \n-            if kind == 'int' or kind == 'byte' or kind"
+    },
+    "relevant_files": [
+      "demo/_curses.py",
+      "demo/bsdopendirtype.py",
+      "demo/readdir.py",
+      "demo/readdir2.py",
+      "demo/readdir_ctypes.py",
+      "demo/recopendirtype.py",
+      "src/c/test_c.py",
+      "src/cffi/backend_ctypes.py",
+      "src/cffi/cparser.py",
+      "testing/cffi0/backend_tests.py",
+      "testing/cffi0/test_verify.py",
+      "testing/cffi0/test_zdistutils.py",
+      "testing/cffi1/test_ffi_obj.py",
+      "testing/cffi1/test_function_args.py",
+      "testing/cffi1/test_new_ffi_1.py",
+      "testing/cffi1/test_pkgconfig.py",
+      "testing/cffi1/test_verify1.py",
+      "testing/support.py"
+    ],
+    "snapshot_commit": "2079ca7d16a7b847d823fc37887b55745e0cec9e",
+    "belief_cutoff_timestamp": "2026-03-25T09:35:21Z",
+    "reference_commit_timestamp": "2026-03-25T10:42:17Z"
+  },
+  {
+    "id": "cffi_feature_214",
+    "repo": "python-cffi/cffi",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 214,
+      "pr_title": "Start removing pre-Python 3.8 code",
+      "pr_body": "Companion to #124.\r\n\r\nMostly applied ruff [pyupgrade (UP)](https://docs.astral.sh/ruff/rules/#pyupgrade-up) rules, and some [pycodestyle (E)](https://docs.astral.sh/ruff/rules/#pycodestyle-e-w) and [refurb (FURB)](https://docs.astral.sh/ruff/rules/#refurb-furb) rules.\r\n\r\n**Edit:** I have left out some [pyupgrade (UP)](https://docs.astral.sh/ruff/rules/#pyupgrade-up) rules:\r\n* [UP030](https://docs.astral.sh/ruff/rules/format-literals/), [UP031](https://docs.astral.sh/ruff/rules/printf-string-formatting/), [UP032](https://docs.astral.sh/ruff/rules/f-string/) are about moving string interpolation to f-strings. Change are pervasive, they are better left in a PR of their own.\r\n* [UP036](https://docs.astral.sh/ruff/rules/outdated-version-block/) implies lots of manual changes and requires extra care. Again, best left in a PR of its own."
+    },
+    "ground_truth": {
+      "merged_at": "2025-12-11T07:43:17Z",
+      "diff": "diff --git a/demo/_curses.py b/demo/_curses.py\nindex d5e993f4..60a21e8f 100644\n--- a/demo/_curses.py\n+++ b/demo/_curses.py\n@@ -219,7 +219,7 @@ class error(Exception):\n     pass\n \n \n-class Window(object):\n+class Window:\n     def __init__(self, window):\n         self._win = window\n \ndiff --git a/demo/api.py b/demo/api.py\nindex a6c07241..b40af9bf 100644\n--- a/demo/api.py\n+++ b/demo/api.py\n@@ -35,7 +35,7 @@ def verify(self, source='', **kwargs):\n         return lib\n \n \n-class _PyExport(object):\n+class _PyExport:\n     def __init__(self, tp, func):\n         self.tp = tp\n         self.func = func\ndiff --git a/demo/btrfs-snap.py b/demo/btrfs-snap.py\nindex 8061f83a..b1e1e518 100644\n--- a/demo/btrfs-snap.py\n+++ b/demo/btrfs-snap.py\n@@ -3,8 +3,6 @@\n \n creates a exactly named snapshots and bails out if they exist\n \"\"\"\n-from __future__ import print_function\n-\n import argparse\n import fcntl\n import os\n@@ -47,7 +45,7 @@\n args_buffer = ffi.buffer(args)\n try:\n     fcntl.ioctl(target, lib.BTRFS_IOC_SNAP_CREATE_V2, args_buffer)\n-except IOError as e:\n+except OSError as e:\n     print(e)\n     sys.exit(1)\n \ndiff --git a/demo/extern_python_varargs.py b/demo/extern_python_varargs.py\nindex f832d6a3..79fee0e3 100644\n--- a/demo/extern_python_varargs.py\n+++ b/demo/extern_python_varargs.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n import cffi\n \n ffi = cffi.FFI()\ndiff --git a/demo/fastcsv.py b/demo/fastcsv.py\nindex 943dd676..8e28a57e 100644\n--- a/demo/fastcsv.py\n+++ b/demo/fastcsv.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n import csv\n import cffi\n \ndiff --git a/demo/gmp.py b/demo/gmp.py\nindex 4f0857f3..90e5e1cf 100644\n--- a/demo/gmp.py\n+++ b/demo/gmp.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n import sys\n #\n # This is only a demo based on the GMP library.\ndiff --git a/demo/manual2.py b/demo/manual2.py\nindex 598fb7ee..57152372 100644\n--- a/demo/manual2.py\n+++ b/demo/manual2.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n import _cffi_backend\n \n ffi = _cffi_backend.FFI(b\"manual2\",\ndiff --git a/demo/pwuid.py b/demo/pwuid.py\nindex 7651e6e0..2ecb4b84 100644\n--- a/demo/pwuid.py\n+++ b/demo/pwuid.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n import sys, os\n \n # run pwuid_build first, then make sure the shared object is on sys.path\ndiff --git a/demo/pyobj.py b/demo/pyobj.py\nindex 922f6da6..1e6b832a 100644\n--- a/demo/pyobj.py\n+++ b/demo/pyobj.py\n@@ -1,5 +1,3 @@\n-from __future__ import print_function\n-\n referents = []     # list \"object descriptor -> python object\"\n freelist = None\n \n@@ -24,7 +22,7 @@ def discard(p):\n     freelist = p\n     return x\n \n-class Ref(object):\n+class Ref:\n     \"\"\"For use in 'with Ref(x) as ob': open an object descriptor\n     and returns it in 'ob', and close it automatically when the\n     'with' statement finishes.\"\"\"\ndiff --git a/demo/readdir.py b/demo/readdir.py\nindex cac9200a..fcb2b7d9 100644\n--- a/demo/readdir.py\n+++ b/demo/readdir.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n # A Linux-only demo\n #\n import sys\ndiff --git a/demo/readdir2.py b/demo/readdir2.py\nindex 601cd2ce..7aef3289 100644\n--- a/demo/readdir2.py\n+++ b/demo/readdir2.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n # A Linux-only demo, using set_source() instead of hard-coding the exact layouts\n #\n import sys\ndiff --git a/demo/readdir_ctypes.py b/demo/readdir_ctypes.py\nindex 8f7f14db..9ceb5298 100644\n--- a/demo/readdir_ctypes.py\n+++ b/demo/readdir_ctypes.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n # A Linux-only demo\n #\n # For comparison purposes, this is a ctypes version of readdir.py.\ndiff --git a/demo/winclipboard.py b/demo/winclipboard.py\nindex e7335e45..c9e64d71 100644\n--- a/demo/winclipboard.py\n+++ b/demo/winclipboard.py\n@@ -1,4 +1,3 @@\n-from __future__ import print_function\n __author__ = \"Israel Fruchter <israel.fruchter@gmail.com>\"\n \n import sys, os\ndiff --git a/doc/source/conf.py b/doc/source/conf.py\nindex 23a21019..075336b7 100644\n--- a/doc/source/conf.py\n+++ b/doc/source/conf.py\n@@ -1,5 +1,3 @@\n-# -*- coding: utf-8 -*-\n-#\n # CFFI documentation build configuration file, created by\n # sphinx-quickstart on Thu Jun 14 16:37:47 2012.\n #\n@@ -37,8 +35,8 @@\n master_doc = 'index'\n \n # General information about the project.\n-project = u'CFFI'\n-copyright = u'2012-2025, Armin Rigo, Maciej Fijalkowski'\n+project = 'CFFI'\n+copyright = '2012-2025, Armin Rigo, Maciej Fijalkowski'\n \n # The version info for the project you're documenting, acts as replacement for\n # |version| and |release|, also used in various other places throughout the\n@@ -172,8 +170,8 @@\n # Grouping the document tree into LaTeX files. List of tuples\n # (source start file, target name, title, author, documentclass [howto/manual]).\n latex_documents = [\n-  ('index', 'CFFI.tex', u'CFFI Documentation',\n-   u'Armin Rigo, Maciej Fijalkowski', 'manual'),\n+  ('index', 'CFFI.tex', 'CFFI Documentation',\n+   'Armin Rigo, Maciej Fijalkowski', 'manual'),\n ]\n \n # The name of an image file (relative to this directory) to place at the top of\ndiff --git a/src/c/test_c.py b/src/c/test_c.py\nindex b2114435..8d2228c1 100644\n--- a/src/c/test_c.py\n+++ b/src/c/test_c.py\n@@ -75,7 +75,7 @@ def _capture_unraisable_hook(ur_args):\n     mandatory_u_prefix = 'u'\n     bytechr = chr\n     bitem2bchr = lambda x: x\n-    class U(object):\n+    class U:\n         def __add__(self, other):\n             return eval('u'+repr(other).replace(r'\\\\u', r'\\u')\n                                        .replace(r'\\\\U', r'\\U'))\n@@ -460,7 +460,7 @@ def test_reading_pointer_to_pointer():\n     assert p[0] is not None\n     assert p[0] == cast(BVoidP, 0)\n     assert p[0] == cast(BCharP, 0)\n-    assert p[0] != None\n+    assert p[0] is not None\n     assert repr(p[0]) == \"<cdata 'int *' NULL>\"\n     p[0] = q\n     assert p[0] != cast(BVoidP, 0)\n@@ -495,12 +495,12 @@ def test_no_len_on_nonarray():\n def test_cmp_none():\n     p = new_primitive_type(\"int\")\n     x = cast(p, 42)\n-    assert (x == None) is False\n-    assert (x != None)"
+    },
+    "relevant_files": [
+      "demo/_curses.py",
+      "demo/api.py",
+      "demo/btrfs-snap.py",
+      "demo/extern_python_varargs.py",
+      "demo/fastcsv.py",
+      "demo/gmp.py",
+      "demo/manual2.py",
+      "demo/pwuid.py",
+      "demo/pyobj.py",
+      "demo/readdir.py",
+      "demo/readdir2.py",
+      "demo/readdir_ctypes.py",
+      "demo/winclipboard.py",
+      "doc/source/conf.py",
+      "src/c/test_c.py",
+      "src/cffi/api.py",
+      "src/cffi/backend_ctypes.py",
+      "src/cffi/cffi_opcode.py",
+      "src/cffi/cparser.py",
+      "src/cffi/model.py",
+      "src/cffi/pkgconfig.py",
+      "src/cffi/recompiler.py",
+      "src/cffi/vengine_cpy.py",
+      "src/cffi/vengine_gen.py",
+      "src/cffi/verifier.py",
+      "testing/cffi0/backend_tests.py",
+      "testing/cffi0/test_cdata.py",
+      "testing/cffi0/test_function.py",
+      "testing/cffi0/test_ownlib.py",
+      "testing/cffi0/test_parsing.py",
+      "testing/cffi0/test_unicode_literals.py",
+      "testing/cffi0/test_verify.py",
+      "testing/cffi0/test_zdistutils.py",
+      "testing/cffi0/test_zintegration.py",
+      "testing/cffi1/test_commontypes.py",
+      "testing/cffi1/test_new_ffi_1.py",
+      "testing/cffi1/test_recompiler.py",
+      "testing/cffi1/test_unicode_literals.py",
+      "testing/cffi1/test_verify1.py",
+      "testing/cffi1/test_zdist.py",
+      "testing/embedding/withunicode.py",
+      "testing/support.py"
+    ],
+    "snapshot_commit": "7020b2da171def1f15d68e90ea2e0823707b6598",
+    "belief_cutoff_timestamp": "2025-11-22T13:08:51Z",
+    "reference_commit_timestamp": "2025-12-11T07:43:17Z"
+  },
+  {
+    "id": "cffi_feature_124",
+    "repo": "python-cffi/cffi",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 124,
+      "pr_title": "Remove pre-Python 3.8 C code",
+      "pr_body": "This is a bit of a big one, but it's mostly removal of dead code anyway, so hopefully it's not too controversial, and well received.\r\n\r\nWhile doing some further code inspection today to re-tackle #86 I realised that there's still a fair bit of code in the C extension, and in the C extension generator, for Python < 3.8. Since 3.8 is the minimum supported version, it makes sense to remove that now-dead code in favour of a less complex codebase.\r\n\r\nIn order to make this a bit more digestible I split this work in two commits: one focuses on removing support for Python <3, and another for <3.8. Many of these changes are big `#if` blocks that could easily be removed. In a few places there were macros that were defined differently depending on the Python version, that would have now been left with a single definition. In these cases I removed the macro altogether in favour of using the direct Python C API or idiom as required (e.g., all the `PyText_*` macros are now `PyUnicode_*` calls, etc).\r\n\r\nBoth commits are (I think) correctly self-contained, at least locally they individually both compile, install and test correctly. So in case something breaks it should be easy to bisect back."
+    },
+    "ground_truth": {
+      "merged_at": "2025-12-08T11:36:39Z",
+      "diff": "diff --git a/src/c/_cffi_backend.c b/src/c/_cffi_backend.c\nindex 28ad3c09..835e3318 100644\n--- a/src/c/_cffi_backend.c\n+++ b/src/c/_cffi_backend.c\n@@ -142,69 +142,10 @@\n #include \"malloc_closure.h\"\n \n \n-#if PY_MAJOR_VERSION >= 3\n-# define STR_OR_BYTES \"bytes\"\n-# define PyText_Type PyUnicode_Type\n-# define PyText_Check PyUnicode_Check\n-# define PyTextAny_Check PyUnicode_Check\n-# define PyText_FromFormat PyUnicode_FromFormat\n-# define PyText_AsUTF8 PyUnicode_AsUTF8\n-# define PyText_AS_UTF8 PyUnicode_AsUTF8\n-# if PY_VERSION_HEX >= 0x03030000\n-#  define PyText_GetSize PyUnicode_GetLength\n-# else\n-#  define PyText_GetSize PyUnicode_GetSize\n-# endif\n-# define PyText_FromString PyUnicode_FromString\n-# define PyText_FromStringAndSize PyUnicode_FromStringAndSize\n-# define PyText_InternInPlace PyUnicode_InternInPlace\n-# define PyText_InternFromString PyUnicode_InternFromString\n-# define PyIntOrLong_Check PyLong_Check\n-#else\n-# define STR_OR_BYTES \"str\"\n-# define PyText_Type PyString_Type\n-# define PyText_Check PyString_Check\n-# define PyTextAny_Check(op) (PyString_Check(op) || PyUnicode_Check(op))\n-# define PyText_FromFormat PyString_FromFormat\n-# define PyText_AsUTF8 PyString_AsString\n-# define PyText_AS_UTF8 PyString_AS_STRING\n-# define PyText_GetSize PyString_Size\n-# define PyText_FromString PyString_FromString\n-# define PyText_FromStringAndSize PyString_FromStringAndSize\n-# define PyText_InternInPlace PyString_InternInPlace\n-# define PyText_InternFromString PyString_InternFromString\n-# define PyIntOrLong_Check(op) (PyInt_Check(op) || PyLong_Check(op))\n-#endif\n-\n-#if PY_MAJOR_VERSION >= 3\n-# define PyInt_FromLong PyLong_FromLong\n-# define PyInt_FromSsize_t PyLong_FromSsize_t\n-# define PyInt_AsSsize_t PyLong_AsSsize_t\n-# define PyInt_AsLong PyLong_AsLong\n-#endif\n-\n-#if PY_MAJOR_VERSION >= 3\n-/* This is the default on Python3 and constant has been removed. */\n-# define Py_TPFLAGS_CHECKTYPES 0\n-#endif\n-\n-#if PY_MAJOR_VERSION < 3\n-# undef PyCapsule_GetPointer\n-# undef PyCapsule_New\n-# define PyCapsule_GetPointer(capsule, name) \\\n-    (PyCObject_AsVoidPtr(capsule))\n-# define PyCapsule_New(pointer, name, destructor) \\\n-    (PyCObject_FromVoidPtr(pointer, destructor))\n-#endif\n-\n #if PY_VERSION_HEX < 0x030900a4\n # define Py_SET_REFCNT(obj, val) (Py_REFCNT(obj) = (val))\n #endif\n \n-#if PY_VERSION_HEX >= 0x03080000\n-# define USE_WRITEUNRAISABLEMSG\n-#endif\n-\n #if PY_VERSION_HEX <= 0x030d00a1\n static int PyDict_GetItemRef(PyObject *mp, PyObject *key, PyObject **result)\n {\n@@ -436,10 +377,7 @@ typedef struct {\n #endif\n \n #include \"minibuffer.h\"\n-\n-#if PY_MAJOR_VERSION >= 3\n-# include \"file_emulator.h\"\n-#endif\n+#include \"file_emulator.h\"\n \n #ifdef PyUnicode_KIND     /* Python >= 3.3 */\n # include \"wchar_helper_3.h\"\n@@ -513,7 +451,7 @@ ctypedescr_new_on_top(CTypeDescrObject *ct_base, const char *extra_text,\n static PyObject *\n ctypedescr_repr(CTypeDescrObject *ct)\n {\n-    return PyText_FromFormat(\"<ctype '%s'>\", ct->ct_name);\n+    return PyUnicode_FromFormat(\"<ctype '%s'>\", ct->ct_name);\n }\n \n static void remove_dead_unique_reference(PyObject *unique_key);\n@@ -589,12 +527,12 @@ static PyObject *ctypeget_kind(CTypeDescrObject *ct, void *context)\n     else\n         result = \"?\";\n \n-    return PyText_FromString(result);\n+    return PyUnicode_FromString(result);\n }\n \n static PyObject *ctypeget_cname(CTypeDescrObject *ct, void *context)\n {\n-    return PyText_FromString(ct->ct_name);\n+    return PyUnicode_FromString(ct->ct_name);\n }\n \n static PyObject *ctypeget_item(CTypeDescrObject *ct, void *context)\n@@ -610,7 +548,7 @@ static PyObject *ctypeget_length(CTypeDescrObject *ct, void *context)\n {\n     if (ct->ct_flags & CT_ARRAY) {\n         if (ct->ct_length >= 0) {\n-            return PyInt_FromSsize_t(ct->ct_length);\n+            return PyLong_FromSsize_t(ct->ct_length);\n         }\n         else {\n             Py_INCREF(Py_None);\n@@ -764,7 +702,7 @@ ctypedescr_dir(PyObject *ct, PyObject *noarg)\n         }\n         else {\n             Py_DECREF(x);\n-            x = PyText_FromString(gsdef->name);\n+            x = PyUnicode_FromString(gsdef->name);\n             err = (x != NULL) ? PyList_Append(res, x) : -1;\n             Py_XDECREF(x);\n             if (err < 0) {\n@@ -898,12 +836,6 @@ _my_PyLong_AsLongLong(PyObject *ob)\n        Like PyLong_AsLongLong(), this version accepts a Python int too, and\n        does conversions from other types of objects.  The difference is that\n        this version refuses floats. */\n-#if PY_MAJOR_VERSION < 3\n-    if (PyInt_Check(ob)) {\n-        return PyInt_AS_LONG(ob);\n-    }\n-    else\n-#endif\n     if (PyLong_Check(ob)) {\n         return PyLong_AsLongLong(ob);\n     }\n@@ -921,7 +853,7 @@ _my_PyLong_AsLongLong(PyObject *ob)\n         if (io == NULL)\n             return -1;\n \n-        if (PyIntOrLong_Check(io)) {\n+        if (PyLong_Check(io)) {\n             res = _my_PyLong_AsLongLong(io);\n         }\n         else {\n@@ -941,15 +873,6 @@ _my_PyLong_AsUnsignedLongLong(PyObject *ob, int strict)\n        does conversions from other types of objects.  If 'strict', complains\n        with OverflowError and refuses floats.  If '!strict', rounds floats\n        and masks the result. */\n-#if PY_MAJOR_VERSION < 3\n-    if (PyInt_Check(ob)) {\n-        long value1 = PyInt_AS_LONG(ob);\n-        if (strict && value1 < 0)\n-            goto negative;\n-        return (unsigned PY_LONG_LONG)(PY_LONG_LONG)value1;\n-    }\n-    else\n-#endif\n     if (PyLong_Check(ob)) {\n         if (strict) {\n             if (_PyLong_Sign(ob) < 0)\n@@ -974,7 +897,7 @@ _my_PyLong_AsUnsignedLongLong(PyObject *ob, int strict)\n         if (io == NULL)\n             return (unsigned PY_LONG_LONG)-1;\n \n-        if (PyIntOrLong_Check(io)) {\n+        if (PyLong_Check(io)) {\n             res = _my_PyLong_AsUnsignedLongLong(io, strict);\n         }\n         else {\n@@ -1193,7 +1116,7 @@ convert_to_object(char *data, CTypeDescrObject *ct)\n         /*READ(data, ct->ct_size)*/\n         value = read_raw_signed_data(data, ct->ct_size);\n         if (ct->ct"
+    },
+    "relevant_files": [
+      "src/c/_cffi_backend.c",
+      "src/c/call_python.c",
+      "src/c/cdlopen.c",
+      "src/c/cffi1_module.c",
+      "src/c/cglob.c",
+      "src/c/commontypes.c",
+      "src/c/ffi_obj.c",
+      "src/c/file_emulator.h",
+      "src/c/lib_obj.c",
+      "src/c/minibuffer.h",
+      "src/c/misc_thread_common.h",
+      "src/c/misc_win32.h",
+      "src/c/realize_c_type.c",
+      "src/cffi/_cffi_errors.h",
+      "src/cffi/_cffi_include.h",
+      "src/cffi/_embedding.h",
+      "src/cffi/recompiler.py",
+      "src/cffi/vengine_cpy.py"
+    ],
+    "snapshot_commit": "88e67ccda69dc89d4feb3629f5c4342be3a5e70f",
+    "belief_cutoff_timestamp": "2024-09-05T15:37:47Z",
+    "reference_commit_timestamp": "2025-12-08T11:36:39Z"
+  }
+]

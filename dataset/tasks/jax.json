@@ -1,0 +1,144 @@
+[
+  {
+    "id": "jax_bug_25986",
+    "repo": "google/jax",
+    "task_type": "bug_fix",
+    "source": "github_bug_label",
+    "input": {
+      "issue_number": 25986,
+      "issue_title": "jax.nn.dot_product_attention CuDNN implementation raises tensor stride error during jit compile",
+      "issue_body": "### Description\n\nI am currently experiencing an issue where I am getting a CuDNN error relating to the stride of my K matrix when using `jax.nn.dot_product_attention` within a flax model. This occurs when jitting and the error stems from the CuDNN dimension checks [here](https://github.com/NVIDIA/cudnn-frontend/blob/ee971b18ee428ff55b444ac93876cfbd377d304f/include/cudnn_frontend/node/scaled_dot_product_flash_attention.h#L180). I am not sure what exactly is causing the striding issue with the `k` tensor, and I have checked the shapes and sharding for the inputs; however, I am struggling to find a way to debug this issue further.\n\nWhen using the `implementation` argument set to `'xla'`, the model jits, and I am able to train with it.\n\nThe shapes for `q`, `k` and `v` are all `(8, 2048, 40, 128)` and all are sharded along the first (batch) dimension, having the following sharding:\n`NamedSharding(mesh=Mesh('dp': 1, 'fsdp': 8), spec=PartitionSpec('fsdp',), memory_kind=device)`.\n\nThe function is called as below:\n```python\njax.nn.dot_product_attention(\n    q.astype(jnp.bfloat16),\n    k.astype(jnp.bfloat16),\n    v.astype(jnp.bfloat16),\n    mask=None, # I have tested with/without masking but get the same error either way\n    scale=float(q.shape[-1] ** -0.5),\n    implementation='cudnn',\n)\n```\n\nThis gives the following error:\n```\n*** truncated ***\nFile \"/app/.venv/lib/python3.11/site-packages/jax/_src/compiler.py\", line 427, in compile_or_get_cached\nreturn _compile_and_write_cache(\n^^^^^^^^^^^^^^^^^^^^^^^^^\nFile \"/app/.venv/lib/python3.11/site-packages/jax/_src/compiler.py\", line 655, in _compile_and_write_cache\nexecutable = backend_compile(\n^^^^^^^^^^^^^^^^\nFile \"/app/.venv/lib/python3.11/site-packages/jax/_src/profiler.py\", line 333, in wrapper\nreturn func(*args, **kwargs)\n^^^^^^^^^^^^^^^^^^^^^\nFile \"/app/.venv/lib/python3.11/site-packages/jax/_src/compiler.py\", line 273, in backend_compile\nraise e\nFile \"/app/.venv/lib/python3.11/site-packages/jax/_src/compiler.py\", line 267,"
+    },
+    "ground_truth": {
+      "fix_commit": "e5b507338",
+      "diff": "commit e5b5073381b1e9c653587d824eac3ff854078941\nAuthor: Joseph Kleinhenz <kleinhej@gene.com>\nDate:   Tue Mar 24 18:06:48 2026 +0000\n\n    Fix cuDNN attention backward pass SPMD partitioning with sharded inputs (jax-ml#25986)\n\ndiff --git a/jax/_src/cudnn/fused_attention_stablehlo.py b/jax/_src/cudnn/fused_attention_stablehlo.py\nindex cd75c07d2..c3ed47b98 100644\n--- a/jax/_src/cudnn/fused_attention_stablehlo.py\n+++ b/jax/_src/cudnn/fused_attention_stablehlo.py\n@@ -1074,11 +1074,23 @@ def _dot_product_attention_bwd_shardy_rule(\n def _dot_product_attention_bwd_partition(\n     scale, seed, dropout_rate, variadic_args, mask_type, layout,\n     sliding_window_length, mesh, arg_shapes, result_shape):\n   out_shardings = _infer_bwd_output_sharding(mesh, arg_shapes, layout, variadic_args)\n   # args sharding\n-  arg_shardings = tuple(arg_i.sharding for arg_i in arg_shapes)\n+  arg_shardings = [arg_i.sharding for arg_i in arg_shapes]\n+  # grad_output (index 12) may be inferred as replicated (e.g. when it\n+  # originates from a broadcast in jnp.sum's backward pass). The cuDNN\n+  # backward custom-call is lowered with batch size B taken from the\n+  # partitioned query, so every operand that carries a batch dimension\n+  # must be partitioned identically. Force fwd_output (11) and\n+  # grad_output (12) to match query's sharding so the SPMD partitioner\n+  # slices them to the correct per-shard shape.\n+  # See https://github.com/jax-ml/jax/issues/25986\n+  query_sharding = arg_shardings[0]\n+  arg_shardings[11] = query_sharding # fwd_output\n+  arg_shardings[12] = query_sharding # grad_output\n+  arg_shardings = tuple(arg_shardings)\n   def sharded_impl(*args):\n     impl = functools.partial(\n       _dot_product_attention_bwd_impl,\n       scale=scale,\n       seed=seed,"
+    },
+    "relevant_files": [
+      "jax/_src/cudnn/fused_attention_stablehlo.py"
+    ],
+    "belief_cutoff_timestamp": "2025-01-20T11:38:25Z",
+    "reference_commit_timestamp": "2026-03-24T18:06:48Z"
+  },
+  {
+    "id": "jax_bug_11206",
+    "repo": "google/jax",
+    "task_type": "bug_fix",
+    "source": "git_fix_keyword_fallback",
+    "input": {
+      "issue_number": 11206,
+      "issue_title": "Adding `align_corners` to `jax.image.resize`",
+      "issue_body": "Hi there ! \r\n\r\nI would like to reproduce the operations that are done under `torch.nn.Upsample()` with `flax` \ud83c\udf89 . In PyTorch, it seems that the flag `align_corners` doesn't mean \"align the corners\" but rather \"sample with equal spacing\" cc @cgarciae ! Can we add this feature in `jax.image.resize`? \ud83d\ude4f (Initially posted on `google/flax`)\r\n\r\n# Problem description:\r\n\r\nIdeally:\r\n```\r\nimport torch\r\nimport torch.nn as nn\r\nimport jax.numpy as jnp\r\nimport jax\r\nimport numpy as np\r\n\r\ninput_arr = jnp.array([\r\n    [0, 1, 2, 3, 4],\r\n    [5, 6, 7, 8, 9],\r\n]) / 9\r\n\r\ntorch_input_arr = torch.from_numpy(np.array(input_arr)).unsqueeze(0).unsqueeze(0)\r\nupsample_with_align_corners = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)\r\nupsample_without_align_corners = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False)\r\n\r\noutput = jax.image.resize(\r\n    image=input_arr,\r\n    shape=(4,10),\r\n    method=\"bilinear\")\r\n\r\noutput_torch_upsample_with_align_corners = upsample_with_align_corners(torch_input_arr)\r\noutput_torch_upsample_without_align_corners = upsample_without_align_corners(torch_input_arr)\r\n\r\nprint(\"jax: \", output)\r\nprint(\"torch upsample align corner:\", output_torch_upsample_with_align_corners)\r\nprint(\"torch upsample without align corners\",output_torch_upsample_without_align_corners)\r\n```\r\nI would like to match `output_torch_upsample_with_align_corners` and flax' `output`. Here is what I get:\r\n```\r\n# jax default output\r\nDeviceArray([[0.        , 0.02777778, 0.08333334, 0.1388889 , 0.19444445,\r\n              0.25      , 0.30555555, 0.3611111 , 0.4166667 , 0.44444445],\r\n             [0.1388889 , 0.16666667, 0.22222222, 0.2777778 , 0.33333334,\r\n              0.3888889 , 0.44444442, 0.5       , 0.5555556 , 0.5833334 ],\r\n             [0.4166667 , 0.44444448, 0.5       , 0.5555555 , 0.6111111 ,\r\n              0.6666667 , 0.7222222 , 0.7777778 , 0.8333333 , 0.8611111 ],\r\n             [0.5555556 , 0.5833334 , 0.6388889 , 0.6944444 , 0.75      ,\r\n              0.8055"
+    },
+    "ground_truth": {
+      "fix_commit": "7de2a7b6e93b5ba4fb3d7c69969a82736fbfe41a",
+      "diff": "commit 7de2a7b6e93b5ba4fb3d7c69969a82736fbfe41a\nAuthor: Peter Hawkins <phawkins@google.com>\nDate:   Wed Mar 25 09:01:29 2026 -0700\n\n    Improve the fix for #11206 by mentioning it in the documentation.\n    \n    PiperOrigin-RevId: 889272393\n\ndiff --git a/jax/_src/image/scale.py b/jax/_src/image/scale.py\nindex eaba896f3..ebc7f8142 100644\n--- a/jax/_src/image/scale.py\n+++ b/jax/_src/image/scale.py\n@@ -279,10 +279,19 @@ def scale_and_translate(image, shape: core.Shape,\n \n   If an output location(pixel) maps to an input sample location that is outside\n   the input boundaries then the value for the output location will be set to\n   zero.\n \n+  This function can be used to imitate the behavior of\n+  ``torch.nn.functional.interpolate`` with ``align_corners=True`` by setting::\n+\n+      scale = (n - 1) / (m - 1)\n+      translation = 0.5 * (1 - scale)\n+\n+  where ``m`` is the input size and ``n`` is the output size for a given\n+  dimension.\n+\n   The ``method`` argument expects one of the following resize methods:\n \n   ``ResizeMethod.LINEAR``, ``\"linear\"``, ``\"bilinear\"``, ``\"trilinear\"``,\n     ``\"triangle\"`` `Linear interpolation`_. If ``antialias`` is ``True``, uses a\n     triangular filter when downsampling.\n@@ -429,10 +438,14 @@ def resize(image, shape: core.Shape, method: str | ResizeMethod,\n   .. _Nearest neighbor interpolation: https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation\n   .. _Linear interpolation: https://en.wikipedia.org/wiki/Bilinear_interpolation\n   .. _Cubic interpolation: https://en.wikipedia.org/wiki/Bicubic_interpolation\n   .. _Lanczos resampling: https://en.wikipedia.org/wiki/Lanczos_resampling\n \n+  This function does not support an ``align_corners`` argument like\n+  ``torch.nn.functional.interpolate``. That behavior can be emulated using\n+  :func:`scale_and_translate`.\n+\n   Args:\n     image: a JAX array.\n     shape: the output shape, as a sequence of integers with length equal to\n       the number of dimensions of `image`. Note that :func:`resize` does not\n       distinguish spatial dimensions from batch or channel dimensions, so this"
+    },
+    "relevant_files": [
+      "jax/_src/image/scale.py"
+    ],
+    "belief_cutoff_timestamp": "2022-06-22T15:00:29Z",
+    "reference_commit_timestamp": "2026-03-25T09:01:29-07:00"
+  },
+  {
+    "id": "jax_feature_36510",
+    "repo": "google/jax",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 36510,
+      "pr_title": "Removed a few unused internal functions",
+      "pr_body": "Removed a few unused internal functions\n"
+    },
+    "ground_truth": {
+      "merged_at": "2026-04-04T16:05:50Z",
+      "diff": "diff --git a/jax/_src/lax/linalg.py b/jax/_src/lax/linalg.py\nindex 70478ca1567c..0345ee3a8d6a 100644\n--- a/jax/_src/lax/linalg.py\n+++ b/jax/_src/lax/linalg.py\n@@ -76,13 +76,6 @@ def register_module_custom_calls(module):\n register_module_custom_calls(lapack)\n \n \n-def _gpu_solver_has_ffi(platform: str, ffi_target: str) -> bool:\n-  if not hasattr(gpu_solver, \"registrations\"):\n-    return False\n-  targets = gpu_solver.registrations().get(platform, ())\n-  return any(name == ffi_target for name, _, _ in targets)\n-\n-\n # Top-level functions in alphabetical order.\n \n def cholesky(x: Array, *, symmetrize_input: bool = True) -> Array:\ndiff --git a/jax/_src/tree_util.py b/jax/_src/tree_util.py\nindex 8646eebb98e9..c583cd9d8c86 100644\n--- a/jax/_src/tree_util.py\n+++ b/jax/_src/tree_util.py\n@@ -373,32 +373,6 @@ def tree_map(f: Callable[..., Any],\n   return treedef.unflatten(f(*xs) for xs in zip(*all_leaves))\n \n \n-@export\n-def build_tree(treedef: PyTreeDef, xs: Any) -> Any:\n-  \"\"\"Build a treedef from a nested iterable structure\n-\n-  DEPRECATED: Use :func:`jax.tree.unflatten` instead.\n-\n-  Args:\n-    treedef: the PyTreeDef structure to build.\n-    xs: nested iterables matching the arity as the treedef\n-\n-  Returns:\n-    object with structure defined by treedef\n-\n-  See Also:\n-    - :func:`jax.tree.unflatten`\n-\n-  Examples:\n-    >>> import jax\n-    >>> tree = [(1, 2), {'a': 3, 'b': 4}]\n-    >>> treedef = jax.tree.structure(tree)\n-    >>> jax.tree_util.tree_unflatten(treedef, [10, 11, 12, 13])\n-    [(10, 11), {'a': 12, 'b': 13}]\n-  \"\"\"\n-  return treedef.from_iterable_tree(xs)\n-\n-\n @export\n def tree_transpose(outer_treedef: PyTreeDef, inner_treedef: PyTreeDef | None,\n                    pytree_to_transpose: Any) -> Any:\n"
+    },
+    "relevant_files": [
+      "jax/_src/lax/linalg.py",
+      "jax/_src/tree_util.py"
+    ],
+    "belief_cutoff_timestamp": "2026-04-04T09:12:19Z",
+    "reference_commit_timestamp": "2026-04-04T16:05:50Z"
+  },
+  {
+    "id": "jax_feature_36506",
+    "repo": "google/jax",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 36506,
+      "pr_title": "update author list",
+      "pr_body": ""
+    },
+    "ground_truth": {
+      "merged_at": "2026-04-03T22:40:35Z",
+      "diff": "diff --git a/CITATION.bib b/CITATION.bib\nindex 777058b5aaa9..51cea8af461b 100644\n--- a/CITATION.bib\n+++ b/CITATION.bib\n@@ -1,5 +1,5 @@\n @software{jax2018github,\n-  author = {James Bradbury and Roy Frostig and Peter Hawkins and Matthew James Johnson and Chris Leary and Dougal Maclaurin and George Necula and Adam Paszke and Jake Vander{P}las and Skye Wanderman-{M}ilne and Qiao Zhang},\n+  author = {James Bradbury and Roy Frostig and Peter Hawkins and Matthew James Johnson and Yash Katariya and Chris Leary and Dougal Maclaurin and George Necula and Adam Paszke and Jake Vander{P}las and Skye Wanderman-{M}ilne and Qiao Zhang},\n   title = {{JAX}: composable transformations of {P}ython+{N}um{P}y programs},\n   url = {http://github.com/jax-ml/jax},\n   version = {0.3.13},\ndiff --git a/README.md b/README.md\nindex f2d617dbff72..3ac6a83f32bf 100644\n--- a/README.md\n+++ b/README.md\n@@ -255,7 +255,7 @@ To cite this repository:\n \n ```\n @software{jax2018github,\n-  author = {James Bradbury and Roy Frostig and Peter Hawkins and Matthew James Johnson and Chris Leary and Dougal Maclaurin and George Necula and Adam Paszke and Jake Vander{P}las and Skye Wanderman-{M}ilne and Qiao Zhang},\n+  author = {James Bradbury and Roy Frostig and Peter Hawkins and Matthew James Johnson and Yash Katariya and Chris Leary and Dougal Maclaurin and George Necula and Adam Paszke and Jake Vander{P}las and Skye Wanderman-{M}ilne and Qiao Zhang},\n   title = {{JAX}: composable transformations of {P}ython+{N}um{P}y programs},\n   url = {http://github.com/jax-ml/jax},\n   version = {0.3.13},\n"
+    },
+    "relevant_files": [
+      "CITATION.bib",
+      "README.md"
+    ],
+    "belief_cutoff_timestamp": "2026-04-03T22:21:01Z",
+    "reference_commit_timestamp": "2026-04-03T22:40:35Z"
+  },
+  {
+    "id": "jax_feature_36474",
+    "repo": "google/jax",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 36474,
+      "pr_title": "[jaxlib] Added all missing .pyis for jaxlib native extensions",
+      "pr_body": "[jaxlib] Added all missing .pyis for jaxlib native extensions\n"
+    },
+    "ground_truth": {
+      "merged_at": "2026-04-03T20:14:21Z",
+      "diff": "diff --git a/examples/ffi/src/jax_ffi_example/_cpu_examples.pyi b/examples/ffi/src/jax_ffi_example/_cpu_examples.pyi\nnew file mode 100644\nindex 000000000000..827c0fa35098\n--- /dev/null\n+++ b/examples/ffi/src/jax_ffi_example/_cpu_examples.pyi\n@@ -0,0 +1,15 @@\n+# Copyright 2026 The JAX Authors.\n+#\n+# Licensed under the Apache License, Version 2.0 (the \"License\");\n+# you may not use this file except in compliance with the License.\n+# You may obtain a copy of the License at\n+#\n+#     https://www.apache.org/licenses/LICENSE-2.0\n+#\n+# Unless required by applicable law or agreed to in writing, software\n+# distributed under the License is distributed on an \"AS IS\" BASIS,\n+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+# See the License for the specific language governing permissions and\n+# limitations under the License.\n+\n+def registrations() -> dict: ...\ndiff --git a/examples/ffi/src/jax_ffi_example/_rms_norm.pyi b/examples/ffi/src/jax_ffi_example/_rms_norm.pyi\nnew file mode 100644\nindex 000000000000..827c0fa35098\n--- /dev/null\n+++ b/examples/ffi/src/jax_ffi_example/_rms_norm.pyi\n@@ -0,0 +1,15 @@\n+# Copyright 2026 The JAX Authors.\n+#\n+# Licensed under the Apache License, Version 2.0 (the \"License\");\n+# you may not use this file except in compliance with the License.\n+# You may obtain a copy of the License at\n+#\n+#     https://www.apache.org/licenses/LICENSE-2.0\n+#\n+# Unless required by applicable law or agreed to in writing, software\n+# distributed under the License is distributed on an \"AS IS\" BASIS,\n+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+# See the License for the specific language governing permissions and\n+# limitations under the License.\n+\n+def registrations() -> dict: ...\ndiff --git a/jax/_src/pretty_printer.py b/jax/_src/pretty_printer.py\nindex b29b5d478158..4867e6149453 100644\n--- a/jax/_src/pretty_printer.py\n+++ b/jax/_src/pretty_printer.py\n@@ -65,7 +65,7 @@ def _can_use_color() -> bool:\n Doc = _pretty_printer.Doc\n \n def _format(\n-  self, width: int = 80, *, use_color: bool | None = None,\n+  self: Doc, width: int = 80, *, use_color: bool | None = None,\n   annotation_prefix: str = \" # \",\n   source_map: list[list[tuple[int, int, Any]]] | None = None\n ) -> str:\ndiff --git a/jax/_src/util.py b/jax/_src/util.py\nindex 7a79ae9729ce..88dc9df3a7e9 100644\n--- a/jax/_src/util.py\n+++ b/jax/_src/util.py\n@@ -386,7 +386,7 @@ def multi_weakref_lru_cache(\n   cached_call = lib_weakref_lru_cache.multi_weakref_lru_cache(  # type: ignore\n       config.trace_context if trace_context_in_key else _ignore,\n       call,\n-      maxsize,\n+      maxsize=maxsize,\n       explain=None,\n       registry=_multi_weakref_registry,\n       weak_types=weakref_cache_key_types,\ndiff --git a/jaxlib/BUILD b/jaxlib/BUILD\nindex 551037af60d3..e56bdfbb817b 100644\n--- a/jaxlib/BUILD\n+++ b/jaxlib/BUILD\n@@ -285,7 +285,6 @@ nanobind_pywrap_extension(\n         \"weakref_lru_cache.h\",\n         \"weakref_lru_cache_module.cc\",\n     ],\n-    pytype_srcs = [\"weakref_lru_cache.pyi\"],\n     deps = [\n         \":nb_class_ptr\",\n         \":pytree\",\n@@ -345,10 +344,8 @@ nanobind_pywrap_extension(\n         \"//third_party/py/numpy\",\n         \"//jaxlib/mlir:ir\",\n     ],\n-    enable_stub_generation = True,\n     postprocess_stubgen = \"//jaxlib:backport_stubs\",\n     pytype_deps = py_deps([\"numpy\"]),\n-    pytype_srcs = glob([\"_jax/*.pyi\"]),\n     stub_replacement_patterns = {\n         \"jax.jaxlib._jax.Array$\": \"Array: Any\",\n         \"jax.jaxlib._jax.ArrayImpl$\": \"ArrayImpl: Any\",\n@@ -703,7 +700,9 @@ cc_library(\n nanobind_pywrap_extension(\n     name = \"_ifrt_proxy\",\n     srcs = [\"ifrt_proxy.cc\"],\n-    pytype_srcs = [\"_ifrt_proxy.pyi\"],\n+    stub_replacement_patterns = {\n+        \"_ifrt_proxy.__prefix__\": \"from jax.jaxlib._jax import Client\",\n+    },\n     deps = [\n         \":nb_class_ptr\",\n         \":py_client\",\n@@ -727,7 +726,9 @@ nanobind_pywrap_extension(\n nanobind_pywrap_extension(\n     name = \"_pathways\",\n     srcs = [\"pathways.cc\"],\n-    pytype_srcs = [\"_pathways.pyi\"],\n+    stub_replacement_patterns = {\n+        \"_pathways.__prefix__\": \"from jax.jaxlib._jax import Client\",\n+    },\n     visibility = jax_visibility(\"jaxlib/_pathways\"),\n     deps = [\n         \":nb_class_ptr\",\n@@ -1305,6 +1306,19 @@ cc_library(\n nanobind_pywrap_extension(\n     name = \"_sdy_mpmd\",\n     srcs = [\"sdy_mpmd.cc\"],\n+    additional_stubgen_deps = [\n+        \"//jaxlib/mlir:ir\",\n+    ],\n+    pytype_deps = [\n+        \"//jaxlib/mlir:ir\",\n+    ],\n+    stub_replacement_patterns = {\n+        \"_sdy_mpmd.__prefix__\": \"from jax.jaxlib._jax import OpSharding, PjRtLayout\",\n+        # TODO(slebedev): Remove all of these once we no longer need to support pytype.\n+        \"PartitioningPhase._boundary_\": \"_boundary_: enum.FlagBoundary = ...\",\n+        \"_sdy_mpmd\\\\.(NONE|IMPORT|OPTIMIZE|PARTITION|ALL)\": \"\\\\1: PartitioningPhase = ...\",\n+        \"_sdy_mpmd\\\\.(KEEP_TRANSFERRED|DROP_TRANSFERRED)\": \"\\\\1: SplitFragmentType = ...\",\n+    },\n     deps = [\n         \":nb_class_ptr\",\n         \":py_client\",\n@@ -1545,6 +1559,8 @@ nanobind_pywrap_extension(\n     name = \"test_exceptions\",\n     testonly = True,\n     srcs = [\"test_exceptions.cc\"],\n+    # No need, since we do not currently type check tests.\n+    enable_stub_generation = False,\n     deps = [\n         \"@com_google_absl//absl/status\",\n         \"@com_google_absl//absl/status:statusor\",\ndiff --git a/jaxlib/_ifrt_proxy.pyi b/jaxlib/_ifrt_proxy.pyi\nindex c8f6b1141a4e..2576c88c650c 100644\n--- a/jaxlib/_ifrt_proxy.pyi\n+++ b/jaxlib/_ifrt_proxy.pyi\n@@ -1,30 +1,41 @@\n-# Copyright 2024 The JAX Authors\n+# Copyright 2026 The JAX Authors.\n #\n # Licensed under the Apache License, Version 2.0 (the \"License\");\n # you may not use this file except in compliance with the License.\n # You may obtain a copy of the License at\n #\n-#     http://www.apache.org/licenses/LICENSE-2.0\n+#     https://www.apache.org/licenses/LICENSE-2.0\n #\n # Unless required by applicable law or agreed to in writing, software\n # distribute"
+    },
+    "relevant_files": [
+      "examples/ffi/src/jax_ffi_example/_cpu_examples.pyi",
+      "examples/ffi/src/jax_ffi_example/_rms_norm.pyi",
+      "jax/_src/pretty_printer.py",
+      "jax/_src/util.py",
+      "jaxlib/BUILD",
+      "jaxlib/_ifrt_proxy.pyi",
+      "jaxlib/_jax/__init__.pyi",
+      "jaxlib/_jax/config.pyi",
+      "jaxlib/_jax/ffi.pyi",
+      "jaxlib/_jax/guard_lib.pyi",
+      "jaxlib/_jax/hlo_sharding_util.pyi",
+      "jaxlib/_jax/ifrt_programs.pyi",
+      "jaxlib/_jax/jax_jit.pyi",
+      "jaxlib/_jax/mlir.pyi",
+      "jaxlib/_jax/pytree.pyi",
+      "jaxlib/_pathways.pyi",
+      "jaxlib/_pretty_printer.cc",
+      "jaxlib/_pretty_printer.pyi",
+      "jaxlib/_sdy_mpmd.pyi",
+      "jaxlib/cpu_feature_guard.pyi",
+      "jaxlib/cuda/BUILD",
+      "jaxlib/cuda/_hybrid.pyi",
+      "jaxlib/cuda/_linalg.pyi",
+      "jaxlib/cuda/_prng.pyi",
+      "jaxlib/cuda/_rnn.pyi",
+      "jaxlib/cuda/_solver.pyi",
+      "jaxlib/cuda/_triton.pyi",
+      "jaxlib/cuda/_versions.pyi",
+      "jaxlib/ifrt_proxy.cc",
+      "jaxlib/jax.bzl",
+      "jaxlib/mlir/_mlir_libs/_jax_mlir_ext.pyi",
+      "jaxlib/mlir/_mlir_libs/_mosaic_gpu_ext.pyi",
+      "jaxlib/mlir/_mlir_libs/_tpu_ext.pyi",
+      "jaxlib/mlir/_mlir_libs/_triton_ext.pyi",
+      "jaxlib/mlir/_mlir_libs/jax_mlir_ext.cc",
+      "jaxlib/mosaic/gpu/BUILD",
+      "jaxlib/mosaic/gpu/_mosaic_gpu_ext.pyi",
+      "jaxlib/pathways.cc",
+      "jaxlib/rocm/BUILD",
+      "jaxlib/sdy_mpmd.cc",
+      "jaxlib/tools/build_wheel.py",
+      "jaxlib/utils.pyi",
+      "jaxlib/weakref_lru_cache.cc",
+      "jaxlib/weakref_lru_cache.pyi"
+    ],
+    "belief_cutoff_timestamp": "2026-04-02T22:44:32Z",
+    "reference_commit_timestamp": "2026-04-03T20:14:21Z"
+  }
+]

@@ -1,0 +1,145 @@
+[
+  {
+    "id": "searxng_bug_5761",
+    "repo": "searxng/searxng",
+    "task_type": "bug_fix",
+    "source": "github_bug_label",
+    "input": {
+      "issue_number": 5761,
+      "issue_title": "Installation with searxng.sh fails: ModuleNotFoundError: No module named 'typing_extensions'",
+      "issue_body": "<!-- PLEASE FILL THESE FIELDS, IT REALLY HELPS THE MAINTAINERS OF SearXNG -->\n\n**Version of SearXNG, commit number if you are using on master branch and stipulate if you forked SearXNG**\n93ac6ceb353078c07541438e4e26146b8c9c66ea\n\n**How did you install SearXNG?**\nTried to install with the script.\n\n**How To Reproduce**\nsudo -H ./utils/searxng.sh install all\n\n**Expected behavior**\nInstallation successful.\n\n**Screenshots & Logs**\n```\nINFO:  install needed python packages\npip install -U pip\npip install -U setuptools\npip install -U wheel\npip install -U pyyaml\npip install -U msgspec\ncd /usr/local/searxng/searxng-src\n  |searxng| Requirement already satisfied: pip in ./searx-pyenv/lib/python3.10/site-packages (22.0.2)\npip install --use-pep517 --no-build-isolation -e .\n  |searxng| Collecting pip\n  |searxng|   Using cached pip-26.0.1-py3-none-any.whl (1.8 MB)\n  |searxng| Installing collected packages: pip\n  |searxng|   Attempting uninstall: pip\n  |searxng|     Found existing installation: pip 22.0.2\n  |searxng|     Uninstalling pip-22.0.2:\n  |searxng|       Successfully uninstalled pip-22.0.2\n  |searxng| Successfully installed pip-26.0.1\n  |searxng| Requirement already satisfied: setuptools in ./searx-pyenv/lib/python3.10/site-packages (59.6.0)\n  |searxng| Collecting setuptools\n  |searxng|   Using cached setuptools-82.0.0-py3-none-any.whl.metadata (6.6 kB)\n  |searxng| Using cached setuptools-82.0.0-py3-none-any.whl (1.0 MB)\n  |searxng| Installing collected packages: setuptools\n  |searxng|   Attempting uninstall: setuptools\n  |searxng|     Found existing installation: setuptools 59.6.0\n  |searxng|     Uninstalling setuptools-59.6.0:\n  |searxng|       Successfully uninstalled setuptools-59.6.0\n  |searxng| Successfully installed setuptools-82.0.0\n  |searxng| Collecting wheel\n  |searxng|   Using cached wheel-0.46.3-py3-none-any.whl.metadata (2.4 kB)\n  |searxng| Collecting packaging>=24.0 (from wheel)\n  |searxng|   Using cached packaging-26.0-py3-none-any.whl.metadata (3.3 kB)\n  |se"
+    },
+    "ground_truth": {
+      "fix_commit": "89a6311",
+      "diff": "commit 89a63114c448df91f08005a3daafbd3ce6ad46c2\nAuthor: Markus Heiser <markus.heiser@darmarit.de>\nDate:   Sat Feb 21 13:40:40 2026 +0100\n\n    [fix] searxng.sh fails: No module named 'typing_extensions'\n    \n    Closes: #5761\n    \n    Signed-off-by: Markus Heiser <markus.heiser@darmarit.de>\n\ndiff --git a/utils/searxng.sh b/utils/searxng.sh\nindex 598d3bb..9f9b4f4 100755\n--- a/utils/searxng.sh\n+++ b/utils/searxng.sh\n@@ -491,10 +491,11 @@ EOF\n pip install -U pip\n pip install -U setuptools\n pip install -U wheel\n pip install -U pyyaml\n pip install -U msgspec\n+pip install -U typing-extensions\n cd ${SEARXNG_SRC}\n pip install --use-pep517 --no-build-isolation -e .\n EOF\n }"
+    },
+    "relevant_files": [
+      "utils/searxng.sh"
+    ],
+    "snapshot_commit": "9754e7b4e2b78666c63bf4e4df3348e4b6c45e09",
+    "belief_cutoff_timestamp": "2026-02-20T22:16:34Z",
+    "reference_commit_timestamp": "2026-02-21T13:40:40+01:00"
+  },
+  {
+    "id": "searxng_feature_5764",
+    "repo": "searxng/searxng",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 5764,
+      "pr_title": "[feat] engines: add pexels engine",
+      "pr_body": "## What does this PR do?\r\n- this PR adds support for the Pexels image engine\r\n\r\nImportant:\r\nThis PR adds [cloudscraper](https://github.com/VeNoMouS/cloudscraper) as a new dependency. I'm not sure if it's worth adding it as dependency, but it seems to be the only way to bypass the Cloudflare page at <https://pexels.com>. \r\n\r\nI think there are actually some more engines that would benefit from this library.\r\n\r\nThe dependency probably won't be needed anymore if we switch to a browser impersonation library like `curl-impersonate`, but I'm not sure about the progress of https://github.com/searxng/searxng/pull/5476."
+    },
+    "ground_truth": {
+      "merged_at": "2026-02-26T10:35:10Z",
+      "diff": "diff --git a/requirements.txt b/requirements.txt\nindex 07429f7b0370..83d484d67e9b 100644\n--- a/requirements.txt\n+++ b/requirements.txt\n@@ -19,3 +19,4 @@ typer==0.24.0\n isodate==0.7.2\n whitenoise==6.11.0\n typing-extensions==4.15.0\n+cloudscraper==1.2.71\ndiff --git a/searx/engines/pexels.py b/searx/engines/pexels.py\nnew file mode 100644\nindex 000000000000..57d2d1424303\n--- /dev/null\n+++ b/searx/engines/pexels.py\n@@ -0,0 +1,112 @@\n+# SPDX-License-Identifier: AGPL-3.0-or-later\n+\"\"\"Pexels (images)\"\"\"\n+\n+import re\n+\n+from urllib.parse import urlencode\n+from lxml import html\n+\n+import cloudscraper\n+\n+from searx.result_types import EngineResults\n+from searx.utils import eval_xpath_list\n+from searx.enginelib import EngineCache\n+from searx.exceptions import SearxEngineAPIException\n+from searx.network import get\n+\n+\n+# about\n+about = {\n+    \"website\": 'https://www.pexels.com',\n+    \"wikidata_id\": 'Q101240504',\n+    \"official_api_documentation\": 'https://www.pexels.com/api/',\n+    \"use_official_api\": False,\n+    \"require_api_key\": False,\n+    \"results\": 'JSON',\n+}\n+\n+base_url = 'https://www.pexels.com'\n+categories = ['images']\n+results_per_page = 20\n+\n+paging = True\n+time_range_support = True\n+time_range_map = {'day': 'last_24_hours', 'week': 'last_week', 'month': 'last_month', 'year': 'last_year'}\n+\n+SECRET_KEY_RE = re.compile('\"secret-key\":\\b*\"(.*?)\"')\n+SECRET_KEY_DB_KEY = \"secret-key\"\n+\n+\n+CACHE: EngineCache\n+\"\"\"Cache to store the secret API key for the engine.\"\"\"\n+\n+\n+def init(engine_settings):\n+    global CACHE  # pylint: disable=global-statement\n+    CACHE = EngineCache(engine_settings[\"name\"])\n+\n+\n+def _get_secret_key():\n+    scraper = cloudscraper.create_scraper()\n+    resp = scraper.get(base_url)\n+    if resp.status_code != 200:\n+        raise SearxEngineAPIException(\"failed to obtain secret key\")\n+\n+    doc = html.fromstring(resp.text)\n+    for script_src in eval_xpath_list(doc, \"//script/@src\"):\n+        script = get(script_src)\n+        if script.status_code != 200:\n+            raise SearxEngineAPIException(\"failed to obtain secret key\")\n+\n+        match = SECRET_KEY_RE.search(script.text)\n+        if match:\n+            return match.groups()[0]\n+\n+    # all scripts checked, but secret key was not found\n+    raise SearxEngineAPIException(\"failed to obtain secret key\")\n+\n+\n+def request(query, params):\n+    args = {\n+        'query': query,\n+        'page': params['pageno'],\n+        'per_page': results_per_page,\n+    }\n+    if params['time_range']:\n+        args['date_from'] = time_range_map[params['time_range']]\n+\n+    params[\"url\"] = f\"{base_url}/en-us/api/v3/search/photos?{urlencode(args)}\"\n+\n+    # cache api key for future requests\n+    secret_key = CACHE.get(SECRET_KEY_DB_KEY)\n+    if not secret_key:\n+        secret_key = _get_secret_key()\n+        CACHE.set(SECRET_KEY_DB_KEY, secret_key)\n+\n+    params[\"headers\"][\"secret-key\"] = CACHE.get(SECRET_KEY_DB_KEY)\n+\n+    return params\n+\n+\n+def response(resp):\n+    res = EngineResults()\n+    json_data = resp.json()\n+\n+    for result in json_data.get('data', []):\n+        attrs = result[\"attributes\"]\n+        res.add(\n+            res.types.LegacyResult(\n+                {\n+                    'template': 'images.html',\n+                    'url': f\"{base_url}/photo/{attrs['slug']}-{attrs['id']}/\",\n+                    'title': attrs[\"title\"],\n+                    'content': attrs[\"description\"],\n+                    'thumbnail_src': attrs[\"image\"][\"small\"],\n+                    'img_src': attrs[\"image\"][\"download_link\"],\n+                    'resolution': f\"{attrs['width']}x{attrs['height']}\",\n+                    'author': f\"{attrs['user']['username']}\",\n+                }\n+            )\n+        )\n+\n+    return res\ndiff --git a/searx/settings.yml b/searx/settings.yml\nindex 7b9ff51e309c..443ec44fe83e 100644\n--- a/searx/settings.yml\n+++ b/searx/settings.yml\n@@ -1605,6 +1605,10 @@ engines:\n     # Hide obsolete PDB entries.  Default is not to hide obsolete structures\n     #  hide_obsolete: false\n \n+  - name: pexels\n+    engine: pexels\n+    shortcut: pe\n+\n   - name: photon\n     engine: photon\n     shortcut: ph\n"
+    },
+    "relevant_files": [
+      "requirements.txt",
+      "searx/engines/pexels.py",
+      "searx/settings.yml"
+    ],
+    "snapshot_commit": "89a63114c448df91f08005a3daafbd3ce6ad46c2",
+    "belief_cutoff_timestamp": "2026-02-21T21:40:38Z",
+    "reference_commit_timestamp": "2026-02-26T10:35:10Z"
+  },
+  {
+    "id": "searxng_feature_5871",
+    "repo": "searxng/searxng",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 5871,
+      "pr_title": "[feat] engines: add karmasearch engine (brave mirror)",
+      "pr_body": "## What does this PR do?\r\n- Implement https://karmasearch.org, which uses the Brave index\r\n\r\n## Why is this change important?\r\n- Brave has very strict rate-limits, so having a second way for loading Brave results is definitely worth it\r\n- see e.g. https://github.com/searxng/searxng/issues/4653\r\n\r\n## How to test this PR locally?\r\n- !kai test\r\n- !ka test\r\n- !kav test\r\n- !kan test\r\n\r\n## Author notes\r\n- ~Languages/regions are not supported yet, I couldn't figure out how to import the existing traits from Brave here. @return42, could you please help here?~ Done\r\n\r\n## AI Disclosure\r\n<!-- please read https://github.com/searxng/searxng/blob/master/AI_POLICY.rst -->\r\n- [X] I hereby confirm that I have not used any AI tools for creating this PR.\r\n- [ ] I have used AI tools for working on the changes in this pull request and will attach a list of all AI tools I used and how I used them. I hereby confirm that I haven't used any other tools than the ones I mention below.\r\n"
+    },
+    "ground_truth": {
+      "merged_at": "2026-03-25T18:45:46Z",
+      "diff": "diff --git a/docs/dev/engines/online/karmasearch.rst b/docs/dev/engines/online/karmasearch.rst\nnew file mode 100644\nindex 00000000000..d76ea2409e4\n--- /dev/null\n+++ b/docs/dev/engines/online/karmasearch.rst\n@@ -0,0 +1,8 @@\n+.. _karmasearch engine:\n+\n+===========\n+Karmasearch\n+===========\n+\n+.. automodule:: searx.engines.karmasearch\n+   :members:\ndiff --git a/searx/data/engine_traits.json b/searx/data/engine_traits.json\nindex 574b8eb4153..fb2078c2de4 100644\n--- a/searx/data/engine_traits.json\n+++ b/searx/data/engine_traits.json\n@@ -5740,6 +5740,186 @@\n       \"zu-ZA\": \"ZA\"\n     }\n   },\n+  \"karmasearch\": {\n+    \"all_locale\": null,\n+    \"custom\": {},\n+    \"data_type\": \"traits_v1\",\n+    \"languages\": {},\n+    \"regions\": {\n+      \"da-DK\": \"da-DK\",\n+      \"de-AT\": \"de-AT\",\n+      \"de-CH\": \"de-CH\",\n+      \"de-DE\": \"de-DE\",\n+      \"en-AU\": \"en-AU\",\n+      \"en-CA\": \"en-CA\",\n+      \"en-GB\": \"en-GB\",\n+      \"en-ID\": \"en-ID\",\n+      \"en-IN\": \"en-IN\",\n+      \"en-MY\": \"en-MY\",\n+      \"en-NZ\": \"en-NZ\",\n+      \"en-PH\": \"en-PH\",\n+      \"en-US\": \"en-US\",\n+      \"en-ZA\": \"en-ZA\",\n+      \"es-AR\": \"es-AR\",\n+      \"es-CL\": \"es-CL\",\n+      \"es-ES\": \"es-ES\",\n+      \"es-MX\": \"es-MX\",\n+      \"es-US\": \"es-US\",\n+      \"fi-FI\": \"fi-FI\",\n+      \"fr-BE\": \"fr-BE\",\n+      \"fr-CA\": \"fr-CA\",\n+      \"fr-CH\": \"fr-CH\",\n+      \"fr-FR\": \"fr-FR\",\n+      \"it-IT\": \"it-IT\",\n+      \"ja-JP\": \"ja-JP\",\n+      \"ko-KR\": \"ko-KR\",\n+      \"nl-BE\": \"nl-BE\",\n+      \"nl-NL\": \"nl-NL\",\n+      \"pl-PL\": \"pl-PL\",\n+      \"pt-BR\": \"pt-BR\",\n+      \"ru-RU\": \"ru-RU\",\n+      \"sv-SE\": \"sv-SE\",\n+      \"tr-TR\": \"tr-TR\",\n+      \"zh-CN\": \"zh-CN\",\n+      \"zh-HK\": \"zh-HK\",\n+      \"zh-TW\": \"zh-TW\"\n+    }\n+  },\n+  \"karmasearch images\": {\n+    \"all_locale\": null,\n+    \"custom\": {},\n+    \"data_type\": \"traits_v1\",\n+    \"languages\": {},\n+    \"regions\": {\n+      \"da-DK\": \"da-DK\",\n+      \"de-AT\": \"de-AT\",\n+      \"de-CH\": \"de-CH\",\n+      \"de-DE\": \"de-DE\",\n+      \"en-AU\": \"en-AU\",\n+      \"en-CA\": \"en-CA\",\n+      \"en-GB\": \"en-GB\",\n+      \"en-ID\": \"en-ID\",\n+      \"en-IN\": \"en-IN\",\n+      \"en-MY\": \"en-MY\",\n+      \"en-NZ\": \"en-NZ\",\n+      \"en-PH\": \"en-PH\",\n+      \"en-US\": \"en-US\",\n+      \"en-ZA\": \"en-ZA\",\n+      \"es-AR\": \"es-AR\",\n+      \"es-CL\": \"es-CL\",\n+      \"es-ES\": \"es-ES\",\n+      \"es-MX\": \"es-MX\",\n+      \"es-US\": \"es-US\",\n+      \"fi-FI\": \"fi-FI\",\n+      \"fr-BE\": \"fr-BE\",\n+      \"fr-CA\": \"fr-CA\",\n+      \"fr-CH\": \"fr-CH\",\n+      \"fr-FR\": \"fr-FR\",\n+      \"it-IT\": \"it-IT\",\n+      \"ja-JP\": \"ja-JP\",\n+      \"ko-KR\": \"ko-KR\",\n+      \"nl-BE\": \"nl-BE\",\n+      \"nl-NL\": \"nl-NL\",\n+      \"pl-PL\": \"pl-PL\",\n+      \"pt-BR\": \"pt-BR\",\n+      \"ru-RU\": \"ru-RU\",\n+      \"sv-SE\": \"sv-SE\",\n+      \"tr-TR\": \"tr-TR\",\n+      \"zh-CN\": \"zh-CN\",\n+      \"zh-HK\": \"zh-HK\",\n+      \"zh-TW\": \"zh-TW\"\n+    }\n+  },\n+  \"karmasearch news\": {\n+    \"all_locale\": null,\n+    \"custom\": {},\n+    \"data_type\": \"traits_v1\",\n+    \"languages\": {},\n+    \"regions\": {\n+      \"da-DK\": \"da-DK\",\n+      \"de-AT\": \"de-AT\",\n+      \"de-CH\": \"de-CH\",\n+      \"de-DE\": \"de-DE\",\n+      \"en-AU\": \"en-AU\",\n+      \"en-CA\": \"en-CA\",\n+      \"en-GB\": \"en-GB\",\n+      \"en-ID\": \"en-ID\",\n+      \"en-IN\": \"en-IN\",\n+      \"en-MY\": \"en-MY\",\n+      \"en-NZ\": \"en-NZ\",\n+      \"en-PH\": \"en-PH\",\n+      \"en-US\": \"en-US\",\n+      \"en-ZA\": \"en-ZA\",\n+      \"es-AR\": \"es-AR\",\n+      \"es-CL\": \"es-CL\",\n+      \"es-ES\": \"es-ES\",\n+      \"es-MX\": \"es-MX\",\n+      \"es-US\": \"es-US\",\n+      \"fi-FI\": \"fi-FI\",\n+      \"fr-BE\": \"fr-BE\",\n+      \"fr-CA\": \"fr-CA\",\n+      \"fr-CH\": \"fr-CH\",\n+      \"fr-FR\": \"fr-FR\",\n+      \"it-IT\": \"it-IT\",\n+      \"ja-JP\": \"ja-JP\",\n+      \"ko-KR\": \"ko-KR\",\n+      \"nl-BE\": \"nl-BE\",\n+      \"nl-NL\": \"nl-NL\",\n+      \"pl-PL\": \"pl-PL\",\n+      \"pt-BR\": \"pt-BR\",\n+      \"ru-RU\": \"ru-RU\",\n+      \"sv-SE\": \"sv-SE\",\n+      \"tr-TR\": \"tr-TR\",\n+      \"zh-CN\": \"zh-CN\",\n+      \"zh-HK\": \"zh-HK\",\n+      \"zh-TW\": \"zh-TW\"\n+    }\n+  },\n+  \"karmasearch videos\": {\n+    \"all_locale\": null,\n+    \"custom\": {},\n+    \"data_type\": \"traits_v1\",\n+    \"languages\": {},\n+    \"regions\": {\n+      \"da-DK\": \"da-DK\",\n+      \"de-AT\": \"de-AT\",\n+      \"de-CH\": \"de-CH\",\n+      \"de-DE\": \"de-DE\",\n+      \"en-AU\": \"en-AU\",\n+      \"en-CA\": \"en-CA\",\n+      \"en-GB\": \"en-GB\",\n+      \"en-ID\": \"en-ID\",\n+      \"en-IN\": \"en-IN\",\n+      \"en-MY\": \"en-MY\",\n+      \"en-NZ\": \"en-NZ\",\n+      \"en-PH\": \"en-PH\",\n+      \"en-US\": \"en-US\",\n+      \"en-ZA\": \"en-ZA\",\n+      \"es-AR\": \"es-AR\",\n+      \"es-CL\": \"es-CL\",\n+      \"es-ES\": \"es-ES\",\n+      \"es-MX\": \"es-MX\",\n+      \"es-US\": \"es-US\",\n+      \"fi-FI\": \"fi-FI\",\n+      \"fr-BE\": \"fr-BE\",\n+      \"fr-CA\": \"fr-CA\",\n+      \"fr-CH\": \"fr-CH\",\n+      \"fr-FR\": \"fr-FR\",\n+      \"it-IT\": \"it-IT\",\n+      \"ja-JP\": \"ja-JP\",\n+      \"ko-KR\": \"ko-KR\",\n+      \"nl-BE\": \"nl-BE\",\n+      \"nl-NL\": \"nl-NL\",\n+      \"pl-PL\": \"pl-PL\",\n+      \"pt-BR\": \"pt-BR\",\n+      \"ru-RU\": \"ru-RU\",\n+      \"sv-SE\": \"sv-SE\",\n+      \"tr-TR\": \"tr-TR\",\n+      \"zh-CN\": \"zh-CN\",\n+      \"zh-HK\": \"zh-HK\",\n+      \"zh-TW\": \"zh-TW\"\n+    }\n+  },\n   \"mojeek\": {\n     \"all_locale\": null,\n     \"custom\": {\ndiff --git a/searx/engines/karmasearch.py b/searx/engines/karmasearch.py\nnew file mode 100644\nindex 00000000000..fce824a145c\n--- /dev/null\n+++ b/searx/engines/karmasearch.py\n@@ -0,0 +1,198 @@\n+# SPDX-License-Identifier: AGPL-3.0-or-later\n+\"\"\"Karmasearch uses Brave's index, so the results should be the same as Brave's.\n+\n+However, the advantages of this engine are:\n+\n+- it has less strict rate-limits\n+- it has a JSON API, so it's less likely to break\n+\"\"\"\n+\n+from datetime import datetime\n+from urllib.parse import urlencode\n+import typing as t\n+\n+from dateutil import parser\n+\n+from searx.enginelib.traits import EngineTraits\n+\n+from searx.utils import html_to_text\n+from searx.result_types import EngineResults, MainResult\n+from searx.result_types._base import LegacyResult\n+\n+\n+if t.TYPE_CHECKING:\n+    from searx.extended_types import SXNG_Response\n+    from searx.search.processors import OnlineParams\n+\n+about = {\n+    \"website\": \"https://karmasearch.org\",\n+    \"official_api_documentation\": None,\n+    \"use_official_api\": False,\n+    \""
+    },
+    "relevant_files": [
+      "docs/dev/engines/online/karmasearch.rst",
+      "searx/data/engine_traits.json",
+      "searx/engines/karmasearch.py",
+      "searx/settings.yml"
+    ],
+    "snapshot_commit": "3810dc9d1c38b44d4e14eaf502222e7dc72f3e17",
+    "belief_cutoff_timestamp": "2026-03-19T20:57:02Z",
+    "reference_commit_timestamp": "2026-03-25T18:45:46Z"
+  },
+  {
+    "id": "searxng_feature_5917",
+    "repo": "searxng/searxng",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 5917,
+      "pr_title": "[l10n] update translations from Weblate",
+      "pr_body": "[l10n] update translations from Weblate"
+    },
+    "ground_truth": {
+      "merged_at": "2026-03-28T17:11:02Z",
+      "diff": "diff --git a/searx/translations/af/LC_MESSAGES/messages.mo b/searx/translations/af/LC_MESSAGES/messages.mo\nindex 8a4105b9cd50..2522442caa66 100644\nBinary files a/searx/translations/af/LC_MESSAGES/messages.mo and b/searx/translations/af/LC_MESSAGES/messages.mo differ\ndiff --git a/searx/translations/af/LC_MESSAGES/messages.po b/searx/translations/af/LC_MESSAGES/messages.po\nindex d5b6786024fa..99f5c5449034 100644\n--- a/searx/translations/af/LC_MESSAGES/messages.po\n+++ b/searx/translations/af/LC_MESSAGES/messages.po\n@@ -23,7 +23,7 @@ msgid \"\"\n msgstr \"\"\n \"Project-Id-Version: PROJECT VERSION\\n\"\n \"Report-Msgid-Bugs-To: EMAIL@ADDRESS\\n\"\n-\"POT-Creation-Date: 2026-02-22 13:48+0000\\n\"\n+\"POT-Creation-Date: 2026-03-24 18:43+0000\\n\"\n \"PO-Revision-Date: 2025-10-22 02:09+0000\\n\"\n \"Last-Translator: return42 <return42@noreply.codeberg.org>\\n\"\n \"Language: af\\n\"\n@@ -76,7 +76,7 @@ msgid \"videos\"\n msgstr \"videos\"\n \n #. CATEGORY_NAMES['RADIO']\n-#: searx/engines/radio_browser.py:142 searx/searxng.msg\n+#: searx/engines/radio_browser.py:146 searx/searxng.msg\n msgid \"radio\"\n msgstr \"radio\"\n \n@@ -550,7 +550,7 @@ msgstr \"geantwoord\"\n msgid \"No item found\"\n msgstr \"Geen item gevind\"\n \n-#: searx/engines/qwant.py:296\n+#: searx/engines/qwant.py:291\n #: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329\n msgid \"Source\"\n msgstr \"Bron\"\n@@ -646,6 +646,11 @@ msgstr \"Genereer verskillende ewekansige waardes\"\n msgid \"Compute {func} of the arguments\"\n msgstr \"Bereken {func} van die opsies\"\n \n+#: searx/engines/boardreader.py:107\n+#, python-brace-format\n+msgid \"Posted by {author}\"\n+msgstr \"\"\n+\n #: searx/engines/openstreetmap.py:155\n msgid \"Show route in map ..\"\n msgstr \"Wys roete op die kaart ..\"\n@@ -659,19 +664,19 @@ msgstr \"{title} (UITGEDIEN)\"\n msgid \"This entry has been superseded by\"\n msgstr \"Hierdie inskrywing was vervang deur\"\n \n-#: searx/engines/qwant.py:298\n+#: searx/engines/qwant.py:293\n msgid \"Channel\"\n msgstr \"Kanaal\"\n \n-#: searx/engines/radio_browser.py:144\n+#: searx/engines/radio_browser.py:148\n msgid \"bitrate\"\n msgstr \"bitsnelheid\"\n \n-#: searx/engines/radio_browser.py:145\n+#: searx/engines/radio_browser.py:149\n msgid \"votes\"\n msgstr \"stemme\"\n \n-#: searx/engines/radio_browser.py:146\n+#: searx/engines/radio_browser.py:150\n msgid \"clicks\"\n msgstr \"klikke\"\n \n@@ -707,15 +712,15 @@ msgstr \"\"\n msgid \"The image could not be downloaded.\"\n msgstr \"Die prent kon nie afgelaai word nie.\"\n \n-#: searx/engines/zlibrary.py:78\n+#: searx/engines/zlibrary.py:79\n msgid \"Language\"\n msgstr \"Taal\"\n \n-#: searx/engines/zlibrary.py:79\n+#: searx/engines/zlibrary.py:80\n msgid \"Book rating\"\n msgstr \"boekgradering\"\n \n-#: searx/engines/zlibrary.py:80\n+#: searx/engines/zlibrary.py:81\n msgid \"File quality\"\n msgstr \"L\u00eaer kwaliteit\"\n \n@@ -896,7 +901,7 @@ msgstr \"Bronkode\"\n msgid \"Issue tracker\"\n msgstr \"Probleem soeker\"\n \n-#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:18\n+#: searx/templates/simple/base.html:71 searx/templates/simple/stats.html:17\n msgid \"Engine stats\"\n msgstr \"Enjin statistieke\"\n \n@@ -936,30 +941,6 @@ msgstr \"Outeur\"\n msgid \"cached\"\n msgstr \"gekas\"\n \n-#: searx/templates/simple/new_issue.html:60\n-msgid \"Start submitting a new issue on GitHub\"\n-msgstr \"Begin om 'n nuwe probleem op GitHub in te dien\"\n-\n-#: searx/templates/simple/new_issue.html:62\n-msgid \"Please check for existing bugs about this engine on GitHub\"\n-msgstr \"Kyk asseblief vir bestaande goggas vir hierdie enjin op GitHub\"\n-\n-#: searx/templates/simple/new_issue.html:65\n-msgid \"I confirm there is no existing bug about the issue I encounter\"\n-msgstr \"\"\n-\"Ek bevestig daar is nie 'n bestaande gogga oor die probleem wat ek teekom\"\n-\" nie\"\n-\n-#: searx/templates/simple/new_issue.html:67\n-msgid \"If this is a public instance, please specify the URL in the bug report\"\n-msgstr \"\"\n-\"As dit 'n publieke geval is, spesifiseer asseblief die URL in die \"\n-\"foutverslag\"\n-\n-#: searx/templates/simple/new_issue.html:68\n-msgid \"Submit a new issue on Github including the above information\"\n-msgstr \"Dien 'n nuwe probleem in op GitHub insluitend die bogenoemde inligting\"\n-\n #: searx/templates/simple/preferences.html:65\n msgid \"No HTTPS\"\n msgstr \"Geen HTTPS\"\n@@ -979,17 +960,17 @@ msgid \"!bang for its categories\"\n msgstr \"!bang vir sy kategorie\u00eb\"\n \n #: searx/templates/simple/preferences.html:102\n-#: searx/templates/simple/stats.html:64\n+#: searx/templates/simple/stats.html:63\n msgid \"Median\"\n msgstr \"Mediaan\"\n \n #: searx/templates/simple/preferences.html:103\n-#: searx/templates/simple/stats.html:70\n+#: searx/templates/simple/stats.html:69\n msgid \"P80\"\n msgstr \"P80\"\n \n #: searx/templates/simple/preferences.html:104\n-#: searx/templates/simple/stats.html:76\n+#: searx/templates/simple/stats.html:75\n msgid \"P95\"\n msgstr \"P95\"\n \n@@ -1084,81 +1065,81 @@ msgstr \"maak skoon\"\n msgid \"search\"\n msgstr \"soek\"\n \n-#: searx/templates/simple/stats.html:21\n+#: searx/templates/simple/stats.html:20\n msgid \"There is currently no data available. \"\n msgstr \"Daar is tans geen data beskikbaar nie.\"\n \n #: searx/templates/simple/preferences/engines.html:24\n-#: searx/templates/simple/stats.html:25\n+#: searx/templates/simple/stats.html:24\n msgid \"Engine name\"\n msgstr \"Enjin naam\"\n \n-#: searx/templates/simple/stats.html:26\n+#: searx/templates/simple/stats.html:25\n msgid \"Scores\"\n msgstr \"Tellings\"\n \n-#: searx/templates/simple/stats.html:27\n+#: searx/templates/simple/stats.html:26\n msgid \"Result count\"\n msgstr \"Resultaattelling\"\n \n #: searx/templates/simple/elements/engines_msg.html:7\n #: searx/templates/simple/preferences/engines.html:31\n-#: searx/templates/simple/stats.html:28\n+#: searx/templates/simple/stats.html:27\n msgid \"Response time\"\n msgstr \"Reaksietyd\"\n \n #: searx/templates/simple/preferences/engines.html:35\n-#: searx/templates/simple/stats.html:29\n+#: searx/templates/simple/stats.html:28\n msgid \"Reliability\"\n msgstr \"Betroubaarheid\"\n \n-#: searx/templates/simple/stats.html:59\n+#: searx/templates/simple/stats.html:58\n msgid \"Total\"\n msgstr \"Totaal\"\n \n-#: searx/templates/s"
+    },
+    "relevant_files": [
+      "searx/translations/af/LC_MESSAGES/messages.po",
+      "searx/translations/ar/LC_MESSAGES/messages.po",
+      "searx/translations/bg/LC_MESSAGES/messages.po",
+      "searx/translations/bn/LC_MESSAGES/messages.po",
+      "searx/translations/bo/LC_MESSAGES/messages.po",
+      "searx/translations/ca/LC_MESSAGES/messages.po",
+      "searx/translations/cs/LC_MESSAGES/messages.po",
+      "searx/translations/cy/LC_MESSAGES/messages.po",
+      "searx/translations/da/LC_MESSAGES/messages.po",
+      "searx/translations/de/LC_MESSAGES/messages.po",
+      "searx/translations/dv/LC_MESSAGES/messages.po",
+      "searx/translations/el_GR/LC_MESSAGES/messages.po",
+      "searx/translations/en/LC_MESSAGES/messages.po",
+      "searx/translations/eo/LC_MESSAGES/messages.po",
+      "searx/translations/es/LC_MESSAGES/messages.po",
+      "searx/translations/et/LC_MESSAGES/messages.po",
+      "searx/translations/eu/LC_MESSAGES/messages.po",
+      "searx/translations/fa_IR/LC_MESSAGES/messages.po",
+      "searx/translations/fi/LC_MESSAGES/messages.po",
+      "searx/translations/fil/LC_MESSAGES/messages.po",
+      "searx/translations/fr/LC_MESSAGES/messages.po",
+      "searx/translations/ga/LC_MESSAGES/messages.po",
+      "searx/translations/gl/LC_MESSAGES/messages.po",
+      "searx/translations/he/LC_MESSAGES/messages.po",
+      "searx/translations/hr/LC_MESSAGES/messages.po",
+      "searx/translations/hu/LC_MESSAGES/messages.po",
+      "searx/translations/ia/LC_MESSAGES/messages.po",
+      "searx/translations/id/LC_MESSAGES/messages.po",
+      "searx/translations/it/LC_MESSAGES/messages.po",
+      "searx/translations/ja/LC_MESSAGES/messages.po",
+      "searx/translations/ko/LC_MESSAGES/messages.po",
+      "searx/translations/lt/LC_MESSAGES/messages.po",
+      "searx/translations/lv/LC_MESSAGES/messages.po",
+      "searx/translations/messages.pot",
+      "searx/translations/ms/LC_MESSAGES/messages.po",
+      "searx/translations/nb_NO/LC_MESSAGES/messages.po",
+      "searx/translations/nl/LC_MESSAGES/messages.po",
+      "searx/translations/oc/LC_MESSAGES/messages.po",
+      "searx/translations/pl/LC_MESSAGES/messages.po",
+      "searx/translations/pt/LC_MESSAGES/messages.po",
+      "searx/translations/pt_BR/LC_MESSAGES/messages.po",
+      "searx/translations/ro/LC_MESSAGES/messages.po",
+      "searx/translations/ru/LC_MESSAGES/messages.po",
+      "searx/translations/si/LC_MESSAGES/messages.po",
+      "searx/translations/sk/LC_MESSAGES/messages.po",
+      "searx/translations/sl/LC_MESSAGES/messages.po",
+      "searx/translations/sr/LC_MESSAGES/messages.po",
+      "searx/translations/sv/LC_MESSAGES/messages.po",
+      "searx/translations/szl/LC_MESSAGES/messages.po",
+      "searx/translations/ta/LC_MESSAGES/messages.po",
+      "searx/translations/te/LC_MESSAGES/messages.po",
+      "searx/translations/th/LC_MESSAGES/messages.po",
+      "searx/translations/tr/LC_MESSAGES/messages.po",
+      "searx/translations/tt/LC_MESSAGES/messages.po",
+      "searx/translations/uk/LC_MESSAGES/messages.po",
+      "searx/translations/vi/LC_MESSAGES/messages.po",
+      "searx/translations/zh_Hans_CN/LC_MESSAGES/messages.po",
+      "searx/translations/zh_Hant_TW/LC_MESSAGES/messages.po"
+    ],
+    "snapshot_commit": "e734424006a607e45afeb20810bf068b0409811f",
+    "belief_cutoff_timestamp": "2026-03-27T07:33:57Z",
+    "reference_commit_timestamp": "2026-03-28T17:11:02Z"
+  }
+]

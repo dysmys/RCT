@@ -1,0 +1,23 @@
+[
+  {
+    "id": "retrofit_bug_4072",
+    "repo": "square/retrofit",
+    "task_type": "bug_fix",
+    "source": "git_fix_keyword_fallback",
+    "input": {
+      "issue_number": 4072,
+      "issue_title": "JDK test tasks do not have dependencies set up correctly",
+      "issue_body": "Re-running a test task will not recompile main sources, for example. Probably need to abandon copying the regular test task inputs and set things up ourselves."
+    },
+    "ground_truth": {
+      "fix_commit": "01cf750640fb660bfef1c3c63eae0d75c003214a",
+      "diff": "commit 01cf750640fb660bfef1c3c63eae0d75c003214a\nAuthor: AmirMohammad Yazdanmanesh <amir.yazdanmanesh@gmail.com>\nDate:   Tue Feb 10 03:44:31 2026 +0330\n\n    Fix JDK test task dependencies by wiring to source set outputs (#4072) (#4651)\n    \n    The testJdkN tasks copied classpath and testClassesDirs from the built-in test task, which broke the Gradle task dependency graph. Re-running a test task would not recompile main/test sources because no dependency on compilation tasks was established.\n    \n      Wire directly to sourceSets.test outputs instead, giving Gradle implicit task dependencies through file collection producers. This also eliminates the tasks.getByName(\"test\") eager realization anti-pattern.\n\ndiff --git a/retrofit/java-test/build.gradle b/retrofit/java-test/build.gradle\nindex 4129d512..bf28c564 100644\n--- a/retrofit/java-test/build.gradle\n+++ b/retrofit/java-test/build.gradle\n@@ -23,14 +23,13 @@ tasks.withType(JavaCompile).configureEach {\n     }\n \n     description = \"Runs the test suite on JDK $majorVersion\"\n     group = LifecycleBasePlugin.VERIFICATION_GROUP\n \n-    // Copy inputs from normal Test task.\n-    def testTask = tasks.getByName(\"test\")\n-    classpath = testTask.classpath\n-    testClassesDirs = testTask.testClassesDirs\n+    // Wire directly to the test source set outputs for proper task dependencies.\n+    testClassesDirs = sourceSets.test.output.classesDirs\n+    classpath = sourceSets.test.runtimeClasspath\n   }\n   tasks.named(\"check\").configure {\n     dependsOn(jdkTest)\n   }\n }"
+    },
+    "relevant_files": [
+      "retrofit/java-test/build.gradle"
+    ],
+    "snapshot_commit": "2ccbf735aff934c0e70cfe941dd60c6abfb5f649",
+    "belief_cutoff_timestamp": "2024-01-30T18:26:56Z",
+    "reference_commit_timestamp": "2026-02-10T03:44:31+03:30"
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "id": "leveldb_bug_523",
+    "repo": "google/leveldb",
+    "task_type": "bug_fix",
+    "source": "github_bug_label",
+    "input": {
+      "issue_number": 523,
+      "issue_title": "Periods (punctuation) missing in \"Repository contents\" section in README.md",
+      "issue_body": "e.g., right after \"include/db.h: Main interface to the DB: Start here\"."
+    },
+    "ground_truth": {
+      "fix_commit": "9ee91ac",
+      "diff": "commit 9ee91ac747ddf26f484d54f9aa474ccc4a2e0359\nAuthor: Chris Mumford <cmumford@google.com>\nDate:   Wed Jun 12 15:28:22 2019 -0700\n\n    Ending sentences with periods in README.md.\n    \n    This change was submitted in https://github.com/google/leveldb/pull/575\n    by @prajwalchalla.\n    \n    This fixes issue #523.\n    \n    PiperOrigin-RevId: 252912613\n\ndiff --git a/README.md b/README.md\nindex 0b660ae..0a312ab 100644\n--- a/README.md\n+++ b/README.md\n@@ -193,19 +193,19 @@ The public interface is in include/*.h.  Callers should not include or\n rely on the details of any other header files in this package.  Those\n internal APIs may be changed without warning.\n \n Guide to header files:\n \n-* **include/db.h**: Main interface to the DB: Start here\n+* **include/db.h**: Main interface to the DB: Start here.\n \n * **include/options.h**: Control over the behavior of an entire database,\n and also control over the behavior of individual reads and writes.\n \n * **include/comparator.h**: Abstraction for user-specified comparison function.\n If you want just bytewise comparison of keys, you can use the default\n comparator, but clients can write their own comparator implementations if they\n-want custom ordering (e.g. to handle different character encodings, etc.)\n+want custom ordering (e.g. to handle different character encodings, etc.).\n \n * **include/iterator.h**: Interface for iterating over data. You can get\n an iterator from a DB object.\n \n * **include/write_batch.h**: Interface for atomically applying multiple\n@@ -217,9 +217,9 @@ length into some other byte array.\n * **include/status.h**: Status is returned from many of the public interfaces\n and is used to report success and various kinds of errors.\n \n * **include/env.h**:\n Abstraction of the OS environment.  A posix implementation of this interface is\n-in util/env_posix.cc\n+in util/env_posix.cc.\n \n * **include/table.h, include/table_builder.h**: Lower-level modules that most\n-clients probably won't use directly\n+clients probably won't use directly."
+    },
+    "relevant_files": [
+      "README.md"
+    ],
+    "snapshot_commit": "e0d5f83a4f80060fe5b5d80025f0ad049bca430e",
+    "belief_cutoff_timestamp": "2017-11-06T09:26:24Z",
+    "reference_commit_timestamp": "2019-06-12T15:28:22-07:00"
+  },
+  {
+    "id": "leveldb_bug_676",
+    "repo": "google/leveldb",
+    "task_type": "bug_fix",
+    "source": "github_bug_label",
+    "input": {
+      "issue_number": 676,
+      "issue_title": "uninit member in ctor",
+      "issue_body": "https://github.com/google/leveldb/blob/master/db/db_bench.cc#L190\r\nUninitialize variables:start_. See lin 190 for more information"
+    },
+    "ground_truth": {
+      "fix_commit": "142035e",
+      "diff": "commit 142035edd4b1ab431c0ecbd547d4a77f1eca0667\nAuthor: Chris Mumford <cmumford@google.com>\nDate:   Mon May 6 10:51:11 2019 -0700\n\n    Initialize Stats::start_ before first use in Stats::Start().\n    \n    Avoids a use before initialization error. This fixes issue #676.\n    \n    PiperOrigin-RevId: 246855204\n\ndiff --git a/benchmarks/db_bench.cc b/benchmarks/db_bench.cc\nindex 3090b43..3696023 100644\n--- a/benchmarks/db_bench.cc\n+++ b/benchmarks/db_bench.cc\n@@ -185,18 +185,16 @@ class Stats {\n  public:\n   Stats() { Start(); }\n \n   void Start() {\n     next_report_ = 100;\n-    last_op_finish_ = start_;\n     hist_.Clear();\n     done_ = 0;\n     bytes_ = 0;\n     seconds_ = 0;\n-    start_ = g_env->NowMicros();\n-    finish_ = start_;\n     message_.clear();\n+    start_ = finish_ = last_op_finish_ = g_env->NowMicros();\n   }\n \n   void Merge(const Stats& other) {\n     hist_.Merge(other.hist_);\n     done_ += other.done_;"
+    },
+    "relevant_files": [
+      "benchmarks/db_bench.cc"
+    ],
+    "snapshot_commit": "e22b1cec6e1e0e2dec4c93b658acbfc56fb692c0",
+    "belief_cutoff_timestamp": "2019-04-18T09:18:01Z",
+    "reference_commit_timestamp": "2019-05-06T10:51:11-07:00"
+  },
+  {
+    "id": "leveldb_bug_439",
+    "repo": "google/leveldb",
+    "task_type": "bug_fix",
+    "source": "github_bug_label",
+    "input": {
+      "issue_number": 439,
+      "issue_title": "New max file size option is not available from C API",
+      "issue_body": "The C API misses a `leveldb_options_set_max_file_size` function.\r\nPull requests is coming up. \r\n\r\nBTW: The new max_file_size works great and gives us a big performance boost for multi-GB datasets."
+    },
+    "ground_truth": {
+      "fix_commit": "47cb9e2",
+      "diff": "commit 47cb9e2a211e1d7157078ba7bab536beb29e56dc\nAuthor: cmumford <cmumford@google.com>\nDate:   Wed Oct 25 16:13:51 2017 -0700\n\n    Add leveldb_options_set_max_file_size to the C API.\n    \n    When the max file size option was added in CL 134391640 the C API\n    was not modified to support this.\n    \n    This change was contributed by GitHub user @olt and fixes issue #439.\n    \n    -------------\n    Created by MOE: https://github.com/google/moe\n    MOE_MIGRATED_REVID=173466388\n\ndiff --git a/db/c.cc b/db/c.cc\nindex 08ff0ad..d242385 100644\n--- a/db/c.cc\n+++ b/db/c.cc\n@@ -444,10 +444,14 @@ void leveldb_options_set_block_size(leveldb_options_t* opt, size_t s) {\n \n void leveldb_options_set_block_restart_interval(leveldb_options_t* opt, int n) {\n   opt->rep.block_restart_interval = n;\n }\n \n+void leveldb_options_set_max_file_size(leveldb_options_t* opt, size_t s) {\n+  opt->rep.max_file_size = s;\n+}\n+\n void leveldb_options_set_compression(leveldb_options_t* opt, int t) {\n   opt->rep.compression = static_cast<CompressionType>(t);\n }\n \n leveldb_comparator_t* leveldb_comparator_create(\ndiff --git a/db/c_test.c b/db/c_test.c\nindex 7cd5ee0..4a14151 100644\n--- a/db/c_test.c\n+++ b/db/c_test.c\n@@ -187,10 +187,11 @@ int main(int argc, char** argv) {\n   leveldb_options_set_write_buffer_size(options, 100000);\n   leveldb_options_set_paranoid_checks(options, 1);\n   leveldb_options_set_max_open_files(options, 10);\n   leveldb_options_set_block_size(options, 1024);\n   leveldb_options_set_block_restart_interval(options, 8);\n+  leveldb_options_set_max_file_size(options, 3 << 20);\n   leveldb_options_set_compression(options, leveldb_no_compression);\n \n   roptions = leveldb_readoptions_create();\n   leveldb_readoptions_set_verify_checksums(roptions, 1);\n   leveldb_readoptions_set_fill_cache(roptions, 0);\ndiff --git a/include/leveldb/c.h b/include/leveldb/c.h\nindex 7ac8121..dc6f255 100644\n--- a/include/leveldb/c.h\n+++ b/include/leveldb/c.h\n@@ -182,10 +182,12 @@ LEVELDB_EXPORT void leveldb_options_set_max_open_files(leveldb_options_t*, int);\n LEVELDB_EXPORT void leveldb_options_set_cache(leveldb_options_t*,\n                                               leveldb_cache_t*);\n LEVELDB_EXPORT void leveldb_options_set_block_size(leveldb_options_t*, size_t);\n LEVELDB_EXPORT void leveldb_options_set_block_restart_interval(\n     leveldb_options_t*, int);\n+LEVELDB_EXPORT void leveldb_options_set_max_file_size(leveldb_options_t*,\n+                                                      size_t);\n \n enum {\n   leveldb_no_compression = 0,\n   leveldb_snappy_compression = 1\n };"
+    },
+    "relevant_files": [
+      "db/c.cc",
+      "db/c_test.c",
+      "include/leveldb/c.h"
+    ],
+    "snapshot_commit": "b5d4a22e64c7a6615b412f464026c808b58b1d34",
+    "belief_cutoff_timestamp": "2017-01-06T12:41:31Z",
+    "reference_commit_timestamp": "2017-10-25T16:13:51-07:00"
+  }
+]

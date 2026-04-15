@@ -1,0 +1,49 @@
+[
+  {
+    "id": "mall_feature_605",
+    "repo": "macrozheng/mall",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 605,
+      "pr_title": "merge from master branch",
+      "pr_body": ""
+    },
+    "ground_truth": {
+      "merged_at": "2023-05-19T08:17:35Z",
+      "diff": "diff --git a/document/docker/docker-compose-env.yml b/document/docker/docker-compose-env.yml\nindex 88f60744e5..5cf9b4f5c3 100644\n--- a/document/docker/docker-compose-env.yml\n+++ b/document/docker/docker-compose-env.yml\n@@ -31,7 +31,7 @@ services:\n     ports:\n       - 80:80\n   rabbitmq:\n-    image: rabbitmq:3.9-management\n+    image: rabbitmq:3.9.11-management\n     container_name: rabbitmq\n     volumes:\n       - /mydata/rabbitmq/data:/var/lib/rabbitmq #\u6570\u636e\u6587\u4ef6\u6302\u8f7d\ndiff --git a/document/sql/mall.sql b/document/sql/mall.sql\nindex 61f6c0d838..ec1a3af95c 100644\n--- a/document/sql/mall.sql\n+++ b/document/sql/mall.sql\n@@ -11,7 +11,7 @@\n  Target Server Version : 50719\n  File Encoding         : 65001\n \n- Date: 16/02/2023 15:27:21\n+ Date: 11/05/2023 15:48:15\n */\n \n SET NAMES utf8mb4;\n@@ -31,7 +31,7 @@ CREATE TABLE `cms_help`  (\n   `read_count` int(1) NULL DEFAULT NULL,\n   `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u5e2e\u52a9\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u5e2e\u52a9\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_help\n@@ -49,7 +49,7 @@ CREATE TABLE `cms_help_category`  (\n   `show_status` int(2) NULL DEFAULT NULL,\n   `sort` int(11) NULL DEFAULT NULL,\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u5e2e\u52a9\u5206\u7c7b\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u5e2e\u52a9\u5206\u7c7b\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_help_category\n@@ -68,7 +68,7 @@ CREATE TABLE `cms_member_report`  (\n   `report_status` int(1) NULL DEFAULT NULL COMMENT '\u4e3e\u62a5\u72b6\u6001\uff1a0->\u672a\u5904\u7406\uff1b1->\u5df2\u5904\u7406',\n   `handle_status` int(1) NULL DEFAULT NULL COMMENT '\u5904\u7406\u7ed3\u679c\uff1a0->\u65e0\u6548\uff1b1->\u6709\u6548\uff1b2->\u6076\u610f',\n   `note` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL\n-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u7528\u6237\u4e3e\u62a5\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u7528\u6237\u4e3e\u62a5\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_member_report\n@@ -86,7 +86,7 @@ CREATE TABLE `cms_prefrence_area`  (\n   `sort` int(11) NULL DEFAULT NULL,\n   `show_status` int(1) NULL DEFAULT NULL,\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4f18\u9009\u4e13\u533a' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4f18\u9009\u4e13\u533a' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_prefrence_area\n@@ -105,7 +105,7 @@ CREATE TABLE `cms_prefrence_area_product_relation`  (\n   `prefrence_area_id` bigint(20) NULL DEFAULT NULL,\n   `product_id` bigint(20) NULL DEFAULT NULL,\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4f18\u9009\u4e13\u533a\u548c\u4ea7\u54c1\u5173\u7cfb\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4f18\u9009\u4e13\u533a\u548c\u4ea7\u54c1\u5173\u7cfb\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_prefrence_area_product_relation\n@@ -141,7 +141,7 @@ CREATE TABLE `cms_subject`  (\n   `forward_count` int(11) NULL DEFAULT NULL COMMENT '\u8f6c\u53d1\u6570',\n   `category_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '\u4e13\u9898\u5206\u7c7b\u540d\u79f0',\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_subject\n@@ -165,7 +165,7 @@ CREATE TABLE `cms_subject_category`  (\n   `show_status` int(2) NULL DEFAULT NULL,\n   `sort` int(11) NULL DEFAULT NULL,\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u5206\u7c7b\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u5206\u7c7b\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_subject_category\n@@ -186,7 +186,7 @@ CREATE TABLE `cms_subject_comment`  (\n   `create_time` datetime NULL DEFAULT NULL,\n   `show_status` int(1) NULL DEFAULT NULL,\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u8bc4\u8bba\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u8bc4\u8bba\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_subject_comment\n@@ -201,7 +201,7 @@ CREATE TABLE `cms_subject_product_relation`  (\n   `subject_id` bigint(20) NULL DEFAULT NULL,\n   `product_id` bigint(20) NULL DEFAULT NULL,\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u5546\u54c1\u5173\u7cfb\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u4e13\u9898\u5546\u54c1\u5173\u7cfb\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------------\n -- Records of cms_subject_product_relation\n@@ -238,7 +238,7 @@ CREATE TABLE `cms_topic`  (\n   `attend_type` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '\u53c2\u4e0e\u65b9\u5f0f',\n   `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '\u8bdd\u9898\u5185\u5bb9',\n   PRIMARY KEY (`id`) USING BTREE\n-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u8bdd\u9898\u8868' ROW_FORMAT = Dynamic;\n+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\u8bdd\u9898\u8868' ROW_FORMAT = DYNAMIC;\n \n -- ----------------------"
+    },
+    "relevant_files": [
+      "document/docker/docker-compose-env.yml",
+      "document/sql/mall.sql",
+      "mall-admin/src/main/java/com/macro/mall/controller/SmsFlashPromotionController.java",
+      "mall-admin/src/main/java/com/macro/mall/controller/SmsFlashPromotionProductRelationController.java",
+      "mall-admin/src/main/java/com/macro/mall/controller/UmsResourceCategoryController.java",
+      "mall-admin/src/main/java/com/macro/mall/dao/PmsProductAttributeValueDao.java",
+      "mall-admin/src/main/java/com/macro/mall/dto/PmsProductCategoryParam.java",
+      "mall-admin/src/main/java/com/macro/mall/dto/PmsProductParam.java",
+      "mall-admin/src/main/java/com/macro/mall/dto/PmsProductQueryParam.java",
+      "mall-admin/src/main/java/com/macro/mall/service/impl/SmsCouponHistoryServiceImpl.java",
+      "mall-admin/src/main/java/com/macro/mall/service/impl/SmsCouponServiceImpl.java",
+      "mall-admin/src/main/java/com/macro/mall/service/impl/SmsFlashPromotionServiceImpl.java",
+      "mall-admin/src/main/java/com/macro/mall/service/impl/SmsHomeAdvertiseServiceImpl.java",
+      "mall-admin/src/main/java/com/macro/mall/service/impl/SmsHomeBrandServiceImpl.java",
+      "mall-admin/src/main/java/com/macro/mall/service/impl/SmsHomeRecommendSubjectServiceImpl.java",
+      "mall-admin/src/main/java/com/macro/mall/service/impl/UmsAdminServiceImpl.java",
+      "mall-admin/src/main/resources/dao/OmsOrderReturnApplyDao.xml",
+      "mall-common/src/main/java/com/macro/mall/common/exception/GlobalExceptionHandler.java",
+      "mall-portal/src/main/java/com/macro/mall/portal/config/JacksonConfig.java",
+      "mall-portal/src/main/java/com/macro/mall/portal/controller/PmsPortalBrandController.java",
+      "mall-portal/src/main/java/com/macro/mall/portal/repository/MemberProductCollectionRepository.java",
+      "mall-portal/src/main/java/com/macro/mall/portal/service/impl/MemberAttentionServiceImpl.java",
+      "mall-portal/src/main/java/com/macro/mall/portal/service/impl/MemberCollectionServiceImpl.java",
+      "mall-portal/src/main/java/com/macro/mall/portal/service/impl/MemberReadHistoryServiceImpl.java",
+      "mall-portal/src/main/java/com/macro/mall/portal/service/impl/PmsPortalProductServiceImpl.java",
+      "mall-portal/src/main/resources/application-prod.yml",
+      "mall-portal/src/main/resources/application.yml",
+      "mall-search/src/main/java/com/macro/mall/search/service/impl/EsProductServiceImpl.java"
+    ],
+    "snapshot_commit": "f0811e8584c1a07ac78ac2f1fb428b1624b0b8bb",
+    "belief_cutoff_timestamp": "2023-05-19T08:16:40Z",
+    "reference_commit_timestamp": "2023-05-19T08:17:35Z"
+  }
+]

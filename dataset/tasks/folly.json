@@ -1,0 +1,23 @@
+[
+  {
+    "id": "folly_review_2469",
+    "repo": "facebook/folly",
+    "task_type": "code_review",
+    "input": {
+      "pr_number": 2469,
+      "pr_title": "Revert \"allow fmt::format with StringPiece format-string\"",
+      "pr_body": "\nThis reverts commit f909b69c0c38f5f5e55206d89d07e951b10559ed.\n",
+      "diff": "diff --git a/folly/Range.h b/folly/Range.h\nindex 460f98de22a..7d3c356b96a 100644\n--- a/folly/Range.h\n+++ b/folly/Range.h\n@@ -714,15 +714,6 @@ class Range {\n     return Tgt(b_, walk_size());\n   }\n \n-#if FMT_VERSION\n-  template <\n-      typename IterType = Iter,\n-      std::enable_if_t<detail::range_is_char_type_v_<IterType>, int> = 0>\n-  constexpr operator fmt::basic_string_view<value_type>() const noexcept {\n-    return _t<StringViewType<value_type>>(*this);\n-  }\n-#endif\n-\n   /// explicit non-operator conversion to any compatible type\n   ///\n   /// A compatible type is one which is constructible with an iterator and a\ndiff --git a/folly/test/RangeTest.cpp b/folly/test/RangeTest.cpp\nindex ceb2c18fed3..60995a08daa 100644\n--- a/folly/test/RangeTest.cpp\n+++ b/folly/test/RangeTest.cpp\n@@ -1761,12 +1761,6 @@ TEST(StringPiece, Format) {\n   EXPECT_EQ(\"  foo\", fmt::format(\"{:>5}\", folly::StringPiece(\"foo\")));\n }\n \n-TEST(StringPiece, FormatInFormatString) {\n-  EXPECT_EQ(\n-      \"  foo\",\n-      fmt::format(folly::StringPiece(\"{:>5}\"), folly::StringPiece(\"foo\")));\n-}\n-\n namespace {\n \n // Range with non-pod value type should not cause compile errors.\n"
+    },
+    "ground_truth": {
+      "known_issues": "PR was reverted \u2014 agent should identify the problematic change."
+    },
+    "relevant_files": [
+      "folly/Range.h",
+      "folly/test/RangeTest.cpp"
+    ],
+    "snapshot_commit": "70260cde63d05d06df6ad1b444463931c9688327",
+    "belief_cutoff_timestamp": "2025-07-02T19:43:19Z",
+    "reference_commit_timestamp": null
+  }
+]

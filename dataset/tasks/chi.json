@@ -1,0 +1,174 @@
+[
+  {
+    "id": "chi_bug_62",
+    "repo": "go-chi/chi",
+    "task_type": "bug_fix",
+    "source": "github_bug_label",
+    "input": {
+      "issue_number": 62,
+      "issue_title": "[v2] Panic when making a request to a subrouter without a root sub-route defined",
+      "issue_body": "``` go\nparentRouter.Mount(\"/path\", childRouter)\n\nfunc childRouter() chi.Router {\n    // some routes, but no \"/\"\n}\n```\n\nRequest to `/path` will return 404\nRequest to `/path/` will cause a panic\n"
+    },
+    "ground_truth": {
+      "fix_commit": "7dbe9a0",
+      "diff": "commit 7dbe9a0bd10f03c7841d0374af79d7fa32769a9f\nAuthor: Nicola Murino <nicola.murino@gmail.com>\nDate:   Tue Jan 4 00:04:36 2022 +0100\n\n    recoverer: don't recover http.ErrAbortHandler (#624)\n    \n    This error is generally used to abort a request while streaming a response\n    so it should not be recovered otherwise the request is not aborted and\n    the client does not detect the error\n    \n    Fixes #588\n\ndiff --git a/middleware/recoverer.go b/middleware/recoverer.go\nindex 79c7826..8fa69ba 100644\n--- a/middleware/recoverer.go\n+++ b/middleware/recoverer.go\n@@ -20,11 +20,16 @@ import (\n //\n // Alternatively, look at https://github.com/go-chi/httplog middleware pkgs.\n func Recoverer(next http.Handler) http.Handler {\n \tfn := func(w http.ResponseWriter, r *http.Request) {\n \t\tdefer func() {\n-\t\t\tif rvr := recover(); rvr != nil && rvr != http.ErrAbortHandler {\n+\t\t\tif rvr := recover(); rvr != nil {\n+\t\t\t\tif rvr == http.ErrAbortHandler {\n+\t\t\t\t\t// we don't recover http.ErrAbortHandler so the response\n+\t\t\t\t\t// to the client is aborted, this should not be logged\n+\t\t\t\t\tpanic(rvr)\n+\t\t\t\t}\n \n \t\t\t\tlogEntry := GetLogEntry(r)\n \t\t\t\tif logEntry != nil {\n \t\t\t\t\tlogEntry.Panic(rvr, debug.Stack())\n \t\t\t\t} else {\ndiff --git a/middleware/recoverer_test.go b/middleware/recoverer_test.go\nindex 942cc03..15e8ae5 100644\n--- a/middleware/recoverer_test.go\n+++ b/middleware/recoverer_test.go\n@@ -38,5 +38,30 @@ func TestRecoverer(t *testing.T) {\n \t\t\treturn\n \t\t}\n \t}\n \tt.Fatal(\"First func call line should start with ->.\")\n }\n+\n+func TestRecovererAbortHandler(t *testing.T) {\n+\tdefer func() {\n+\t\trcv := recover()\n+\t\tif rcv != http.ErrAbortHandler {\n+\t\t\tt.Fatalf(\"http.ErrAbortHandler should not be recovered\")\n+\t\t}\n+\t}()\n+\n+\tw := httptest.NewRecorder()\n+\n+\tr := chi.NewRouter()\n+\tr.Use(Recoverer)\n+\n+\tr.Get(\"/\", func(w http.ResponseWriter, r *http.Request) {\n+\t\tpanic(http.ErrAbortHandler)\n+\t})\n+\n+\treq, err := http.NewRequest(\"GET\", \"/\", nil)\n+\tif err != nil {\n+\t\tt.Fatal(err)\n+\t}\n+\n+\tr.ServeHTTP(w, req)\n+}"
+    },
+    "relevant_files": [
+      "middleware/recoverer.go",
+      "middleware/recoverer_test.go"
+    ],
+    "snapshot_commit": "b750c805b4ee0952be12031a9b64014a8ae99c6f",
+    "belief_cutoff_timestamp": "2016-07-27T15:56:55Z",
+    "reference_commit_timestamp": "2022-01-04T00:04:36+01:00"
+  },
+  {
+    "id": "chi_bug_846",
+    "repo": "go-chi/chi",
+    "task_type": "bug_fix",
+    "source": "git_fix_keyword_fallback",
+    "input": {
+      "issue_number": 846,
+      "issue_title": "chi.RouteContext(r.Context()).RoutePattern() returns \"\"",
+      "issue_body": "with a route like this \r\n\r\n```go\r\nr := chi.NewRouter()\r\nr.Get(\"/\", handler)\r\n```\r\n\r\nwhen a request to `localhost:8080/` is received, the method `chi.RouteContext(r.Context()).RoutePattern()` return `\"\"` \r\n\r\nI think the expected value is `/`\r\n\r\nmaybe this can help \r\n\r\n```go\r\nfunc (x *Context) RoutePattern() string {\r\n\troutePattern := strings.Join(x.RoutePatterns, \"\")\r\n\troutePattern = replaceWildcards(routePattern)\r\n\troutePattern = strings.TrimSuffix(routePattern, \"//\")\r\n\tif len(routePattern) > 1 {\r\n\t\troutePattern = strings.TrimSuffix(routePattern, \"/\")\r\n\t}\r\n\treturn routePattern\r\n}\r\n```\r\n \r\n"
+    },
+    "ground_truth": {
+      "fix_commit": "f4ab9b1f050bdcf14bd096399e8bd57363406514",
+      "diff": "commit f4ab9b1f050bdcf14bd096399e8bd57363406514\nAuthor: Athfan Fasee <aththaar47@gmail.com>\nDate:   Thu Oct 19 05:30:59 2023 +0530\n\n    fix: #846 (#847)\n\ndiff --git a/context.go b/context.go\nindex 0eda1a2..6aaee8b 100644\n--- a/context.go\n+++ b/context.go\n@@ -121,12 +121,14 @@ func (x *Context) URLParam(key string) string {\n //   \t })\n //   }\n func (x *Context) RoutePattern() string {\n \troutePattern := strings.Join(x.RoutePatterns, \"\")\n \troutePattern = replaceWildcards(routePattern)\n-\troutePattern = strings.TrimSuffix(routePattern, \"//\")\n-\troutePattern = strings.TrimSuffix(routePattern, \"/\")\n+\tif routePattern != \"/\" {\n+\t\troutePattern = strings.TrimSuffix(routePattern, \"//\")\n+\t\troutePattern = strings.TrimSuffix(routePattern, \"/\")\n+\t}\n \treturn routePattern\n }\n \n // replaceWildcards takes a route pattern and recursively replaces all\n // occurrences of \"/*/\" to \"/\".\ndiff --git a/context_test.go b/context_test.go\nindex 8379520..9a254ab 100644\n--- a/context_test.go\n+++ b/context_test.go\n@@ -73,6 +73,13 @@ func TestRoutePattern(t *testing.T) {\n \n \t// Correctly removes in-the-middle wildcards instead of \"/v1/resourcesspecial_path/with_asterisks{resource_id}\"\n \tif p := x.RoutePattern(); p != \"/v1/resources/*special_path/with_asterisks*/{resource_id}\" {\n \t\tt.Fatal(\"unexpected route pattern: \" + p)\n \t}\n+\n+\t// Testing for the root route pattern\n+\tx.RoutePatterns = []string{\"/\"}\n+\t// It should just return \"/\" as the pattern\n+\tif p := x.RoutePattern(); p != \"/\" {\n+\t\tt.Fatal(\"unexpected route pattern for root: \" + p)\n+\t}\n }"
+    },
+    "relevant_files": [
+      "context.go",
+      "context_test.go"
+    ],
+    "snapshot_commit": "355dd04bad970f83ad19dc6856bc209f2402732d",
+    "belief_cutoff_timestamp": "2023-09-07T21:55:28Z",
+    "reference_commit_timestamp": "2023-10-19T05:30:59+05:30"
+  },
+  {
+    "id": "chi_bug_587",
+    "repo": "go-chi/chi",
+    "task_type": "bug_fix",
+    "source": "git_fix_keyword_fallback",
+    "input": {
+      "issue_number": 587,
+      "issue_title": "Possible regression in 1.5.2: middleware got instantiated and invoked twice",
+      "issue_body": "We noticed the following behavior changes between 1.5.1 and 1.5.2+ (1.5.2 and 1.5.3) related to middleware handlers.\r\n- Middleware handlers got instantiated twice in 1.5.2+. It's once in 1.5.1.\r\n- Middleware handlers got invoked twice for URLs routed to NotFound handlers in 1.5.2+. It's once in 1.5.1.\r\n\r\nExample code:\r\n```\r\npackage main\r\n\r\nimport (\r\n\t\"fmt\"\r\n\t\"net/http\"\r\n\r\n\t\"github.com/go-chi/chi\"\r\n)\r\n\r\nfunc main() {\r\n\tr := chi.NewRouter()\r\n\r\n\tr.Use(func(next http.Handler) http.Handler {\r\n\t\tfmt.Println(\"Instantiating test middleware...\")\r\n\t\treturn http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\r\n\t\t\tfmt.Println(r.URL.Path, \"going through middleware...\")\r\n\t\t\tnext.ServeHTTP(w, r)\r\n\t\t})\r\n\t})\r\n\r\n\tr.NotFound(func(w http.ResponseWriter, r *http.Request) {\r\n\t\tw.WriteHeader(404)\r\n\t\tw.Write([]byte(\"Resource not found\\n\"))\r\n\t})\r\n\r\n\tr.Get(\"/hello\", func(w http.ResponseWriter, r *http.Request) {\r\n\t\tw.WriteHeader(200)\r\n\t\tw.Write([]byte(\"Hello world!\\n\"))\r\n\t})\r\n\r\n\tsvr := &http.Server{\r\n\t\tAddr:    \":6060\",\r\n\t\tHandler: r,\r\n\t}\r\n\r\n\tfmt.Println(\"Starting server...\")\r\n\tif err := svr.ListenAndServe(); err != nil && err != http.ErrServerClosed {\r\n\t\tfmt.Println(\"Server stopped with error:\", err)\r\n\t} else {\r\n\t\tfmt.Println(\"Server stopped normally\")\r\n\t}\r\n}\r\n```\r\n\r\nOutput after one `GET /hello` and one `GET /nihao` requests in 1.5.2+:\r\n```\r\nInstantiating test middleware...\r\nInstantiating test middleware...\r\nStarting server...\r\n/hello going through middleware...\r\n/nihao going through middleware...\r\n/nihao going through middleware...\r\n```\r\n\r\nOutput of the same case in 1.5.1:\r\n```\r\nInstantiating test middleware...\r\nStarting server...\r\n/hello going through middleware...\r\n/nihao going through middleware...\r\n```"
+    },
+    "ground_truth": {
+      "fix_commit": "969d7fcccb46710a67a9380877cfb50610490b6a",
+      "diff": "commit 969d7fcccb46710a67a9380877cfb50610490b6a\nAuthor: Peter Kieltyka <pkieltyka@users.noreply.github.com>\nDate:   Thu Mar 25 08:56:33 2021 -0400\n\n    fix #587 by reverting 894714a and 00cc734 (#606)\n\ndiff --git a/mux.go b/mux.go\nindex 751edc3..fff6a3c 100644\n--- a/mux.go\n+++ b/mux.go\n@@ -187,39 +187,41 @@ func (mx *Mux) Trace(pattern string, handlerFn http.HandlerFunc) {\n // NotFound sets a custom http.HandlerFunc for routing paths that could\n // not be found. The default 404 handler is `http.NotFound`.\n func (mx *Mux) NotFound(handlerFn http.HandlerFunc) {\n \t// Build NotFound handler chain\n \tm := mx\n-\th := Chain(mx.middlewares...).HandlerFunc(handlerFn).ServeHTTP\n+\thFn := handlerFn\n \tif mx.inline && mx.parent != nil {\n \t\tm = mx.parent\n+\t\thFn = Chain(mx.middlewares...).HandlerFunc(hFn).ServeHTTP\n \t}\n \n \t// Update the notFoundHandler from this point forward\n-\tm.notFoundHandler = h\n+\tm.notFoundHandler = hFn\n \tm.updateSubRoutes(func(subMux *Mux) {\n \t\tif subMux.notFoundHandler == nil {\n-\t\t\tsubMux.NotFound(h)\n+\t\t\tsubMux.NotFound(hFn)\n \t\t}\n \t})\n }\n \n // MethodNotAllowed sets a custom http.HandlerFunc for routing paths where the\n // method is unresolved. The default handler returns a 405 with an empty body.\n func (mx *Mux) MethodNotAllowed(handlerFn http.HandlerFunc) {\n \t// Build MethodNotAllowed handler chain\n \tm := mx\n-\th := Chain(mx.middlewares...).HandlerFunc(handlerFn).ServeHTTP\n+\thFn := handlerFn\n \tif mx.inline && mx.parent != nil {\n \t\tm = mx.parent\n+\t\thFn = Chain(mx.middlewares...).HandlerFunc(hFn).ServeHTTP\n \t}\n \n \t// Update the methodNotAllowedHandler from this point forward\n-\tm.methodNotAllowedHandler = h\n+\tm.methodNotAllowedHandler = hFn\n \tm.updateSubRoutes(func(subMux *Mux) {\n \t\tif subMux.methodNotAllowedHandler == nil {\n-\t\t\tsubMux.MethodNotAllowed(h)\n+\t\t\tsubMux.MethodNotAllowed(hFn)\n \t\t}\n \t})\n }\n \n // With adds inline middlewares for an endpoint handler."
+    },
+    "relevant_files": [
+      "mux.go"
+    ],
+    "snapshot_commit": "ab14a9ac6e765bab360bdcc51c6a0c810fcc7315",
+    "belief_cutoff_timestamp": "2021-02-23T03:20:19Z",
+    "reference_commit_timestamp": "2021-03-25T08:56:33-04:00"
+  },
+  {
+    "id": "chi_feature_1049",
+    "repo": "go-chi/chi",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 1049,
+      "pr_title": "Propagate inline middlewares across mounted subrouters",
+      "pr_body": "- Walk() missed middlewares set via With()/Group()"
+    },
+    "ground_truth": {
+      "merged_at": "2026-02-12T11:31:52Z",
+      "diff": "diff --git a/tree.go b/tree.go\nindex ac03d3fe..65ca61d2 100644\n--- a/tree.go\n+++ b/tree.go\n@@ -841,6 +841,12 @@ func walk(r Routes, walkFn WalkFunc, parentRoute string, parentMw ...func(http.H\n \t\tmws = append(mws, r.Middlewares()...)\n \n \t\tif route.SubRoutes != nil {\n+\t\t\tif handler, ok := route.Handlers[\"*\"]; ok {\n+\t\t\t\tif chain, ok := handler.(*ChainHandler); ok {\n+\t\t\t\t\tmws = append(mws, chain.Middlewares...)\n+\t\t\t\t}\n+\t\t\t}\n+\n \t\t\tif err := walk(route.SubRoutes, walkFn, parentRoute+route.Pattern, mws...); err != nil {\n \t\t\t\treturn err\n \t\t\t}\ndiff --git a/tree_test.go b/tree_test.go\nindex d8b2e626..c07e8309 100644\n--- a/tree_test.go\n+++ b/tree_test.go\n@@ -521,3 +521,59 @@ func TestWalker(t *testing.T) {\n \t\tt.Error(err)\n \t}\n }\n+\n+func TestWalkInlineMiddlewaresAcrossSubrouter(t *testing.T) {\n+\tmw := func(next http.Handler) http.Handler { return next }\n+\thandler := func(w http.ResponseWriter, r *http.Request) {}\n+\n+\ttests := []struct {\n+\t\tname     string\n+\t\tsetup    func() Router\n+\t\texpected int\n+\t}{\n+\t\t{\n+\t\t\tname: \"With+Group wrapping Route+With\",\n+\t\t\tsetup: func() Router {\n+\t\t\t\tr := NewMux()\n+\t\t\t\tr.With(mw).Group(func(r Router) {\n+\t\t\t\t\tr.Route(\"/foo\", func(r Router) {\n+\t\t\t\t\t\tr.With(mw).Post(\"/bar\", handler)\n+\t\t\t\t\t})\n+\t\t\t\t})\n+\t\t\t\treturn r\n+\t\t\t},\n+\t\t\texpected: 2,\n+\t\t},\n+\t\t{\n+\t\t\tname: \"Use on subrouter combined with outer With\",\n+\t\t\tsetup: func() Router {\n+\t\t\t\tr := NewMux()\n+\t\t\t\tr.With(mw).Group(func(r Router) {\n+\t\t\t\t\tr.Route(\"/foo\", func(r Router) {\n+\t\t\t\t\t\tr.Use(mw)\n+\t\t\t\t\t\tr.With(mw).Post(\"/bar\", handler)\n+\t\t\t\t\t})\n+\t\t\t\t})\n+\t\t\t\treturn r\n+\t\t\t},\n+\t\t\texpected: 3,\n+\t\t},\n+\t}\n+\n+\tfor _, tt := range tests {\n+\t\tt.Run(tt.name, func(t *testing.T) {\n+\t\t\tr := tt.setup()\n+\t\t\tvar middlewareCount int\n+\t\t\terr := Walk(r, func(method, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {\n+\t\t\t\tmiddlewareCount = len(middlewares)\n+\t\t\t\treturn nil\n+\t\t\t})\n+\t\t\tif err != nil {\n+\t\t\t\tt.Fatal(err)\n+\t\t\t}\n+\t\t\tif middlewareCount != tt.expected {\n+\t\t\t\tt.Fatalf(\"expected %d middlewares, got %d\", tt.expected, middlewareCount)\n+\t\t\t}\n+\t\t})\n+\t}\n+}\n"
+    },
+    "relevant_files": [
+      "tree.go",
+      "tree_test.go"
+    ],
+    "snapshot_commit": "142fada90f83e2f41f29552110d342de09f96781",
+    "belief_cutoff_timestamp": "2026-02-11T16:02:39Z",
+    "reference_commit_timestamp": "2026-02-12T11:31:52Z"
+  },
+  {
+    "id": "chi_feature_1044",
+    "repo": "go-chi/chi",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 1044,
+      "pr_title": "middleware: harden RedirectSlashes handler",
+      "pr_body": ""
+    },
+    "ground_truth": {
+      "merged_at": "2026-01-14T16:02:01Z",
+      "diff": "diff --git a/middleware/strip.go b/middleware/strip.go\nindex 17aa9bf3..32d21e90 100644\n--- a/middleware/strip.go\n+++ b/middleware/strip.go\n@@ -47,15 +47,22 @@ func RedirectSlashes(next http.Handler) http.Handler {\n \t\t} else {\n \t\t\tpath = r.URL.Path\n \t\t}\n+\n \t\tif len(path) > 1 && path[len(path)-1] == '/' {\n-\t\t\t// Trim all leading and trailing slashes (e.g., \"//evil.com\", \"/some/path//\")\n-\t\t\tpath = \"/\" + strings.Trim(path, \"/\")\n+\t\t\t// Normalize backslashes to forward slashes to prevent \"/\\evil.com\" style redirects\n+\t\t\t// that some clients may interpret as protocol-relative.\n+\t\t\tpath = strings.ReplaceAll(path, `\\`, `/`)\n+\n+\t\t\t// Collapse leading/trailing slashes and force a single leading slash.\n+\t\t\tpath := \"/\" + strings.Trim(path, \"/\")\n+\n \t\t\tif r.URL.RawQuery != \"\" {\n \t\t\t\tpath = fmt.Sprintf(\"%s?%s\", path, r.URL.RawQuery)\n \t\t\t}\n \t\t\thttp.Redirect(w, r, path, 301)\n \t\t\treturn\n \t\t}\n+\n \t\tnext.ServeHTTP(w, r)\n \t}\n \treturn http.HandlerFunc(fn)\ndiff --git a/middleware/strip_test.go b/middleware/strip_test.go\nindex 79a0b348..2fa98680 100644\n--- a/middleware/strip_test.go\n+++ b/middleware/strip_test.go\n@@ -4,6 +4,7 @@ import (\n \t\"net/http\"\n \t\"net/http/httptest\"\n \t\"net/url\"\n+\t\"strings\"\n \t\"testing\"\n \n \t\"github.com/go-chi/chi/v5\"\n@@ -271,3 +272,58 @@ func TestStripPrefix(t *testing.T) {\n \t\tt.Fatalf(\"got: %q, want: %q\", resp, \"404 page not found\\n\")\n \t}\n }\n+\n+func TestRedirectSlashes_PreventBackslashRelativeOpenRedirect(t *testing.T) {\n+\th := RedirectSlashes(http.NotFoundHandler())\n+\n+\ttests := []struct {\n+\t\tname   string\n+\t\ttarget string\n+\t}{\n+\t\t{\n+\t\t\tname:   `raw backslash: /\\evil.com/`,\n+\t\t\ttarget: `/\\evil.com/`,\n+\t\t},\n+\t\t{\n+\t\t\tname:   `encoded backslash: /%5Cevil.com/`,\n+\t\t\ttarget: \"/%5Cevil.com/\",\n+\t\t},\n+\t}\n+\n+\tfor _, tc := range tests {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\treq := httptest.NewRequest(http.MethodGet, \"http://example.test\"+tc.target, nil)\n+\t\t\trr := httptest.NewRecorder()\n+\n+\t\t\th.ServeHTTP(rr, req)\n+\t\t\tres := rr.Result()\n+\t\t\tdefer res.Body.Close()\n+\n+\t\t\tif res.StatusCode != http.StatusMovedPermanently {\n+\t\t\t\tt.Fatalf(\"expected %d, got %d\", http.StatusMovedPermanently, res.StatusCode)\n+\t\t\t}\n+\n+\t\t\tloc := res.Header.Get(\"Location\")\n+\t\t\tif loc == \"\" {\n+\t\t\t\tt.Fatalf(\"expected Location header to be set\")\n+\t\t\t}\n+\n+\t\t\t// The core security assertions:\n+\t\t\tif strings.Contains(loc, `\\`) {\n+\t\t\t\tt.Fatalf(\"Location must not contain backslashes: %q\", loc)\n+\t\t\t}\n+\t\t\tif strings.HasPrefix(loc, \"//\") {\n+\t\t\t\tt.Fatalf(\"Location must not be protocol-relative: %q\", loc)\n+\t\t\t}\n+\t\t\tif !strings.HasPrefix(loc, \"/\") {\n+\t\t\t\tt.Fatalf(\"Location must be an absolute-path reference starting with '/': %q\", loc)\n+\t\t\t}\n+\n+\t\t\t// Optional stronger assertion if your middleware normalizes to /evil.com exactly:\n+\t\t\t// (Keep or remove depending on your chosen behavior.)\n+\t\t\tif loc != \"/evil.com\" {\n+\t\t\t\tt.Fatalf(\"expected Location %q, got %q\", \"/evil.com\", loc)\n+\t\t\t}\n+\t\t})\n+\t}\n+}\n"
+    },
+    "relevant_files": [
+      "middleware/strip.go",
+      "middleware/strip_test.go"
+    ],
+    "snapshot_commit": "de0d16e6d23092aeef0b6e78f146799369160651",
+    "belief_cutoff_timestamp": "2026-01-14T15:59:06Z",
+    "reference_commit_timestamp": "2026-01-14T16:02:01Z"
+  },
+  {
+    "id": "chi_feature_986",
+    "repo": "go-chi/chi",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 986,
+      "pr_title": "feat(mux): support http.Request.Pattern in Go 1.23",
+      "pr_body": "Similar to #901\r\n\r\nAdds support to get the pattern that was used by Chi to match the route, without needing to call the Chi context."
+    },
+    "ground_truth": {
+      "merged_at": "2025-08-26T11:16:42Z",
+      "diff": "diff --git a/mux.go b/mux.go\nindex 91daf691..5e0a2812 100644\n--- a/mux.go\n+++ b/mux.go\n@@ -476,6 +476,9 @@ func (mx *Mux) routeHTTP(w http.ResponseWriter, r *http.Request) {\n \t\tif supportsPathValue {\n \t\t\tsetPathValue(rctx, r)\n \t\t}\n+\t\tif supportsPattern {\n+\t\t\tsetPattern(rctx, r)\n+\t\t}\n \n \t\th.ServeHTTP(w, r)\n \t\treturn\ndiff --git a/pattern.go b/pattern.go\nnew file mode 100644\nindex 00000000..890a2c21\n--- /dev/null\n+++ b/pattern.go\n@@ -0,0 +1,16 @@\n+//go:build go1.23 && !tinygo\n+// +build go1.23,!tinygo\n+\n+package chi\n+\n+import \"net/http\"\n+\n+// supportsPattern is true if the Go version is 1.23 and above.\n+//\n+// If this is true, `net/http.Request` has field `Pattern`.\n+const supportsPattern = true\n+\n+// setPattern sets the mux matched pattern in the http Request.\n+func setPattern(rctx *Context, r *http.Request) {\n+\tr.Pattern = rctx.routePattern\n+}\ndiff --git a/pattern_fallback.go b/pattern_fallback.go\nnew file mode 100644\nindex 00000000..48a94ef8\n--- /dev/null\n+++ b/pattern_fallback.go\n@@ -0,0 +1,17 @@\n+//go:build !go1.23 || tinygo\n+// +build !go1.23 tinygo\n+\n+package chi\n+\n+import \"net/http\"\n+\n+// supportsPattern is true if the Go version is 1.23 and above.\n+//\n+// If this is true, `net/http.Request` has field `Pattern`.\n+const supportsPattern = false\n+\n+// setPattern sets the mux matched pattern in the http Request.\n+//\n+// setPattern is only supported in Go 1.23 and above so\n+// this is just a blank function so that it compiles.\n+func setPattern(rctx *Context, r *http.Request) {}\ndiff --git a/pattern_test.go b/pattern_test.go\nnew file mode 100644\nindex 00000000..bf8a3045\n--- /dev/null\n+++ b/pattern_test.go\n@@ -0,0 +1,56 @@\n+//go:build go1.23\n+// +build go1.23\n+\n+package chi\n+\n+import (\n+\t\"net/http\"\n+\t\"net/http/httptest\"\n+\t\"testing\"\n+)\n+\n+func TestPattern(t *testing.T) {\n+\ttestCases := []struct {\n+\t\tname        string\n+\t\tpattern     string\n+\t\tmethod      string\n+\t\trequestPath string\n+\t}{\n+\t\t{\n+\t\t\tname:        \"Basic path value\",\n+\t\t\tpattern:     \"/hubs/{hubID}\",\n+\t\t\tmethod:      \"GET\",\n+\t\t\trequestPath: \"/hubs/392\",\n+\t\t},\n+\t\t{\n+\t\t\tname:        \"Two path values\",\n+\t\t\tpattern:     \"/users/{userID}/conversations/{conversationID}\",\n+\t\t\tmethod:      \"POST\",\n+\t\t\trequestPath: \"/users/Gojo/conversations/2948\",\n+\t\t},\n+\t\t{\n+\t\t\tname:        \"Wildcard path\",\n+\t\t\tpattern:     \"/users/{userID}/friends/*\",\n+\t\t\tmethod:      \"POST\",\n+\t\t\trequestPath: \"/users/Gojo/friends/all-of-them/and/more\",\n+\t\t},\n+\t}\n+\n+\tfor _, tc := range testCases {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\tr := NewRouter()\n+\n+\t\t\tr.Handle(tc.method+\" \"+tc.pattern, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {\n+\t\t\t\tw.Write([]byte(r.Pattern))\n+\t\t\t}))\n+\n+\t\t\tts := httptest.NewServer(r)\n+\t\t\tdefer ts.Close()\n+\n+\t\t\t_, body := testRequest(t, ts, tc.method, tc.requestPath, nil)\n+\t\t\tif body != tc.pattern {\n+\t\t\t\tt.Fatalf(\"expecting %q, got %q\", tc.pattern, body)\n+\t\t\t}\n+\t\t})\n+\t}\n+}\n"
+    },
+    "relevant_files": [
+      "mux.go",
+      "pattern.go",
+      "pattern_fallback.go",
+      "pattern_test.go"
+    ],
+    "snapshot_commit": "d7034fdfdaefd10f1bc1a7b813bc979f2eda3a36",
+    "belief_cutoff_timestamp": "2025-03-03T11:52:14Z",
+    "reference_commit_timestamp": "2025-08-26T11:16:42Z"
+  },
+  {
+    "id": "chi_review_966",
+    "repo": "go-chi/chi",
+    "task_type": "code_review",
+    "input": {
+      "pr_number": 966,
+      "pr_title": "Revert \"feat(): add CF-Connecting-IP\"",
+      "pr_body": "Reverts go-chi/chi#908 (an unpublished feature).\r\n\r\nFYI @n33pm, I was reading up on the topic of RealIP middleware some more today\r\n- https://github.com/go-chi/chi/issues/708\r\n- https://github.com/go-chi/chi/issues/711\r\n- https://adam-p.ca/blog/2022/03/x-forwarded-for/\r\n\r\nand I've decided to revert #908 until we have a better long-term plan for RealIP middleware. I don't want to add another function to the public API that shares the same problems / pitfalls as the original middleware.\r\n\r\nSince this feature hasn't been published (git tagged) yet, it should be OK to revert it.\r\n\r\nLet's think some more about the proper solution outlined in #708.",
+      "diff": "diff --git a/middleware/realip.go b/middleware/realip.go\nindex d91f2d1c..55c95a89 100644\n--- a/middleware/realip.go\n+++ b/middleware/realip.go\n@@ -9,11 +9,9 @@ import (\n \t\"strings\"\n )\n \n-var defaultHeaders = []string{\n-\t\"True-Client-IP\", // Cloudflare Enterprise plan\n-\t\"X-Real-IP\",\n-\t\"X-Forwarded-For\",\n-}\n+var trueClientIP = http.CanonicalHeaderKey(\"True-Client-IP\")\n+var xForwardedFor = http.CanonicalHeaderKey(\"X-Forwarded-For\")\n+var xRealIP = http.CanonicalHeaderKey(\"X-Real-IP\")\n \n // RealIP is a middleware that sets a http.Request's RemoteAddr to the results\n // of parsing either the True-Client-IP, X-Real-IP or the X-Forwarded-For headers\n@@ -32,7 +30,7 @@ var defaultHeaders = []string{\n // how you're using RemoteAddr, vulnerable to an attack of some sort).\n func RealIP(h http.Handler) http.Handler {\n \tfn := func(w http.ResponseWriter, r *http.Request) {\n-\t\tif rip := getRealIP(r, defaultHeaders); rip != \"\" {\n+\t\tif rip := realIP(r); rip != \"\" {\n \t\t\tr.RemoteAddr = rip\n \t\t}\n \t\th.ServeHTTP(w, r)\n@@ -41,33 +39,22 @@ func RealIP(h http.Handler) http.Handler {\n \treturn http.HandlerFunc(fn)\n }\n \n-// RealIPFromHeaders is a middleware that sets a http.Request's RemoteAddr to the results\n-// of parsing the custom headers.\n-//\n-// usage:\n-// r.Use(RealIPFromHeaders(\"CF-Connecting-IP\"))\n-func RealIPFromHeaders(headers ...string) func(http.Handler) http.Handler {\n-\tf := func(h http.Handler) http.Handler {\n-\t\tfn := func(w http.ResponseWriter, r *http.Request) {\n-\t\t\tif rip := getRealIP(r, headers); rip != \"\" {\n-\t\t\t\tr.RemoteAddr = rip\n-\t\t\t}\n-\t\t\th.ServeHTTP(w, r)\n-\t\t}\n-\t\treturn http.HandlerFunc(fn)\n-\t}\n-\treturn f\n-}\n+func realIP(r *http.Request) string {\n+\tvar ip string\n \n-func getRealIP(r *http.Request, headers []string) string {\n-\tfor _, header := range headers {\n-\t\tif ip := r.Header.Get(header); ip != \"\" {\n-\t\t\tips := strings.Split(ip, \",\")\n-\t\t\tif ips[0] == \"\" || net.ParseIP(ips[0]) == nil {\n-\t\t\t\tcontinue\n-\t\t\t}\n-\t\t\treturn ips[0]\n+\tif tcip := r.Header.Get(trueClientIP); tcip != \"\" {\n+\t\tip = tcip\n+\t} else if xrip := r.Header.Get(xRealIP); xrip != \"\" {\n+\t\tip = xrip\n+\t} else if xff := r.Header.Get(xForwardedFor); xff != \"\" {\n+\t\ti := strings.Index(xff, \",\")\n+\t\tif i == -1 {\n+\t\t\ti = len(xff)\n \t\t}\n+\t\tip = xff[:i]\n+\t}\n+\tif ip == \"\" || net.ParseIP(ip) == nil {\n+\t\treturn \"\"\n \t}\n-\treturn \"\"\n+\treturn ip\n }\ndiff --git a/middleware/realip_test.go b/middleware/realip_test.go\nindex 97370323..1ab5e95e 100644\n--- a/middleware/realip_test.go\n+++ b/middleware/realip_test.go\n@@ -113,52 +113,3 @@ func TestInvalidIP(t *testing.T) {\n \t\tt.Fatal(\"Invalid IP used.\")\n \t}\n }\n-\n-func TestCustomIPHeader(t *testing.T) {\n-\tvar customHeaderKey = \"X-CUSTOM-IP\"\n-\treq, _ := http.NewRequest(\"GET\", \"/\", nil)\n-\treq.Header.Add(customHeaderKey, \"100.100.100.100\")\n-\tw := httptest.NewRecorder()\n-\n-\tr := chi.NewRouter()\n-\tr.Use(RealIPFromHeaders(customHeaderKey))\n-\n-\trealIP := \"\"\n-\tr.Get(\"/\", func(w http.ResponseWriter, r *http.Request) {\n-\t\trealIP = r.RemoteAddr\n-\t\tw.Write([]byte(\"Hello World\"))\n-\t})\n-\tr.ServeHTTP(w, req)\n-\n-\tif w.Code != 200 {\n-\t\tt.Fatal(\"Response Code should be 200\")\n-\t}\n-\n-\tif realIP != \"100.100.100.100\" {\n-\t\tt.Fatal(\"Test get real IP precedence error.\")\n-\t}\n-}\n-\n-func TestCustomIPHeaderWithoutDefault(t *testing.T) {\n-\treq, _ := http.NewRequest(\"GET\", \"/\", nil)\n-\treq.Header.Add(\"X-REAL-IP\", \"100.100.100.100\")\n-\tw := httptest.NewRecorder()\n-\n-\tr := chi.NewRouter()\n-\tr.Use(RealIPFromHeaders(\"CF-Connecting-IP\"))\n-\n-\trealIP := \"\"\n-\tr.Get(\"/\", func(w http.ResponseWriter, r *http.Request) {\n-\t\trealIP = r.RemoteAddr\n-\t\tw.Write([]byte(\"Hello World\"))\n-\t})\n-\tr.ServeHTTP(w, req)\n-\n-\tif w.Code != 200 {\n-\t\tt.Fatal(\"Response Code should be 200\")\n-\t}\n-\n-\tif realIP != \"\" {\n-\t\tt.Fatal(\"Invalid IP used.\")\n-\t}\n-}\n"
+    },
+    "ground_truth": {
+      "known_issues": "PR was reverted \u2014 agent should identify the problematic change."
+    },
+    "relevant_files": [
+      "middleware/realip.go",
+      "middleware/realip_test.go"
+    ],
+    "snapshot_commit": "d9d5e318c2701f0dfd1decf6f77566501d720d20",
+    "belief_cutoff_timestamp": "2024-12-14T17:01:54Z",
+    "reference_commit_timestamp": "2024-12-14T17:06:53Z"
+  },
+  {
+    "id": "chi_review_924",
+    "repo": "go-chi/chi",
+    "task_type": "code_review",
+    "input": {
+      "pr_number": 924,
+      "pr_title": "Revert \"Avoid possible memory leak in compress middleware\"",
+      "pr_body": "Reverts go-chi/chi#919 due to https://github.com/go-chi/chi/issues/923\r\n\r\nFixes https://github.com/go-chi/chi/issues/923",
+      "diff": "diff --git a/middleware/compress.go b/middleware/compress.go\nindex 7ba95fd5e..28240c4b3 100644\n--- a/middleware/compress.go\n+++ b/middleware/compress.go\n@@ -371,7 +371,7 @@ func (cw *compressResponseWriter) Push(target string, opts *http.PushOptions) er\n }\n \n func (cw *compressResponseWriter) Close() error {\n-\tif c, ok := cw.w.(io.WriteCloser); ok {\n+\tif c, ok := cw.writer().(io.WriteCloser); ok {\n \t\treturn c.Close()\n \t}\n \treturn errors.New(\"chi/middleware: io.WriteCloser is unavailable on the writer\")\ndiff --git a/middleware/compress_test.go b/middleware/compress_test.go\nindex 992f1d40c..eaafc13b9 100644\n--- a/middleware/compress_test.go\n+++ b/middleware/compress_test.go\n@@ -26,13 +26,8 @@ func TestCompressor(t *testing.T) {\n \t\treturn w\n \t})\n \n-\tvar sideEffect int\n-\tcompressor.SetEncoder(\"test\", func(w io.Writer, _ int) io.Writer {\n-\t\treturn newSideEffectWriter(w, &sideEffect)\n-\t})\n-\n-\tif len(compressor.encoders) != 2 {\n-\t\tt.Errorf(\"nop and test encoders should be stored in the encoders map\")\n+\tif len(compressor.encoders) != 1 {\n+\t\tt.Errorf(\"nop encoder should be stored in the encoders map\")\n \t}\n \n \tr.Use(compressor.Handler)\n@@ -52,11 +47,6 @@ func TestCompressor(t *testing.T) {\n \t\tw.Write([]byte(\"textstring\"))\n \t})\n \n-\tr.Get(\"/getimage\", func(w http.ResponseWriter, r *http.Request) {\n-\t\tw.Header().Set(\"Content-Type\", \"image/png\")\n-\t\tw.Write([]byte(\"textstring\"))\n-\t})\n-\n \tts := httptest.NewServer(r)\n \tdefer ts.Close()\n \n@@ -103,12 +93,6 @@ func TestCompressor(t *testing.T) {\n \t\t\tacceptedEncodings: []string{\"nop, gzip, deflate\"},\n \t\t\texpectedEncoding:  \"nop\",\n \t\t},\n-\t\t{\n-\t\t\tname:              \"test is used and side effect is cleared after close\",\n-\t\t\tpath:              \"/getimage\",\n-\t\t\tacceptedEncodings: []string{\"test\"},\n-\t\t\texpectedEncoding:  \"\",\n-\t\t},\n \t}\n \n \tfor _, tc := range tests {\n@@ -123,10 +107,7 @@ func TestCompressor(t *testing.T) {\n \t\t\t}\n \n \t\t})\n-\t}\n \n-\tif sideEffect > 1 {\n-\t\tt.Errorf(\"side effect should be cleared after close\")\n \t}\n }\n \n@@ -236,26 +217,3 @@ func decodeResponseBody(t *testing.T, resp *http.Response) string {\n \n \treturn string(respBody)\n }\n-\n-type (\n-\tsideEffectWriter struct {\n-\t\tw io.Writer\n-\t\ts *int\n-\t}\n-)\n-\n-func newSideEffectWriter(w io.Writer, sideEffect *int) io.Writer {\n-\t*sideEffect = *sideEffect + 1\n-\n-\treturn &sideEffectWriter{w: w, s: sideEffect}\n-}\n-\n-func (w *sideEffectWriter) Write(p []byte) (n int, err error) {\n-\treturn w.w.Write(p)\n-}\n-\n-func (w *sideEffectWriter) Close() error {\n-\t*w.s = *w.s - 1\n-\n-\treturn nil\n-}\n"
+    },
+    "ground_truth": {
+      "known_issues": "PR was reverted \u2014 agent should identify the problematic change."
+    },
+    "relevant_files": [
+      "middleware/compress.go",
+      "middleware/compress_test.go"
+    ],
+    "snapshot_commit": "f728a1c1976959d4a313da09bac44e88ec111917",
+    "belief_cutoff_timestamp": "2024-06-21T12:22:08Z",
+    "reference_commit_timestamp": "2024-06-21T12:30:42Z"
+  }
+]

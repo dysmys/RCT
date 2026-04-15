@@ -1,0 +1,65 @@
+[
+  {
+    "id": "huey_bug_708",
+    "repo": "coleifer/huey",
+    "task_type": "bug_fix",
+    "source": "git_fix_keyword_fallback",
+    "input": {
+      "issue_number": 708,
+      "issue_title": "Avoid using `setup.py install`",
+      "issue_body": "Hi there! Thanks for Huey, it's working great for our organisation.\r\n\r\nWhen installing Huey with Python 3.11 and pip 23.0, the following deprecation warning is given during `pip install`:\r\n\r\n```\r\nDEPRECATION: huey is being installed using the legacy 'setup.py install' method, because it does not have a 'pyproject.toml' and the 'wheel' package is not installed. pip 23.1 will enforce this behaviour change. A possible replacement is to enable the '--use-pep517' option. Discussion can be found at https://github.com/pypa/pip/issues/8559\r\n```\r\n\r\nTo be clear, the package continues to install -- but, as the message says, this will fail in pip 23.1. \r\n\r\nI hope this helps!"
+    },
+    "ground_truth": {
+      "fix_commit": "7eed7598d10d0815b0fb275ec0e12f0ba7580a2d",
+      "diff": "commit 7eed7598d10d0815b0fb275ec0e12f0ba7580a2d\nAuthor: Charles Leifer <coleifer@gmail.com>\nDate:   Thu Feb 9 08:12:03 2023 -0600\n\n    Add pyproject.toml, fixes #708\n    \n    brought to you by the brave folks at pypa.\n\ndiff --git a/pyproject.toml b/pyproject.toml\nnew file mode 100644\nindex 0000000..d1e6ae6\n--- /dev/null\n+++ b/pyproject.toml\n@@ -0,0 +1,2 @@\n+[build-system]\n+requires = [\"setuptools\", \"wheel\"]"
+    },
+    "relevant_files": [
+      "pyproject.toml"
+    ],
+    "snapshot_commit": "ae1d582266be8d2d982e3dfa1d8a3e7bfc2d9b2a",
+    "belief_cutoff_timestamp": "2023-02-09T14:10:52Z",
+    "reference_commit_timestamp": "2023-02-09T08:12:03-06:00"
+  },
+  {
+    "id": "huey_bug_673",
+    "repo": "coleifer/huey",
+    "task_type": "bug_fix",
+    "source": "git_fix_keyword_fallback",
+    "input": {
+      "issue_number": 673,
+      "issue_title": "Document it that blocking tasks should not return None",
+      "issue_body": "This is related to #450. Similar to the author of that issue, it seemed natural to me to return `None` from my task. Re-reading the documentation, I inferred that time outs were happening because Huey (basically) considers a `None` value to mean that a task has not yet completed. I then found #450, which confirmed it for me.\r\n\r\nThis issue is to request that this design decision/limitation be explicitly documented. Perhaps to the \"troubleshooting\" section. A user can alternatively alter the behaviour of their task (either returning a dummy value, or, in my case, a boolean flag), or, as last-ditched alternative, the user can set `store_none=True` with `RedisExpireStorage`. If this has already been documented, then I have missed it, but it could safe someone else some time and head scratching.\r\n\r\n(In my case, the task involved network I/O, so the threads/greenlets could parallelise connections. After all the results were returned, I needed to collate them and generate a single report. If there is a concern about anti-patterns, that might warrant a mention as well.)"
+    },
+    "ground_truth": {
+      "fix_commit": "66d1f1ae1c6f35a83fccdcf64fecc459e4b133bf",
+      "diff": "commit 66d1f1ae1c6f35a83fccdcf64fecc459e4b133bf\nAuthor: Charles Leifer <coleifer@gmail.com>\nDate:   Mon Jun 13 07:52:26 2022 -0500\n\n    Additional note in docs, fixes #673\n\ndiff --git a/docs/troubleshooting.rst b/docs/troubleshooting.rst\nindex 5a193ce..d6b6cd7 100644\n--- a/docs/troubleshooting.rst\n+++ b/docs/troubleshooting.rst\n@@ -32,10 +32,18 @@ Tasks not running\n \n Tasks not returning results\n     Ensure that you have not accidentally specified ``results=False`` when\n     instantiating your :py:class:`Huey` object.\n \n+    Additionally note that, by default, Huey does not store ``None`` in the\n+    result-store. So if your task returns ``None``, Huey will discard the\n+    result. If you need to block or detect whether a task has finished, it is\n+    recommended that you return a non-``None`` value or in extreme\n+    circumstances you can initialize Huey with ``store_none=True`` (though this\n+    can quickly fill up your result store and is only recommended for users who\n+    are very familiar with Huey).\n+\n Scheduled tasks are not being run at the correct time\n     Check the time on the server the consumer is running on - if different from\n     the producer this may cause problems. Huey uses UTC internally by default,\n     and naive datetimes will be converted from local time to UTC (if local time\n     happens to not be UTC)."
+    },
+    "relevant_files": [
+      "docs/troubleshooting.rst"
+    ],
+    "snapshot_commit": "3c06e3fa468a098ae912a6e6e084cc3fe09754c6",
+    "belief_cutoff_timestamp": "2022-06-13T12:44:32Z",
+    "reference_commit_timestamp": "2022-06-13T07:52:26-05:00"
+  },
+  {
+    "id": "huey_bug_477",
+    "repo": "coleifer/huey",
+    "task_type": "bug_fix",
+    "source": "git_fix_keyword_fallback",
+    "input": {
+      "issue_number": 477,
+      "issue_title": "Serializer is not forwards/backwards compatible with application changes",
+      "issue_body": "The default Serializer class is not forwards/backwards compatible with application changes and enqueued tasks in a few ways:\r\n\r\n* The Pickle HIGHEST_PROTOCOL is always used. This makes upgrading Python to a new version with a new pickle protocol (such as Python 3.3 -> 3.4) a one way operation. If a roll back is needed to the previous version, enqueue tasks will not be readable as they're encoded in a pickle protocol only usable on the new Python version.\r\n* The \"decompress\" logic in deserializiation is guarded by `if self.comp` and `if self.use_zlib` checks. Changing these flags in a new application version prevents enqueued tasks from being read by the correct path, and either compressed data will not be uncompressed, or it will be uncompressed with the wrong compression algorithm.\r\n\r\nThe first problem should probably be solved by making users explicitly choose their pickle version. Python has changed both `DEFAULT_PROTOCOL` and `HIGHEST_PROTOCOL` in recent versions (3.8 and 3.4 respectively) so neither is \"stable\" to use from a library perspective.\r\n\r\nThe second problem can be solved by rewriting the `deserialize()` method to check the dequeued data to see if it's able to decompress it."
+    },
+    "ground_truth": {
+      "fix_commit": "29e95bb42593b44babb7c5d249aa3e57d7872e15",
+      "diff": "commit 29e95bb42593b44babb7c5d249aa3e57d7872e15\nAuthor: Charles Leifer <coleifer@gmail.com>\nDate:   Mon Jan 6 17:16:13 2020 -0600\n\n    Fix typo, refs #477\n\ndiff --git a/huey/serializer.py b/huey/serializer.py\nindex a963d34..63230b1 100644\n--- a/huey/serializer.py\n+++ b/huey/serializer.py\n@@ -46,11 +46,11 @@ if gzip is not None:\n if sys.version_info[0] == 2:\n     def is_compressed(data):\n         return data and (data[0] == b'\\x1f' or data[0] == b'\\x78')\n else:\n     def is_compressed(data):\n-        return data and data[0] == 0x1for data[0] == 0x78\n+        return data and data[0] == 0x1f or data[0] == 0x78\n \n \n class Serializer(object):\n     def __init__(self, compression=False, compression_level=6, use_zlib=False,\n                  pickle_protocol=pickle.HIGHEST_PROTOCOL):"
+    },
+    "relevant_files": [
+      "huey/serializer.py"
+    ],
+    "snapshot_commit": "49dd3ad3ae147bb31eca68420475ab130ece9625",
+    "belief_cutoff_timestamp": "2020-01-06T16:53:14Z",
+    "reference_commit_timestamp": "2020-01-06T17:16:13-06:00"
+  }
+]

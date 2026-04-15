@@ -1,0 +1,47 @@
+[
+  {
+    "id": "label-studio_review_8140",
+    "repo": "HumanSignal/label-studio",
+    "task_type": "code_review",
+    "input": {
+      "pr_number": 8140,
+      "pr_title": "Revert \"feat: UTC-210: Prediction validation\"",
+      "pr_body": "Reverts HumanSignal/label-studio#8062\r\n\r\nOpening just in case. We have seen some strange Selenium test failures in LSE - should all be fixed but in case we need to unblock quickly, merge this PR + corresponding LSE FM PR",
+      "diff": "diff --git a/label_studio/data_import/api.py b/label_studio/data_import/api.py\nindex 65d428bc049a..8aef296d8d48 100644\n--- a/label_studio/data_import/api.py\n+++ b/label_studio/data_import/api.py\n@@ -19,7 +19,6 @@\n from django.utils.decorators import method_decorator\n from drf_spectacular.types import OpenApiTypes\n from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema\n-from label_studio_sdk.label_interface import LabelInterface\n from projects.models import Project, ProjectImport, ProjectReimport\n from ranged_fileresponse import RangedFileResponse\n from rest_framework import generics, status\n@@ -267,31 +266,7 @@ def sync_import(self, request, project, preannotated_from_fields, commit_to_proj\n \n         if preannotated_from_fields:\n             # turn flat task JSONs {\"column1\": value, \"column2\": value} into {\"data\": {\"column1\"..}, \"predictions\": [{...\"column2\"}]\n-            parsed_data = reformat_predictions(parsed_data, preannotated_from_fields, project)\n-\n-        # Conditionally validate predictions: skip when label config is default during project creation\n-        if project.label_config_is_not_default:\n-            validation_errors = []\n-            li = LabelInterface(project.label_config)\n-\n-            for i, task in enumerate(parsed_data):\n-                if 'predictions' in task:\n-                    for j, prediction in enumerate(task['predictions']):\n-                        try:\n-                            validation_errors_list = li.validate_prediction(prediction, return_errors=True)\n-                            if validation_errors_list:\n-                                for error in validation_errors_list:\n-                                    validation_errors.append(f'Task {i}, prediction {j}: {error}')\n-                        except Exception as e:\n-                            error_msg = f'Task {i}, prediction {j}: Error validating prediction - {str(e)}'\n-                            validation_errors.append(error_msg)\n-\n-            if validation_errors:\n-                error_message = f'Prediction validation failed ({len(validation_errors)} errors):\\n'\n-                for error in validation_errors:\n-                    error_message += f'- {error}\\n'\n-\n-                raise ValidationError({'predictions': [error_message]})\n+            parsed_data = reformat_predictions(parsed_data, preannotated_from_fields)\n \n         if commit_to_project:\n             # Immediately create project tasks and update project states and counters\n@@ -509,55 +484,22 @@ def _create_legacy(self, project):\n         logger.debug(\n             f'Importing {len(self.request.data)} predictions to project {project} with {len(tasks_ids)} tasks (legacy mode)'\n         )\n-\n-        li = LabelInterface(project.label_config)\n-\n-        # Validate all predictions before creating any\n-        validation_errors = []\n         predictions = []\n-\n-        for i, item in enumerate(self.request.data):\n-            # Validate task ID\n+        for item in self.request.data:\n             if item.get('task') not in tasks_ids:\n-                validation_errors.append(\n-                    f'Prediction {i}: Invalid task ID {item.get(\"task\")} - task not found in project'\n+                raise ValidationError(\n+                    f'{item} contains invalid \"task\" field: corresponding task ID couldn\\'t be retrieved '\n+                    f'from project {project} tasks'\n                 )\n-                continue\n-\n-            # Validate prediction using LabelInterface only\n-            try:\n-                validation_errors_list = li.validate_prediction(item, return_errors=True)\n-\n-                # If prediction is invalid, add error to validation_errors list and continue to next prediction\n-                if validation_errors_list:\n-                    # Format errors for better readability\n-                    for error in validation_errors_list:\n-                        validation_errors.append(f'Prediction {i}: {error}')\n-                    continue\n-\n-            except Exception as e:\n-                validation_errors.append(f'Prediction {i}: Error validating prediction - {str(e)}')\n-                continue\n-\n-            # If prediction is valid, add it to predictions list to be created\n-            try:\n-                predictions.append(\n-                    Prediction(\n-                        task_id=item['task'],\n-                        project_id=project.id,\n-                        result=Prediction.prepare_prediction_result(item.get('result'), project),\n-                        score=item.get('score'),\n-                        model_version=item.get('model_version', 'undefined'),\n-                    )\n+            predictions.append(\n+                Prediction(\n+                    task_id=item['task'],\n+                    project_id=project.id,\n+                    result=Prediction.prepare_prediction_result(item.get('result'), project),\n+                    score=item.get('score'),\n+                    model_version=item.get('model_version', 'undefined'),\n                 )\n-            except Exception as e:\n-                validation_errors.append(f'Prediction {i}: Failed to create prediction - {str(e)}')\n-                continue\n-\n-        # If there are validation errors, raise them before creating any predictions\n-        if validation_errors:\n-            raise ValidationError(validation_errors)\n-\n+            )\n         predictions_obj = Prediction.objects.bulk_create(predictions, batch_size=settings.BATCH_SIZE)\n         start_job_async_or_sync(update_tasks_counters, Task.objects.filter(id__in=tasks_ids))\n         return Response({'created': len(predictions_obj)}, status=status.HTTP_201_CREATED)\ndiff --git a/label_studio/data_import/functions.py b/label_studio/data_import/functions.py\nindex c88b969d033c..bfee2d13ae05 100644\n--- a/label_studio/data_import/functions.py\n+++ b/label_studio/data_import/functions.py\n@@ -7,9 +7,7 @@\n from core.utils."
+    },
+    "ground_truth": {
+      "known_issues": "PR was reverted \u2014 agent should identify the problematic change."
+    },
+    "relevant_files": [
+      "label_studio/data_import/api.py",
+      "label_studio/data_import/functions.py",
+      "label_studio/io_storages/base_models.py",
+      "label_studio/io_storages/tests/test_multitask_import.py",
+      "label_studio/tasks/serializers.py",
+      "label_studio/tests/conftest.py",
+      "label_studio/tests/data_import.tavern.yml",
+      "label_studio/tests/data_manager/api_tasks.tavern.yml",
+      "label_studio/tests/data_manager/filters/int_tasks.json",
+      "label_studio/tests/data_manager/test_ordering_filters.py",
+      "label_studio/tests/data_manager/test_undefined.py",
+      "label_studio/tests/ml/test_predict.py",
+      "label_studio/tests/next_task.tavern.yml",
+      "label_studio/tests/predictions.model.tavern.yml",
+      "label_studio/tests/predictions.tavern.yml",
+      "label_studio/tests/sdk/test_ml.py",
+      "label_studio/tests/sdk/test_predictions.py",
+      "label_studio/tests/test_next_task.py",
+      "label_studio/tests/test_projects.tavern.yml",
+      "label_studio/tests/test_suites/samples/text_with_2_predictions.json",
+      "label_studio/tests/test_tasks_upload.py",
+      "label_studio/tests/utils.py",
+      "poetry.lock",
+      "pyproject.toml",
+      "web/apps/labelstudio/src/pages/CreateProject/CreateProject.jsx",
+      "web/apps/labelstudio/src/pages/Settings/StorageSettings/StorageSummary.jsx"
+    ],
+    "snapshot_commit": "37f4f522bfc99f46887942b64228539eab1817ce",
+    "belief_cutoff_timestamp": "2025-08-12T22:54:59Z",
+    "reference_commit_timestamp": null
+  }
+]

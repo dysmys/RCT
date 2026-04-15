@@ -1,0 +1,5663 @@
+{
+  "repositories": [
+    {
+      "url": "https://github.com/pallets/flask.git",
+      "name": "flask",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Lightweight WSGI web application framework"
+    },
+    {
+      "url": "https://github.com/fastapi/fastapi.git",
+      "name": "fastapi",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Modern async web framework for APIs"
+    },
+    {
+      "url": "https://github.com/encode/starlette.git",
+      "name": "starlette",
+      "category": "web_framework",
+      "language": "python",
+      "description": "ASGI framework/toolkit"
+    },
+    {
+      "url": "https://github.com/sanic-org/sanic.git",
+      "name": "sanic",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Async Python web server and framework"
+    },
+    {
+      "url": "https://github.com/bottlepy/bottle.git",
+      "name": "bottle",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Single-file micro web framework"
+    },
+    {
+      "url": "https://github.com/falconry/falcon.git",
+      "name": "falcon",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Minimalist ASGI/WSGI framework for REST APIs"
+    },
+    {
+      "url": "https://github.com/tornadoweb/tornado.git",
+      "name": "tornado",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Async networking library and web framework"
+    },
+    {
+      "url": "https://github.com/aio-libs/aiohttp.git",
+      "name": "aiohttp",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Async HTTP client/server framework"
+    },
+    {
+      "url": "https://github.com/encode/uvicorn.git",
+      "name": "uvicorn",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Lightning-fast ASGI server"
+    },
+    {
+      "url": "https://github.com/benoitc/gunicorn.git",
+      "name": "gunicorn",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Python WSGI HTTP server"
+    },
+    {
+      "url": "https://github.com/psf/requests.git",
+      "name": "requests",
+      "category": "library",
+      "language": "python",
+      "description": "HTTP library for Python"
+    },
+    {
+      "url": "https://github.com/encode/httpx.git",
+      "name": "httpx",
+      "category": "library",
+      "language": "python",
+      "description": "Next-generation HTTP client"
+    },
+    {
+      "url": "https://github.com/pydantic/pydantic.git",
+      "name": "pydantic",
+      "category": "library",
+      "language": "python",
+      "description": "Data validation using type hints"
+    },
+    {
+      "url": "https://github.com/python-attrs/attrs.git",
+      "name": "attrs",
+      "category": "library",
+      "language": "python",
+      "description": "Classes without boilerplate"
+    },
+    {
+      "url": "https://github.com/marshmallow-code/marshmallow.git",
+      "name": "marshmallow",
+      "category": "library",
+      "language": "python",
+      "description": "Object serialization/deserialization"
+    },
+    {
+      "url": "https://github.com/pallets/click.git",
+      "name": "click",
+      "category": "library",
+      "language": "python",
+      "description": "Composable command-line toolkit"
+    },
+    {
+      "url": "https://github.com/Textualize/rich.git",
+      "name": "rich",
+      "category": "library",
+      "language": "python",
+      "description": "Rich text and formatting in the terminal"
+    },
+    {
+      "url": "https://github.com/tqdm/tqdm.git",
+      "name": "tqdm",
+      "category": "library",
+      "language": "python",
+      "description": "Fast progress bar"
+    },
+    {
+      "url": "https://github.com/jd/tenacity.git",
+      "name": "tenacity",
+      "category": "library",
+      "language": "python",
+      "description": "General-purpose retrying library"
+    },
+    {
+      "url": "https://github.com/arrow-py/arrow.git",
+      "name": "arrow",
+      "category": "library",
+      "language": "python",
+      "description": "Better dates and times"
+    },
+    {
+      "url": "https://github.com/sdispater/pendulum.git",
+      "name": "pendulum",
+      "category": "library",
+      "language": "python",
+      "description": "Python datetimes made easy"
+    },
+    {
+      "url": "https://github.com/more-itertools/more-itertools.git",
+      "name": "more-itertools",
+      "category": "library",
+      "language": "python",
+      "description": "Additional itertools recipes"
+    },
+    {
+      "url": "https://github.com/ijl/orjson.git",
+      "name": "orjson",
+      "category": "library",
+      "language": "python",
+      "description": "Fast JSON library"
+    },
+    {
+      "url": "https://github.com/theskumar/python-dotenv.git",
+      "name": "python-dotenv",
+      "category": "library",
+      "language": "python",
+      "description": "Read .env files"
+    },
+    {
+      "url": "https://github.com/pallets/itsdangerous.git",
+      "name": "itsdangerous",
+      "category": "library",
+      "language": "python",
+      "description": "Cryptographic signing helpers"
+    },
+    {
+      "url": "https://github.com/pytest-dev/pytest.git",
+      "name": "pytest",
+      "category": "testing",
+      "language": "python",
+      "description": "Testing framework"
+    },
+    {
+      "url": "https://github.com/HypothesisWorks/hypothesis.git",
+      "name": "hypothesis",
+      "category": "testing",
+      "language": "python",
+      "description": "Property-based testing"
+    },
+    {
+      "url": "https://github.com/tox-dev/tox.git",
+      "name": "tox",
+      "category": "testing",
+      "language": "python",
+      "description": "Test automation and virtualenv management"
+    },
+    {
+      "url": "https://github.com/nedbat/coveragepy.git",
+      "name": "coveragepy",
+      "category": "testing",
+      "language": "python",
+      "description": "Code coverage measurement"
+    },
+    {
+      "url": "https://github.com/joke2k/faker.git",
+      "name": "faker",
+      "category": "testing",
+      "language": "python",
+      "description": "Fake data generator"
+    },
+    {
+      "url": "https://github.com/FactoryBoy/factory_boy.git",
+      "name": "factory-boy",
+      "category": "testing",
+      "language": "python",
+      "description": "Test fixture replacement"
+    },
+    {
+      "url": "https://github.com/wntrblm/nox.git",
+      "name": "nox",
+      "category": "testing",
+      "language": "python",
+      "description": "Flexible test automation"
+    },
+    {
+      "url": "https://github.com/optuna/optuna.git",
+      "name": "optuna",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Hyperparameter optimization"
+    },
+    {
+      "url": "https://github.com/mlflow/mlflow.git",
+      "name": "mlflow",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "ML lifecycle platform"
+    },
+    {
+      "url": "https://github.com/microsoft/LightGBM.git",
+      "name": "lightgbm",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Gradient boosting framework"
+    },
+    {
+      "url": "https://github.com/explosion/spaCy.git",
+      "name": "spacy",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Industrial-strength NLP"
+    },
+    {
+      "url": "https://github.com/RaRe-Technologies/gensim.git",
+      "name": "gensim",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Topic modelling and NLP"
+    },
+    {
+      "url": "https://github.com/vwxyzjn/cleanrl.git",
+      "name": "cleanrl",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Clean RL implementations"
+    },
+    {
+      "url": "https://github.com/DLR-RM/stable-baselines3.git",
+      "name": "stable-baselines3",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Reliable RL implementations"
+    },
+    {
+      "url": "https://github.com/huggingface/accelerate.git",
+      "name": "accelerate",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Easy distributed training"
+    },
+    {
+      "url": "https://github.com/gradio-app/gradio.git",
+      "name": "gradio",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "UI library for ML models"
+    },
+    {
+      "url": "https://github.com/comfyanonymous/ComfyUI.git",
+      "name": "comfyui",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Node-based UI for diffusion models"
+    },
+    {
+      "url": "https://github.com/iterative/dvc.git",
+      "name": "dvc",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Data version control for ML"
+    },
+    {
+      "url": "https://github.com/wandb/wandb.git",
+      "name": "wandb",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "ML experiment tracking"
+    },
+    {
+      "url": "https://github.com/psf/black.git",
+      "name": "black",
+      "category": "tooling",
+      "language": "python",
+      "description": "Code formatter"
+    },
+    {
+      "url": "https://github.com/astral-sh/ruff.git",
+      "name": "ruff",
+      "category": "tooling",
+      "language": "python",
+      "description": "Fast Python linter"
+    },
+    {
+      "url": "https://github.com/python-poetry/poetry.git",
+      "name": "poetry",
+      "category": "tooling",
+      "language": "python",
+      "description": "Dependency management and packaging"
+    },
+    {
+      "url": "https://github.com/pypa/pipenv.git",
+      "name": "pipenv",
+      "category": "tooling",
+      "language": "python",
+      "description": "Python virtualenv management"
+    },
+    {
+      "url": "https://github.com/pre-commit/pre-commit.git",
+      "name": "pre-commit",
+      "category": "tooling",
+      "language": "python",
+      "description": "Git pre-commit hook framework"
+    },
+    {
+      "url": "https://github.com/pypa/hatch.git",
+      "name": "hatch",
+      "category": "tooling",
+      "language": "python",
+      "description": "Modern Python project manager"
+    },
+    {
+      "url": "https://github.com/cookiecutter/cookiecutter.git",
+      "name": "cookiecutter",
+      "category": "tooling",
+      "language": "python",
+      "description": "Project templating tool"
+    },
+    {
+      "url": "https://github.com/fastapi/typer.git",
+      "name": "typer",
+      "category": "tooling",
+      "language": "python",
+      "description": "CLI framework based on type hints"
+    },
+    {
+      "url": "https://github.com/python/mypy.git",
+      "name": "mypy",
+      "category": "tooling",
+      "language": "python",
+      "description": "Static type checker"
+    },
+    {
+      "url": "https://github.com/copier-org/copier.git",
+      "name": "copier",
+      "category": "tooling",
+      "language": "python",
+      "description": "Project template renderer"
+    },
+    {
+      "url": "https://github.com/Textualize/textual.git",
+      "name": "textual",
+      "category": "tooling",
+      "language": "python",
+      "description": "TUI framework"
+    },
+    {
+      "url": "https://github.com/pygments/pygments.git",
+      "name": "pygments",
+      "category": "tooling",
+      "language": "python",
+      "description": "Syntax highlighting"
+    },
+    {
+      "url": "https://github.com/python-websockets/websockets.git",
+      "name": "websockets",
+      "category": "async",
+      "language": "python",
+      "description": "WebSocket library"
+    },
+    {
+      "url": "https://github.com/MagicStack/uvloop.git",
+      "name": "uvloop",
+      "category": "async",
+      "language": "python",
+      "description": "Ultra-fast asyncio event loop"
+    },
+    {
+      "url": "https://github.com/agronholm/anyio.git",
+      "name": "anyio",
+      "category": "async",
+      "language": "python",
+      "description": "Structured concurrency library"
+    },
+    {
+      "url": "https://github.com/python-trio/trio.git",
+      "name": "trio",
+      "category": "async",
+      "language": "python",
+      "description": "Friendly async I/O library"
+    },
+    {
+      "url": "https://github.com/MagicStack/httptools.git",
+      "name": "httptools",
+      "category": "async",
+      "language": "python",
+      "description": "Fast HTTP parser"
+    },
+    {
+      "url": "https://github.com/redis/redis-py.git",
+      "name": "redis-py",
+      "category": "database",
+      "language": "python",
+      "description": "Python client for Redis"
+    },
+    {
+      "url": "https://github.com/tortoise/tortoise-orm.git",
+      "name": "tortoise-orm",
+      "category": "database",
+      "language": "python",
+      "description": "Async ORM for Python"
+    },
+    {
+      "url": "https://github.com/coleifer/peewee.git",
+      "name": "peewee",
+      "category": "database",
+      "language": "python",
+      "description": "Small, expressive ORM"
+    },
+    {
+      "url": "https://github.com/msiemens/tinydb.git",
+      "name": "tinydb",
+      "category": "database",
+      "language": "python",
+      "description": "Lightweight document-oriented database"
+    },
+    {
+      "url": "https://github.com/fastapi/sqlmodel.git",
+      "name": "sqlmodel",
+      "category": "database",
+      "language": "python",
+      "description": "SQL databases with Pydantic and SQLAlchemy"
+    },
+    {
+      "url": "https://github.com/sqlalchemy/alembic.git",
+      "name": "alembic",
+      "category": "database",
+      "language": "python",
+      "description": "Database migration tool"
+    },
+    {
+      "url": "https://github.com/encode/databases.git",
+      "name": "databases",
+      "category": "database",
+      "language": "python",
+      "description": "Async database support"
+    },
+    {
+      "url": "https://github.com/pyca/cryptography.git",
+      "name": "cryptography",
+      "category": "security",
+      "language": "python",
+      "description": "Cryptographic recipes and primitives"
+    },
+    {
+      "url": "https://github.com/paramiko/paramiko.git",
+      "name": "paramiko",
+      "category": "security",
+      "language": "python",
+      "description": "SSH2 protocol library"
+    },
+    {
+      "url": "https://github.com/certbot/certbot.git",
+      "name": "certbot",
+      "category": "security",
+      "language": "python",
+      "description": "ACME client for SSL certificates"
+    },
+    {
+      "url": "https://github.com/jpadilla/PyJWT.git",
+      "name": "pyjwt",
+      "category": "security",
+      "language": "python",
+      "description": "JSON Web Token library"
+    },
+    {
+      "url": "https://github.com/plotly/plotly.py.git",
+      "name": "plotly",
+      "category": "visualization",
+      "language": "python",
+      "description": "Interactive graphing library"
+    },
+    {
+      "url": "https://github.com/bokeh/bokeh.git",
+      "name": "bokeh",
+      "category": "visualization",
+      "language": "python",
+      "description": "Interactive visualization library"
+    },
+    {
+      "url": "https://github.com/mwaskom/seaborn.git",
+      "name": "seaborn",
+      "category": "visualization",
+      "language": "python",
+      "description": "Statistical data visualization"
+    },
+    {
+      "url": "https://github.com/altair-viz/altair.git",
+      "name": "altair",
+      "category": "visualization",
+      "language": "python",
+      "description": "Declarative statistical visualization"
+    },
+    {
+      "url": "https://github.com/streamlit/streamlit.git",
+      "name": "streamlit",
+      "category": "visualization",
+      "language": "python",
+      "description": "App framework for data science"
+    },
+    {
+      "url": "https://github.com/fabric/fabric.git",
+      "name": "fabric",
+      "category": "devops",
+      "language": "python",
+      "description": "Remote execution and deployment"
+    },
+    {
+      "url": "https://github.com/pyinvoke/invoke.git",
+      "name": "invoke",
+      "category": "devops",
+      "language": "python",
+      "description": "Pythonic task execution"
+    },
+    {
+      "url": "https://github.com/Supervisor/supervisor.git",
+      "name": "supervisor",
+      "category": "devops",
+      "language": "python",
+      "description": "Process control system"
+    },
+    {
+      "url": "https://github.com/scrapy/scrapy.git",
+      "name": "scrapy",
+      "category": "web_scraping",
+      "language": "python",
+      "description": "Web scraping framework"
+    },
+    {
+      "url": "https://github.com/httpie/cli.git",
+      "name": "httpie",
+      "category": "web_scraping",
+      "language": "python",
+      "description": "Human-friendly HTTP client"
+    },
+    {
+      "url": "https://github.com/scrapy/parsel.git",
+      "name": "parsel",
+      "category": "web_scraping",
+      "language": "python",
+      "description": "HTML/XML data extraction"
+    },
+    {
+      "url": "https://github.com/celery/celery.git",
+      "name": "celery",
+      "category": "distributed",
+      "language": "python",
+      "description": "Distributed task queue"
+    },
+    {
+      "url": "https://github.com/rq/rq.git",
+      "name": "rq",
+      "category": "distributed",
+      "language": "python",
+      "description": "Simple job queue backed by Redis"
+    },
+    {
+      "url": "https://github.com/Bogdanp/dramatiq.git",
+      "name": "dramatiq",
+      "category": "distributed",
+      "language": "python",
+      "description": "Background task processing"
+    },
+    {
+      "url": "https://github.com/coleifer/huey.git",
+      "name": "huey",
+      "category": "distributed",
+      "language": "python",
+      "description": "Lightweight task queue"
+    },
+    {
+      "url": "https://github.com/dask/dask.git",
+      "name": "dask",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Parallel computing library"
+    },
+    {
+      "url": "https://github.com/pydata/xarray.git",
+      "name": "xarray",
+      "category": "data_processing",
+      "language": "python",
+      "description": "N-D labeled arrays and datasets"
+    },
+    {
+      "url": "https://github.com/modin-project/modin.git",
+      "name": "modin",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Scalable pandas alternative"
+    },
+    {
+      "url": "https://github.com/Delgan/loguru.git",
+      "name": "loguru",
+      "category": "logging",
+      "language": "python",
+      "description": "Effortless logging"
+    },
+    {
+      "url": "https://github.com/hynek/structlog.git",
+      "name": "structlog",
+      "category": "logging",
+      "language": "python",
+      "description": "Structured logging"
+    },
+    {
+      "url": "https://github.com/openai/openai-python.git",
+      "name": "openai-python",
+      "category": "api_client",
+      "language": "python",
+      "description": "OpenAI Python library"
+    },
+    {
+      "url": "https://github.com/anthropics/anthropic-sdk-python.git",
+      "name": "anthropic-sdk",
+      "category": "api_client",
+      "language": "python",
+      "description": "Anthropic Python SDK"
+    },
+    {
+      "url": "https://github.com/getsentry/sentry-python.git",
+      "name": "sentry-python",
+      "category": "api_client",
+      "language": "python",
+      "description": "Sentry SDK for Python"
+    },
+    {
+      "url": "https://github.com/pallets/jinja.git",
+      "name": "jinja",
+      "category": "library",
+      "language": "python",
+      "description": "Template engine"
+    },
+    {
+      "url": "https://github.com/ipython/ipython.git",
+      "name": "ipython",
+      "category": "tooling",
+      "language": "python",
+      "description": "Interactive Python shell"
+    },
+    {
+      "url": "https://github.com/jupyter/notebook.git",
+      "name": "jupyter-notebook",
+      "category": "tooling",
+      "language": "python",
+      "description": "Interactive computing environment"
+    },
+    {
+      "url": "https://github.com/spyder-ide/spyder.git",
+      "name": "spyder",
+      "category": "tooling",
+      "language": "python",
+      "description": "Scientific Python IDE"
+    },
+    {
+      "url": "https://github.com/python-telegram-bot/python-telegram-bot.git",
+      "name": "python-telegram-bot",
+      "category": "library",
+      "language": "python",
+      "description": "Telegram Bot API wrapper"
+    },
+    {
+      "url": "https://github.com/pyparsing/pyparsing.git",
+      "name": "pyparsing",
+      "category": "library",
+      "language": "python",
+      "description": "Creating and executing simple grammars"
+    },
+    {
+      "url": "https://github.com/mozilla/bleach.git",
+      "name": "bleach",
+      "category": "security",
+      "language": "python",
+      "description": "HTML sanitization library"
+    },
+    {
+      "url": "https://github.com/secdev/scapy.git",
+      "name": "scapy",
+      "category": "networking",
+      "language": "python",
+      "description": "Packet manipulation library"
+    },
+    {
+      "url": "https://github.com/yaml/pyyaml.git",
+      "name": "pyyaml",
+      "category": "library",
+      "language": "python",
+      "description": "YAML parser and emitter"
+    },
+    {
+      "url": "https://github.com/micheles/decorator.git",
+      "name": "decorator",
+      "category": "library",
+      "language": "python",
+      "description": "Decorator factory for signature-preserving decorators"
+    },
+    {
+      "url": "https://github.com/python-pillow/Pillow.git",
+      "name": "pillow",
+      "category": "library",
+      "language": "python",
+      "description": "Python Imaging Library fork"
+    },
+    {
+      "url": "https://github.com/beetbox/beets.git",
+      "name": "beets",
+      "category": "media",
+      "language": "python",
+      "description": "Music library manager and tagger"
+    },
+    {
+      "url": "https://github.com/python-poetry/poetry-core.git",
+      "name": "poetry-core",
+      "category": "tooling",
+      "language": "python",
+      "description": "Poetry PEP 517 build backend"
+    },
+    {
+      "url": "https://github.com/pypa/build.git",
+      "name": "build",
+      "category": "tooling",
+      "language": "python",
+      "description": "Simple PEP 517 package builder"
+    },
+    {
+      "url": "https://github.com/platformdirs/platformdirs.git",
+      "name": "platformdirs",
+      "category": "library",
+      "language": "python",
+      "description": "Platform-specific system directories"
+    },
+    {
+      "url": "https://github.com/jazzband/pip-tools.git",
+      "name": "pip-tools",
+      "category": "tooling",
+      "language": "python",
+      "description": "Dependency management for Python"
+    },
+    {
+      "url": "https://github.com/pypa/setuptools_scm.git",
+      "name": "setuptools-scm",
+      "category": "tooling",
+      "language": "python",
+      "description": "Version management from SCM metadata"
+    },
+    {
+      "url": "https://github.com/pytest-dev/pluggy.git",
+      "name": "pluggy",
+      "category": "library",
+      "language": "python",
+      "description": "Plugin and hook calling mechanisms"
+    },
+    {
+      "url": "https://github.com/python-jsonschema/jsonschema.git",
+      "name": "jsonschema",
+      "category": "library",
+      "language": "python",
+      "description": "JSON Schema validation"
+    },
+    {
+      "url": "https://github.com/schemathesis/schemathesis.git",
+      "name": "schemathesis",
+      "category": "testing",
+      "language": "python",
+      "description": "Property-based testing for API schemas"
+    },
+    {
+      "url": "https://github.com/certifi/python-certifi.git",
+      "name": "certifi",
+      "category": "security",
+      "language": "python",
+      "description": "Root certificates for SSL verification"
+    },
+    {
+      "url": "https://github.com/urllib3/urllib3.git",
+      "name": "urllib3",
+      "category": "library",
+      "language": "python",
+      "description": "HTTP library with thread-safe connection pooling"
+    },
+    {
+      "url": "https://github.com/oauthlib/oauthlib.git",
+      "name": "oauthlib",
+      "category": "security",
+      "language": "python",
+      "description": "OAuth request-signing logic"
+    },
+    {
+      "url": "https://github.com/pytest-dev/pytest-asyncio.git",
+      "name": "pytest-asyncio",
+      "category": "testing",
+      "language": "python",
+      "description": "Pytest support for asyncio"
+    },
+    {
+      "url": "https://github.com/pytest-dev/pytest-mock.git",
+      "name": "pytest-mock",
+      "category": "testing",
+      "language": "python",
+      "description": "Thin wrapper around mock for pytest"
+    },
+    {
+      "url": "https://github.com/pytest-dev/pytest-cov.git",
+      "name": "pytest-cov",
+      "category": "testing",
+      "language": "python",
+      "description": "Coverage plugin for pytest"
+    },
+    {
+      "url": "https://github.com/jazzband/docopt.git",
+      "name": "docopt",
+      "category": "library",
+      "language": "python",
+      "description": "Pythonic argument parser"
+    },
+    {
+      "url": "https://github.com/google/python-fire.git",
+      "name": "python-fire",
+      "category": "library",
+      "language": "python",
+      "description": "Automatically generating CLIs"
+    },
+    {
+      "url": "https://github.com/pyinstaller/pyinstaller.git",
+      "name": "pyinstaller",
+      "category": "tooling",
+      "language": "python",
+      "description": "Bundle Python applications"
+    },
+    {
+      "url": "https://github.com/Nuitka/Nuitka.git",
+      "name": "nuitka",
+      "category": "compiler",
+      "language": "python",
+      "description": "Python to C compiler"
+    },
+    {
+      "url": "https://github.com/pybind/pybind11.git",
+      "name": "pybind11",
+      "category": "library",
+      "language": "python",
+      "description": "C++ binding generation"
+    },
+    {
+      "url": "https://github.com/python-cffi/cffi.git",
+      "name": "cffi",
+      "category": "library",
+      "language": "python",
+      "description": "Foreign function interface for C"
+    },
+    {
+      "url": "https://github.com/ronf/asyncssh.git",
+      "name": "asyncssh",
+      "category": "async",
+      "language": "python",
+      "description": "Asynchronous SSH implementation"
+    },
+    {
+      "url": "https://github.com/aio-libs/aiobotocore.git",
+      "name": "aiobotocore",
+      "category": "cloud",
+      "language": "python",
+      "description": "Async AWS SDK for Python"
+    },
+    {
+      "url": "https://github.com/aio-libs/aioredis-py.git",
+      "name": "aioredis",
+      "category": "database",
+      "language": "python",
+      "description": "Async Redis client"
+    },
+    {
+      "url": "https://github.com/aio-libs/aiokafka.git",
+      "name": "aiokafka",
+      "category": "messaging",
+      "language": "python",
+      "description": "Async Kafka client"
+    },
+    {
+      "url": "https://github.com/aio-libs/aiopg.git",
+      "name": "aiopg",
+      "category": "database",
+      "language": "python",
+      "description": "Async PostgreSQL client"
+    },
+    {
+      "url": "https://github.com/msgpack/msgpack-python.git",
+      "name": "msgpack",
+      "category": "library",
+      "language": "python",
+      "description": "MessagePack serializer"
+    },
+    {
+      "url": "https://github.com/ultrajson/ultrajson.git",
+      "name": "ujson",
+      "category": "library",
+      "language": "python",
+      "description": "Ultra-fast JSON encoder and decoder"
+    },
+    {
+      "url": "https://github.com/pypa/packaging.git",
+      "name": "packaging",
+      "category": "library",
+      "language": "python",
+      "description": "Core utilities for Python packages"
+    },
+    {
+      "url": "https://github.com/uqfoundation/dill.git",
+      "name": "dill",
+      "category": "library",
+      "language": "python",
+      "description": "Serialize all of python"
+    },
+    {
+      "url": "https://github.com/joblib/joblib.git",
+      "name": "joblib",
+      "category": "library",
+      "language": "python",
+      "description": "Lightweight pipelining and caching"
+    },
+    {
+      "url": "https://github.com/cloudpipe/cloudpickle.git",
+      "name": "cloudpickle",
+      "category": "library",
+      "language": "python",
+      "description": "Extended pickling support"
+    },
+    {
+      "url": "https://github.com/jquast/wcwidth.git",
+      "name": "wcwidth",
+      "category": "library",
+      "language": "python",
+      "description": "Terminal width calculation"
+    },
+    {
+      "url": "https://github.com/python-prompt-toolkit/python-prompt-toolkit.git",
+      "name": "prompt-toolkit",
+      "category": "library",
+      "language": "python",
+      "description": "Building interactive command lines"
+    },
+    {
+      "url": "https://github.com/asweigart/pyautogui.git",
+      "name": "pyautogui",
+      "category": "automation",
+      "language": "python",
+      "description": "GUI automation library"
+    },
+    {
+      "url": "https://github.com/jazzband/prettytable.git",
+      "name": "prettytable",
+      "category": "library",
+      "language": "python",
+      "description": "Display tabular data in ASCII"
+    },
+    {
+      "url": "https://github.com/wireservice/csvkit.git",
+      "name": "csvkit",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Suite of CSV utilities"
+    },
+    {
+      "url": "https://github.com/jazzband/tablib.git",
+      "name": "tablib",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Tabular dataset library"
+    },
+    {
+      "url": "https://github.com/ahupp/python-magic.git",
+      "name": "python-magic",
+      "category": "library",
+      "language": "python",
+      "description": "File type identification"
+    },
+    {
+      "url": "https://github.com/gitpython-developers/GitPython.git",
+      "name": "gitpython",
+      "category": "library",
+      "language": "python",
+      "description": "Git library for Python"
+    },
+    {
+      "url": "https://github.com/pypa/twine.git",
+      "name": "twine",
+      "category": "tooling",
+      "language": "python",
+      "description": "Upload packages to PyPI"
+    },
+    {
+      "url": "https://github.com/PyCQA/isort.git",
+      "name": "isort",
+      "category": "tooling",
+      "language": "python",
+      "description": "Sort Python imports"
+    },
+    {
+      "url": "https://github.com/PyCQA/flake8.git",
+      "name": "flake8",
+      "category": "tooling",
+      "language": "python",
+      "description": "Python linting tool"
+    },
+    {
+      "url": "https://github.com/PyCQA/pylint.git",
+      "name": "pylint",
+      "category": "tooling",
+      "language": "python",
+      "description": "Python code analyzer"
+    },
+    {
+      "url": "https://github.com/PyCQA/bandit.git",
+      "name": "bandit",
+      "category": "security",
+      "language": "python",
+      "description": "Security linter for Python"
+    },
+    {
+      "url": "https://github.com/python-babel/babel.git",
+      "name": "babel",
+      "category": "library",
+      "language": "python",
+      "description": "Internationalization utilities"
+    },
+    {
+      "url": "https://github.com/dateutil/dateutil.git",
+      "name": "python-dateutil",
+      "category": "library",
+      "language": "python",
+      "description": "Extensions to the datetime module"
+    },
+    {
+      "url": "https://github.com/chardet/chardet.git",
+      "name": "chardet",
+      "category": "library",
+      "language": "python",
+      "description": "Character encoding detection"
+    },
+    {
+      "url": "https://github.com/python-greenlet/greenlet.git",
+      "name": "greenlet",
+      "category": "async",
+      "language": "python",
+      "description": "Lightweight concurrent programming"
+    },
+    {
+      "url": "https://github.com/gevent/gevent.git",
+      "name": "gevent",
+      "category": "async",
+      "language": "python",
+      "description": "Coroutine-based networking library"
+    },
+    {
+      "url": "https://github.com/astropy/astropy.git",
+      "name": "astropy",
+      "category": "scientific",
+      "language": "python",
+      "description": "Astronomy library"
+    },
+    {
+      "url": "https://github.com/pymc-devs/pymc.git",
+      "name": "pymc",
+      "category": "scientific",
+      "language": "python",
+      "description": "Bayesian statistical modeling"
+    },
+    {
+      "url": "https://github.com/sympy/sympy.git",
+      "name": "sympy",
+      "category": "scientific",
+      "language": "python",
+      "description": "Symbolic mathematics"
+    },
+    {
+      "url": "https://github.com/networkx/networkx.git",
+      "name": "networkx",
+      "category": "library",
+      "language": "python",
+      "description": "Network analysis library"
+    },
+    {
+      "url": "https://github.com/python-markdown/markdown.git",
+      "name": "markdown",
+      "category": "library",
+      "language": "python",
+      "description": "Markdown to HTML converter"
+    },
+    {
+      "url": "https://github.com/lepture/mistune.git",
+      "name": "mistune",
+      "category": "library",
+      "language": "python",
+      "description": "Fast markdown parser"
+    },
+    {
+      "url": "https://github.com/pypa/virtualenv.git",
+      "name": "virtualenv",
+      "category": "tooling",
+      "language": "python",
+      "description": "Virtual Python environment builder"
+    },
+    {
+      "url": "https://github.com/boto/boto3.git",
+      "name": "boto3",
+      "category": "cloud",
+      "language": "python",
+      "description": "AWS SDK for Python"
+    },
+    {
+      "url": "https://github.com/googleapis/google-cloud-python.git",
+      "name": "google-cloud-python",
+      "category": "cloud",
+      "language": "python",
+      "description": "Google Cloud Client Library"
+    },
+    {
+      "url": "https://github.com/Azure/azure-sdk-for-python.git",
+      "name": "azure-sdk",
+      "category": "cloud",
+      "language": "python",
+      "description": "Microsoft Azure SDK"
+    },
+    {
+      "url": "https://github.com/ansible/ansible.git",
+      "name": "ansible",
+      "category": "devops",
+      "language": "python",
+      "description": "IT automation platform"
+    },
+    {
+      "url": "https://github.com/saltstack/salt.git",
+      "name": "salt",
+      "category": "devops",
+      "language": "python",
+      "description": "Infrastructure automation and management"
+    },
+    {
+      "url": "https://github.com/locustio/locust.git",
+      "name": "locust",
+      "category": "testing",
+      "language": "python",
+      "description": "Load testing framework"
+    },
+    {
+      "url": "https://github.com/getmoto/moto.git",
+      "name": "moto",
+      "category": "testing",
+      "language": "python",
+      "description": "Mock AWS services"
+    },
+    {
+      "url": "https://github.com/sqlalchemy/sqlalchemy.git",
+      "name": "sqlalchemy",
+      "category": "database",
+      "language": "python",
+      "description": "SQL toolkit and ORM"
+    },
+    {
+      "url": "https://github.com/mongodb/motor.git",
+      "name": "motor",
+      "category": "database",
+      "language": "python",
+      "description": "Async MongoDB driver"
+    },
+    {
+      "url": "https://github.com/elastic/elasticsearch-py.git",
+      "name": "elasticsearch-py",
+      "category": "database",
+      "language": "python",
+      "description": "Official Elasticsearch client"
+    },
+    {
+      "url": "https://github.com/pika/pika.git",
+      "name": "pika",
+      "category": "messaging",
+      "language": "python",
+      "description": "RabbitMQ client library"
+    },
+    {
+      "url": "https://github.com/dpkp/kafka-python.git",
+      "name": "kafka-python",
+      "category": "messaging",
+      "language": "python",
+      "description": "Apache Kafka client"
+    },
+    {
+      "url": "https://github.com/confluentinc/confluent-kafka-python.git",
+      "name": "confluent-kafka-python",
+      "category": "messaging",
+      "language": "python",
+      "description": "Confluent Kafka client"
+    },
+    {
+      "url": "https://github.com/sivel/speedtest-cli.git",
+      "name": "speedtest-cli",
+      "category": "cli",
+      "language": "python",
+      "description": "Internet bandwidth tester"
+    },
+    {
+      "url": "https://github.com/willmcgugan/rich-cli.git",
+      "name": "rich-cli",
+      "category": "cli",
+      "language": "python",
+      "description": "Rich-powered CLI toolbox"
+    },
+    {
+      "url": "https://github.com/httpie/http-prompt.git",
+      "name": "http-prompt",
+      "category": "cli",
+      "language": "python",
+      "description": "Interactive HTTP client"
+    },
+    {
+      "url": "https://github.com/expressjs/express.git",
+      "name": "express",
+      "category": "web_framework",
+      "language": "javascript",
+      "description": "Minimal web framework for Node.js"
+    },
+    {
+      "url": "https://github.com/koajs/koa.git",
+      "name": "koa",
+      "category": "web_framework",
+      "language": "javascript",
+      "description": "Next-generation web framework"
+    },
+    {
+      "url": "https://github.com/fastify/fastify.git",
+      "name": "fastify",
+      "category": "web_framework",
+      "language": "javascript",
+      "description": "Fast and low-overhead web framework"
+    },
+    {
+      "url": "https://github.com/socketio/socket.io.git",
+      "name": "socket-io",
+      "category": "messaging",
+      "language": "javascript",
+      "description": "Real-time bidirectional event-based communication"
+    },
+    {
+      "url": "https://github.com/axios/axios.git",
+      "name": "axios",
+      "category": "library",
+      "language": "javascript",
+      "description": "Promise-based HTTP client"
+    },
+    {
+      "url": "https://github.com/lodash/lodash.git",
+      "name": "lodash",
+      "category": "library",
+      "language": "javascript",
+      "description": "Utility library"
+    },
+    {
+      "url": "https://github.com/iamkun/dayjs.git",
+      "name": "dayjs",
+      "category": "library",
+      "language": "javascript",
+      "description": "Lightweight date library"
+    },
+    {
+      "url": "https://github.com/date-fns/date-fns.git",
+      "name": "date-fns",
+      "category": "library",
+      "language": "javascript",
+      "description": "Date utility library"
+    },
+    {
+      "url": "https://github.com/chartjs/Chart.js.git",
+      "name": "chartjs",
+      "category": "visualization",
+      "language": "javascript",
+      "description": "Charting library"
+    },
+    {
+      "url": "https://github.com/tj/commander.js.git",
+      "name": "commander",
+      "category": "library",
+      "language": "javascript",
+      "description": "Command-line interfaces"
+    },
+    {
+      "url": "https://github.com/yargs/yargs.git",
+      "name": "yargs",
+      "category": "library",
+      "language": "javascript",
+      "description": "CLI argument parser"
+    },
+    {
+      "url": "https://github.com/chalk/chalk.git",
+      "name": "chalk",
+      "category": "library",
+      "language": "javascript",
+      "description": "Terminal string styling"
+    },
+    {
+      "url": "https://github.com/sindresorhus/got.git",
+      "name": "got",
+      "category": "library",
+      "language": "javascript",
+      "description": "Human-friendly HTTP requests"
+    },
+    {
+      "url": "https://github.com/node-fetch/node-fetch.git",
+      "name": "node-fetch",
+      "category": "library",
+      "language": "javascript",
+      "description": "Window.fetch for Node.js"
+    },
+    {
+      "url": "https://github.com/jaredhanson/passport.git",
+      "name": "passport",
+      "category": "security",
+      "language": "javascript",
+      "description": "Authentication middleware"
+    },
+    {
+      "url": "https://github.com/motdotla/dotenv.git",
+      "name": "dotenv-node",
+      "category": "library",
+      "language": "javascript",
+      "description": "Environment variable loader"
+    },
+    {
+      "url": "https://github.com/pnpm/pnpm.git",
+      "name": "pnpm",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Fast disk-space efficient package manager"
+    },
+    {
+      "url": "https://github.com/evanw/esbuild.git",
+      "name": "esbuild",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Extremely fast bundler"
+    },
+    {
+      "url": "https://github.com/vitejs/vite.git",
+      "name": "vite",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Next-generation frontend tooling"
+    },
+    {
+      "url": "https://github.com/winstonjs/winston.git",
+      "name": "winston",
+      "category": "logging",
+      "language": "javascript",
+      "description": "Multi-transport async logging"
+    },
+    {
+      "url": "https://github.com/nestjs/nest.git",
+      "name": "nestjs",
+      "category": "web_framework",
+      "language": "typescript",
+      "description": "Progressive Node.js framework"
+    },
+    {
+      "url": "https://github.com/vuejs/core.git",
+      "name": "vue",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Progressive JavaScript framework"
+    },
+    {
+      "url": "https://github.com/sveltejs/svelte.git",
+      "name": "svelte",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Cybernetically enhanced web apps"
+    },
+    {
+      "url": "https://github.com/solidjs/solid.git",
+      "name": "solidjs",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Declarative reactive UI library"
+    },
+    {
+      "url": "https://github.com/withastro/astro.git",
+      "name": "astro",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Content-driven web framework"
+    },
+    {
+      "url": "https://github.com/prisma/prisma.git",
+      "name": "prisma",
+      "category": "database",
+      "language": "typescript",
+      "description": "Next-generation Node.js ORM"
+    },
+    {
+      "url": "https://github.com/trpc/trpc.git",
+      "name": "trpc",
+      "category": "library",
+      "language": "typescript",
+      "description": "End-to-end typesafe APIs"
+    },
+    {
+      "url": "https://github.com/drizzle-team/drizzle-orm.git",
+      "name": "drizzle-orm",
+      "category": "database",
+      "language": "typescript",
+      "description": "TypeScript ORM"
+    },
+    {
+      "url": "https://github.com/colinhacks/zod.git",
+      "name": "zod",
+      "category": "library",
+      "language": "typescript",
+      "description": "TypeScript-first schema validation"
+    },
+    {
+      "url": "https://github.com/vitest-dev/vitest.git",
+      "name": "vitest",
+      "category": "testing",
+      "language": "typescript",
+      "description": "Vite-native unit testing"
+    },
+    {
+      "url": "https://github.com/honojs/hono.git",
+      "name": "hono",
+      "category": "web_framework",
+      "language": "typescript",
+      "description": "Ultrafast web framework"
+    },
+    {
+      "url": "https://github.com/Effect-TS/effect.git",
+      "name": "effect-ts",
+      "category": "library",
+      "language": "typescript",
+      "description": "Effect system for TypeScript"
+    },
+    {
+      "url": "https://github.com/typeorm/typeorm.git",
+      "name": "typeorm",
+      "category": "database",
+      "language": "typescript",
+      "description": "TypeScript ORM for Node.js"
+    },
+    {
+      "url": "https://github.com/tailwindlabs/tailwindcss.git",
+      "name": "tailwindcss",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Utility-first CSS framework"
+    },
+    {
+      "url": "https://github.com/reduxjs/redux.git",
+      "name": "redux",
+      "category": "library",
+      "language": "typescript",
+      "description": "Predictable state container"
+    },
+    {
+      "url": "https://github.com/tokio-rs/tokio.git",
+      "name": "tokio",
+      "category": "runtime",
+      "language": "rust",
+      "description": "Async runtime for Rust"
+    },
+    {
+      "url": "https://github.com/serde-rs/serde.git",
+      "name": "serde",
+      "category": "library",
+      "language": "rust",
+      "description": "Serialization framework"
+    },
+    {
+      "url": "https://github.com/actix/actix-web.git",
+      "name": "actix-web",
+      "category": "web_framework",
+      "language": "rust",
+      "description": "Powerful web framework"
+    },
+    {
+      "url": "https://github.com/clap-rs/clap.git",
+      "name": "clap",
+      "category": "library",
+      "language": "rust",
+      "description": "Command-line argument parser"
+    },
+    {
+      "url": "https://github.com/seanmonstar/reqwest.git",
+      "name": "reqwest",
+      "category": "library",
+      "language": "rust",
+      "description": "Ergonomic HTTP client"
+    },
+    {
+      "url": "https://github.com/hyperium/hyper.git",
+      "name": "hyper",
+      "category": "runtime",
+      "language": "rust",
+      "description": "Fast HTTP implementation"
+    },
+    {
+      "url": "https://github.com/seanmonstar/warp.git",
+      "name": "warp",
+      "category": "web_framework",
+      "language": "rust",
+      "description": "Composable web server framework"
+    },
+    {
+      "url": "https://github.com/rwf2/Rocket.git",
+      "name": "rocket",
+      "category": "web_framework",
+      "language": "rust",
+      "description": "Web framework for Rust"
+    },
+    {
+      "url": "https://github.com/tokio-rs/axum.git",
+      "name": "axum",
+      "category": "web_framework",
+      "language": "rust",
+      "description": "Ergonomic modular web framework"
+    },
+    {
+      "url": "https://github.com/diesel-rs/diesel.git",
+      "name": "diesel",
+      "category": "database",
+      "language": "rust",
+      "description": "Safe, extensible ORM and query builder"
+    },
+    {
+      "url": "https://github.com/SeaQL/sea-orm.git",
+      "name": "sea-orm",
+      "category": "database",
+      "language": "rust",
+      "description": "Async dynamic ORM"
+    },
+    {
+      "url": "https://github.com/BurntSushi/ripgrep.git",
+      "name": "ripgrep",
+      "category": "cli",
+      "language": "rust",
+      "description": "Fast recursive grep"
+    },
+    {
+      "url": "https://github.com/sharkdp/bat.git",
+      "name": "bat",
+      "category": "cli",
+      "language": "rust",
+      "description": "Cat clone with syntax highlighting"
+    },
+    {
+      "url": "https://github.com/sharkdp/fd.git",
+      "name": "fd",
+      "category": "cli",
+      "language": "rust",
+      "description": "Fast find alternative"
+    },
+    {
+      "url": "https://github.com/starship/starship.git",
+      "name": "starship",
+      "category": "cli",
+      "language": "rust",
+      "description": "Cross-shell prompt"
+    },
+    {
+      "url": "https://github.com/casey/just.git",
+      "name": "just",
+      "category": "cli",
+      "language": "rust",
+      "description": "Command runner"
+    },
+    {
+      "url": "https://github.com/ajeetdsouza/zoxide.git",
+      "name": "zoxide",
+      "category": "cli",
+      "language": "rust",
+      "description": "Smarter cd command"
+    },
+    {
+      "url": "https://github.com/jdx/mise.git",
+      "name": "mise",
+      "category": "tooling",
+      "language": "rust",
+      "description": "Dev tool version manager"
+    },
+    {
+      "url": "https://github.com/dandavison/delta.git",
+      "name": "delta",
+      "category": "cli",
+      "language": "rust",
+      "description": "Syntax-highlighting pager for git"
+    },
+    {
+      "url": "https://github.com/eza-community/eza.git",
+      "name": "eza",
+      "category": "cli",
+      "language": "rust",
+      "description": "Modern ls replacement"
+    },
+    {
+      "url": "https://github.com/gin-gonic/gin.git",
+      "name": "gin",
+      "category": "web_framework",
+      "language": "go",
+      "description": "HTTP web framework"
+    },
+    {
+      "url": "https://github.com/gofiber/fiber.git",
+      "name": "fiber",
+      "category": "web_framework",
+      "language": "go",
+      "description": "Express-inspired web framework"
+    },
+    {
+      "url": "https://github.com/labstack/echo.git",
+      "name": "echo",
+      "category": "web_framework",
+      "language": "go",
+      "description": "High-performance web framework"
+    },
+    {
+      "url": "https://github.com/go-chi/chi.git",
+      "name": "chi",
+      "category": "web_framework",
+      "language": "go",
+      "description": "Lightweight HTTP router"
+    },
+    {
+      "url": "https://github.com/gorilla/mux.git",
+      "name": "gorilla-mux",
+      "category": "web_framework",
+      "language": "go",
+      "description": "URL router and dispatcher"
+    },
+    {
+      "url": "https://github.com/spf13/cobra.git",
+      "name": "cobra",
+      "category": "library",
+      "language": "go",
+      "description": "CLI application framework"
+    },
+    {
+      "url": "https://github.com/spf13/viper.git",
+      "name": "viper",
+      "category": "library",
+      "language": "go",
+      "description": "Configuration management"
+    },
+    {
+      "url": "https://github.com/uber-go/zap.git",
+      "name": "zap",
+      "category": "logging",
+      "language": "go",
+      "description": "Blazing fast structured logger"
+    },
+    {
+      "url": "https://github.com/sirupsen/logrus.git",
+      "name": "logrus",
+      "category": "logging",
+      "language": "go",
+      "description": "Structured logger for Go"
+    },
+    {
+      "url": "https://github.com/prometheus/prometheus.git",
+      "name": "prometheus",
+      "category": "monitoring",
+      "language": "go",
+      "description": "Monitoring system and time series database"
+    },
+    {
+      "url": "https://github.com/etcd-io/etcd.git",
+      "name": "etcd",
+      "category": "database",
+      "language": "go",
+      "description": "Distributed key-value store"
+    },
+    {
+      "url": "https://github.com/helm/helm.git",
+      "name": "helm",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Kubernetes package manager"
+    },
+    {
+      "url": "https://github.com/argoproj/argo-cd.git",
+      "name": "argo-cd",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "GitOps continuous delivery"
+    },
+    {
+      "url": "https://github.com/caddyserver/caddy.git",
+      "name": "caddy",
+      "category": "web_server",
+      "language": "go",
+      "description": "Web server with automatic HTTPS"
+    },
+    {
+      "url": "https://github.com/traefik/traefik.git",
+      "name": "traefik",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Cloud-native application proxy"
+    },
+    {
+      "url": "https://github.com/nats-io/nats-server.git",
+      "name": "nats",
+      "category": "messaging",
+      "language": "go",
+      "description": "High-performance messaging system"
+    },
+    {
+      "url": "https://github.com/minio/minio.git",
+      "name": "minio",
+      "category": "storage",
+      "language": "go",
+      "description": "Object storage server"
+    },
+    {
+      "url": "https://github.com/rclone/rclone.git",
+      "name": "rclone",
+      "category": "storage",
+      "language": "go",
+      "description": "Cloud storage sync tool"
+    },
+    {
+      "url": "https://github.com/restic/restic.git",
+      "name": "restic",
+      "category": "backup",
+      "language": "go",
+      "description": "Backup program"
+    },
+    {
+      "url": "https://github.com/kubernetes-sigs/kind.git",
+      "name": "kind",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Kubernetes in Docker"
+    },
+    {
+      "url": "https://github.com/golangci/golangci-lint.git",
+      "name": "golangci-lint",
+      "category": "tooling",
+      "language": "go",
+      "description": "Fast Go linters runner"
+    },
+    {
+      "url": "https://github.com/cosmtrek/air.git",
+      "name": "air",
+      "category": "tooling",
+      "language": "go",
+      "description": "Live reload for Go apps"
+    },
+    {
+      "url": "https://github.com/google/wire.git",
+      "name": "wire",
+      "category": "library",
+      "language": "go",
+      "description": "Compile-time dependency injection"
+    },
+    {
+      "url": "https://github.com/bufbuild/buf.git",
+      "name": "buf",
+      "category": "tooling",
+      "language": "go",
+      "description": "Protobuf tooling"
+    },
+    {
+      "url": "https://github.com/ko-build/ko.git",
+      "name": "ko",
+      "category": "tooling",
+      "language": "go",
+      "description": "Build and deploy Go containers"
+    },
+    {
+      "url": "https://github.com/sinatra/sinatra.git",
+      "name": "sinatra",
+      "category": "web_framework",
+      "language": "ruby",
+      "description": "DSL for web applications"
+    },
+    {
+      "url": "https://github.com/sidekiq/sidekiq.git",
+      "name": "sidekiq",
+      "category": "distributed",
+      "language": "ruby",
+      "description": "Background job processing"
+    },
+    {
+      "url": "https://github.com/rspec/rspec-core.git",
+      "name": "rspec-core",
+      "category": "testing",
+      "language": "ruby",
+      "description": "BDD testing framework"
+    },
+    {
+      "url": "https://github.com/heartcombo/devise.git",
+      "name": "devise",
+      "category": "security",
+      "language": "ruby",
+      "description": "Authentication solution for Rails"
+    },
+    {
+      "url": "https://github.com/rack/rack.git",
+      "name": "rack",
+      "category": "web_framework",
+      "language": "ruby",
+      "description": "Modular web server interface"
+    },
+    {
+      "url": "https://github.com/puma/puma.git",
+      "name": "puma",
+      "category": "web_server",
+      "language": "ruby",
+      "description": "Concurrent HTTP server"
+    },
+    {
+      "url": "https://github.com/rubocop/rubocop.git",
+      "name": "rubocop",
+      "category": "tooling",
+      "language": "ruby",
+      "description": "Ruby static code analyzer"
+    },
+    {
+      "url": "https://github.com/javalin/javalin.git",
+      "name": "javalin",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Lightweight web framework"
+    },
+    {
+      "url": "https://github.com/google/gson.git",
+      "name": "gson",
+      "category": "library",
+      "language": "java",
+      "description": "JSON serialization/deserialization"
+    },
+    {
+      "url": "https://github.com/square/okhttp.git",
+      "name": "okhttp",
+      "category": "library",
+      "language": "java",
+      "description": "HTTP client for JVM"
+    },
+    {
+      "url": "https://github.com/square/retrofit.git",
+      "name": "retrofit",
+      "category": "library",
+      "language": "java",
+      "description": "Type-safe HTTP client"
+    },
+    {
+      "url": "https://github.com/micronaut-projects/micronaut-core.git",
+      "name": "micronaut-core",
+      "category": "web_framework",
+      "language": "java",
+      "description": "JVM-based full-stack framework"
+    },
+    {
+      "url": "https://github.com/phoenixframework/phoenix.git",
+      "name": "phoenix",
+      "category": "web_framework",
+      "language": "elixir",
+      "description": "Productive web framework"
+    },
+    {
+      "url": "https://github.com/elixir-ecto/ecto.git",
+      "name": "ecto",
+      "category": "database",
+      "language": "elixir",
+      "description": "Database wrapper and query generator"
+    },
+    {
+      "url": "https://github.com/absinthe-graphql/absinthe.git",
+      "name": "absinthe",
+      "category": "library",
+      "language": "elixir",
+      "description": "GraphQL toolkit"
+    },
+    {
+      "url": "https://github.com/jqlang/jq.git",
+      "name": "jq",
+      "category": "cli",
+      "language": "c",
+      "description": "Command-line JSON processor"
+    },
+    {
+      "url": "https://github.com/DaveGamble/cJSON.git",
+      "name": "cjson",
+      "category": "library",
+      "language": "c",
+      "description": "Ultralightweight JSON parser"
+    },
+    {
+      "url": "https://github.com/facebook/zstd.git",
+      "name": "zstd",
+      "category": "library",
+      "language": "cpp",
+      "description": "Fast compression algorithm"
+    },
+    {
+      "url": "https://github.com/lz4/lz4.git",
+      "name": "lz4",
+      "category": "library",
+      "language": "c",
+      "description": "Extremely fast compression"
+    },
+    {
+      "url": "https://github.com/rabbitmq/rabbitmq-server.git",
+      "name": "rabbitmq",
+      "category": "messaging",
+      "language": "erlang",
+      "description": "Message broker"
+    },
+    {
+      "url": "https://github.com/microsoft/TypeScript.git",
+      "name": "typescript",
+      "category": "compiler",
+      "language": "typescript",
+      "description": "TypeScript language compiler"
+    },
+    {
+      "url": "https://github.com/denoland/deno.git",
+      "name": "deno",
+      "category": "runtime",
+      "language": "rust",
+      "description": "Secure JavaScript/TypeScript runtime"
+    },
+    {
+      "url": "https://github.com/oven-sh/bun.git",
+      "name": "bun",
+      "category": "runtime",
+      "language": "zig",
+      "description": "Fast all-in-one JavaScript runtime"
+    },
+    {
+      "url": "https://github.com/swc-project/swc.git",
+      "name": "swc",
+      "category": "compiler",
+      "language": "rust",
+      "description": "Super-fast TypeScript/JavaScript compiler"
+    },
+    {
+      "url": "https://github.com/biomejs/biome.git",
+      "name": "biome",
+      "category": "tooling",
+      "language": "rust",
+      "description": "Fast formatter and linter"
+    },
+    {
+      "url": "https://github.com/oxc-project/oxc.git",
+      "name": "oxc",
+      "category": "tooling",
+      "language": "rust",
+      "description": "JavaScript oxidation compiler"
+    },
+    {
+      "url": "https://github.com/parcel-bundler/parcel.git",
+      "name": "parcel",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Zero-config web app bundler"
+    },
+    {
+      "url": "https://github.com/rollup/rollup.git",
+      "name": "rollup",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Module bundler for JavaScript"
+    },
+    {
+      "url": "https://github.com/webpack/webpack.git",
+      "name": "webpack",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Static module bundler"
+    },
+    {
+      "url": "https://github.com/eslint/eslint.git",
+      "name": "eslint",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Pluggable linting utility"
+    },
+    {
+      "url": "https://github.com/prettier/prettier.git",
+      "name": "prettier",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Opinionated code formatter"
+    },
+    {
+      "url": "https://github.com/jestjs/jest.git",
+      "name": "jest",
+      "category": "testing",
+      "language": "javascript",
+      "description": "Delightful JavaScript testing"
+    },
+    {
+      "url": "https://github.com/mochajs/mocha.git",
+      "name": "mocha",
+      "category": "testing",
+      "language": "javascript",
+      "description": "JavaScript test framework"
+    },
+    {
+      "url": "https://github.com/avajs/ava.git",
+      "name": "ava",
+      "category": "testing",
+      "language": "javascript",
+      "description": "Node.js test runner"
+    },
+    {
+      "url": "https://github.com/storybookjs/storybook.git",
+      "name": "storybook",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "UI component development"
+    },
+    {
+      "url": "https://github.com/pmndrs/zustand.git",
+      "name": "zustand",
+      "category": "library",
+      "language": "typescript",
+      "description": "Minimal state management"
+    },
+    {
+      "url": "https://github.com/TanStack/query.git",
+      "name": "tanstack-query",
+      "category": "library",
+      "language": "typescript",
+      "description": "Powerful async state management"
+    },
+    {
+      "url": "https://github.com/apollographql/apollo-client.git",
+      "name": "apollo-client",
+      "category": "library",
+      "language": "typescript",
+      "description": "GraphQL client"
+    },
+    {
+      "url": "https://github.com/graphql/graphql-js.git",
+      "name": "graphql-js",
+      "category": "library",
+      "language": "javascript",
+      "description": "GraphQL reference implementation"
+    },
+    {
+      "url": "https://github.com/immutable-js/immutable-js.git",
+      "name": "immutable-js",
+      "category": "library",
+      "language": "javascript",
+      "description": "Immutable persistent data collections"
+    },
+    {
+      "url": "https://github.com/immerjs/immer.git",
+      "name": "immer",
+      "category": "library",
+      "language": "javascript",
+      "description": "Immutable state mutations"
+    },
+    {
+      "url": "https://github.com/ramda/ramda.git",
+      "name": "ramda",
+      "category": "library",
+      "language": "javascript",
+      "description": "Functional programming library"
+    },
+    {
+      "url": "https://github.com/ReactiveX/rxjs.git",
+      "name": "rxjs",
+      "category": "library",
+      "language": "typescript",
+      "description": "Reactive extensions for JavaScript"
+    },
+    {
+      "url": "https://github.com/mongodb/node-mongodb-native.git",
+      "name": "mongodb-node",
+      "category": "database",
+      "language": "javascript",
+      "description": "Official MongoDB driver for Node.js"
+    },
+    {
+      "url": "https://github.com/sequelize/sequelize.git",
+      "name": "sequelize",
+      "category": "database",
+      "language": "javascript",
+      "description": "Promise-based ORM for Node.js"
+    },
+    {
+      "url": "https://github.com/knex/knex.git",
+      "name": "knex",
+      "category": "database",
+      "language": "javascript",
+      "description": "SQL query builder"
+    },
+    {
+      "url": "https://github.com/MikroORM/mikro-orm.git",
+      "name": "mikro-orm",
+      "category": "database",
+      "language": "typescript",
+      "description": "TypeScript ORM"
+    },
+    {
+      "url": "https://github.com/redis/ioredis.git",
+      "name": "ioredis",
+      "category": "database",
+      "language": "typescript",
+      "description": "Robust Redis client"
+    },
+    {
+      "url": "https://github.com/expressjs/multer.git",
+      "name": "multer",
+      "category": "library",
+      "language": "javascript",
+      "description": "Multipart form data handling"
+    },
+    {
+      "url": "https://github.com/expressjs/cors.git",
+      "name": "cors",
+      "category": "library",
+      "language": "javascript",
+      "description": "CORS middleware"
+    },
+    {
+      "url": "https://github.com/expressjs/compression.git",
+      "name": "compression",
+      "category": "library",
+      "language": "javascript",
+      "description": "Compression middleware"
+    },
+    {
+      "url": "https://github.com/helmetjs/helmet.git",
+      "name": "helmet",
+      "category": "security",
+      "language": "javascript",
+      "description": "Security headers for Express"
+    },
+    {
+      "url": "https://github.com/node-formidable/formidable.git",
+      "name": "formidable",
+      "category": "library",
+      "language": "javascript",
+      "description": "Form data parser"
+    },
+    {
+      "url": "https://github.com/websockets/ws.git",
+      "name": "ws",
+      "category": "networking",
+      "language": "javascript",
+      "description": "WebSocket library"
+    },
+    {
+      "url": "https://github.com/socketio/engine.io.git",
+      "name": "engine-io",
+      "category": "networking",
+      "language": "javascript",
+      "description": "Transport layer for Socket.IO"
+    },
+    {
+      "url": "https://github.com/nodemailer/nodemailer.git",
+      "name": "nodemailer",
+      "category": "library",
+      "language": "javascript",
+      "description": "Email sending library"
+    },
+    {
+      "url": "https://github.com/node-cron/node-cron.git",
+      "name": "node-cron",
+      "category": "library",
+      "language": "javascript",
+      "description": "Cron jobs for Node.js"
+    },
+    {
+      "url": "https://github.com/agenda/agenda.git",
+      "name": "agenda",
+      "category": "distributed",
+      "language": "javascript",
+      "description": "Job scheduling for Node.js"
+    },
+    {
+      "url": "https://github.com/bee-queue/bee-queue.git",
+      "name": "bee-queue",
+      "category": "distributed",
+      "language": "javascript",
+      "description": "Simple fast job queue"
+    },
+    {
+      "url": "https://github.com/OptimalBits/bull.git",
+      "name": "bull",
+      "category": "distributed",
+      "language": "typescript",
+      "description": "Premium queue package"
+    },
+    {
+      "url": "https://github.com/pinojs/pino.git",
+      "name": "pino",
+      "category": "logging",
+      "language": "javascript",
+      "description": "Super-fast logger"
+    },
+    {
+      "url": "https://github.com/debug-js/debug.git",
+      "name": "debug",
+      "category": "logging",
+      "language": "javascript",
+      "description": "Tiny debugging utility"
+    },
+    {
+      "url": "https://github.com/trentm/node-bunyan.git",
+      "name": "bunyan",
+      "category": "logging",
+      "language": "javascript",
+      "description": "JSON logging library"
+    },
+    {
+      "url": "https://github.com/log4js-node/log4js-node.git",
+      "name": "log4js-node",
+      "category": "logging",
+      "language": "javascript",
+      "description": "Port of log4js to Node.js"
+    },
+    {
+      "url": "https://github.com/cheeriojs/cheerio.git",
+      "name": "cheerio",
+      "category": "web_scraping",
+      "language": "javascript",
+      "description": "jQuery for server-side"
+    },
+    {
+      "url": "https://github.com/puppeteer/puppeteer.git",
+      "name": "puppeteer",
+      "category": "web_scraping",
+      "language": "typescript",
+      "description": "Headless Chrome automation"
+    },
+    {
+      "url": "https://github.com/microsoft/playwright.git",
+      "name": "playwright",
+      "category": "testing",
+      "language": "typescript",
+      "description": "Cross-browser automation"
+    },
+    {
+      "url": "https://github.com/cypress-io/cypress.git",
+      "name": "cypress",
+      "category": "testing",
+      "language": "javascript",
+      "description": "End-to-end testing framework"
+    },
+    {
+      "url": "https://github.com/validatorjs/validator.js.git",
+      "name": "validator-js",
+      "category": "library",
+      "language": "javascript",
+      "description": "String validators and sanitizers"
+    },
+    {
+      "url": "https://github.com/ajv-validator/ajv.git",
+      "name": "ajv",
+      "category": "library",
+      "language": "javascript",
+      "description": "JSON schema validator"
+    },
+    {
+      "url": "https://github.com/hapijs/joi.git",
+      "name": "joi",
+      "category": "library",
+      "language": "javascript",
+      "description": "Schema validation"
+    },
+    {
+      "url": "https://github.com/sindresorhus/p-limit.git",
+      "name": "p-limit",
+      "category": "library",
+      "language": "javascript",
+      "description": "Concurrency limiter"
+    },
+    {
+      "url": "https://github.com/sindresorhus/p-queue.git",
+      "name": "p-queue",
+      "category": "library",
+      "language": "typescript",
+      "description": "Promise queue with concurrency control"
+    },
+    {
+      "url": "https://github.com/sindresorhus/execa.git",
+      "name": "execa",
+      "category": "library",
+      "language": "javascript",
+      "description": "Process execution"
+    },
+    {
+      "url": "https://github.com/shelljs/shelljs.git",
+      "name": "shelljs",
+      "category": "library",
+      "language": "javascript",
+      "description": "Unix shell commands"
+    },
+    {
+      "url": "https://github.com/sindresorhus/ora.git",
+      "name": "ora",
+      "category": "library",
+      "language": "javascript",
+      "description": "Elegant terminal spinners"
+    },
+    {
+      "url": "https://github.com/SBoudrias/Inquirer.js.git",
+      "name": "inquirer",
+      "category": "library",
+      "language": "javascript",
+      "description": "Interactive CLI prompts"
+    },
+    {
+      "url": "https://github.com/terkelg/prompts.git",
+      "name": "prompts",
+      "category": "library",
+      "language": "javascript",
+      "description": "Lightweight CLI prompts"
+    },
+    {
+      "url": "https://github.com/yeoman/yeoman.git",
+      "name": "yeoman",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Project scaffolding tool"
+    },
+    {
+      "url": "https://github.com/isaacs/minimatch.git",
+      "name": "minimatch",
+      "category": "library",
+      "language": "javascript",
+      "description": "Glob matcher"
+    },
+    {
+      "url": "https://github.com/mrmlnc/fast-glob.git",
+      "name": "fast-glob",
+      "category": "library",
+      "language": "typescript",
+      "description": "Fast file system globbing"
+    },
+    {
+      "url": "https://github.com/paulmillr/chokidar.git",
+      "name": "chokidar",
+      "category": "library",
+      "language": "javascript",
+      "description": "Efficient file watching"
+    },
+    {
+      "url": "https://github.com/node-cache/node-cache.git",
+      "name": "node-cache",
+      "category": "library",
+      "language": "javascript",
+      "description": "In-memory cache"
+    },
+    {
+      "url": "https://github.com/kelektiv/node-uuid.git",
+      "name": "uuid",
+      "category": "library",
+      "language": "javascript",
+      "description": "UUID generation"
+    },
+    {
+      "url": "https://github.com/ai/nanoid.git",
+      "name": "nanoid",
+      "category": "library",
+      "language": "javascript",
+      "description": "Tiny unique ID generator"
+    },
+    {
+      "url": "https://github.com/uuidjs/uuid.git",
+      "name": "uuid-js",
+      "category": "library",
+      "language": "javascript",
+      "description": "UUID generation library"
+    },
+    {
+      "url": "https://github.com/dcodeIO/bcrypt.js.git",
+      "name": "bcryptjs",
+      "category": "security",
+      "language": "javascript",
+      "description": "Password hashing"
+    },
+    {
+      "url": "https://github.com/auth0/node-jsonwebtoken.git",
+      "name": "jsonwebtoken",
+      "category": "security",
+      "language": "javascript",
+      "description": "JWT implementation"
+    },
+    {
+      "url": "https://github.com/ianstormtaylor/superstruct.git",
+      "name": "superstruct",
+      "category": "library",
+      "language": "typescript",
+      "description": "Validatable JavaScript data structures"
+    },
+    {
+      "url": "https://github.com/typestack/class-validator.git",
+      "name": "class-validator",
+      "category": "library",
+      "language": "typescript",
+      "description": "Decorator-based validation"
+    },
+    {
+      "url": "https://github.com/typestack/class-transformer.git",
+      "name": "class-transformer",
+      "category": "library",
+      "language": "typescript",
+      "description": "Transform objects to classes"
+    },
+    {
+      "url": "https://github.com/socketio/socket.io-redis.git",
+      "name": "socket-io-redis",
+      "category": "messaging",
+      "language": "typescript",
+      "description": "Redis adapter for Socket.IO"
+    },
+    {
+      "url": "https://github.com/grpc/grpc-node.git",
+      "name": "grpc-node",
+      "category": "networking",
+      "language": "javascript",
+      "description": "gRPC for Node.js"
+    },
+    {
+      "url": "https://github.com/jprichardson/node-fs-extra.git",
+      "name": "fs-extra",
+      "category": "library",
+      "language": "javascript",
+      "description": "Extra file system methods"
+    },
+    {
+      "url": "https://github.com/isaacs/node-glob.git",
+      "name": "glob",
+      "category": "library",
+      "language": "javascript",
+      "description": "File matching patterns"
+    },
+    {
+      "url": "https://github.com/isaacs/rimraf.git",
+      "name": "rimraf",
+      "category": "library",
+      "language": "javascript",
+      "description": "Deep deletion utility"
+    },
+    {
+      "url": "https://github.com/sindresorhus/make-dir.git",
+      "name": "make-dir",
+      "category": "library",
+      "language": "javascript",
+      "description": "Make directory recursively"
+    },
+    {
+      "url": "https://github.com/jonschlinkert/gray-matter.git",
+      "name": "gray-matter",
+      "category": "library",
+      "language": "javascript",
+      "description": "Parse front-matter"
+    },
+    {
+      "url": "https://github.com/markdown-it/markdown-it.git",
+      "name": "markdown-it",
+      "category": "library",
+      "language": "javascript",
+      "description": "Markdown parser"
+    },
+    {
+      "url": "https://github.com/rehypejs/rehype.git",
+      "name": "rehype",
+      "category": "library",
+      "language": "javascript",
+      "description": "HTML processor"
+    },
+    {
+      "url": "https://github.com/remarkjs/remark.git",
+      "name": "remark",
+      "category": "library",
+      "language": "javascript",
+      "description": "Markdown processor"
+    },
+    {
+      "url": "https://github.com/unifiedjs/unified.git",
+      "name": "unified",
+      "category": "library",
+      "language": "javascript",
+      "description": "Content processing interface"
+    },
+    {
+      "url": "https://github.com/facebook/docusaurus.git",
+      "name": "docusaurus",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "Documentation website generator"
+    },
+    {
+      "url": "https://github.com/11ty/eleventy.git",
+      "name": "eleventy",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Static site generator"
+    },
+    {
+      "url": "https://github.com/gohugoio/hugo.git",
+      "name": "hugo",
+      "category": "tooling",
+      "language": "go",
+      "description": "Fast static site generator"
+    },
+    {
+      "url": "https://github.com/vercel/swr.git",
+      "name": "swr",
+      "category": "library",
+      "language": "typescript",
+      "description": "React Hooks for data fetching"
+    },
+    {
+      "url": "https://github.com/formium/formik.git",
+      "name": "formik",
+      "category": "library",
+      "language": "typescript",
+      "description": "Form library for React"
+    },
+    {
+      "url": "https://github.com/react-hook-form/react-hook-form.git",
+      "name": "react-hook-form",
+      "category": "library",
+      "language": "typescript",
+      "description": "Performant form validation"
+    },
+    {
+      "url": "https://github.com/jaredpalmer/tsdx.git",
+      "name": "tsdx",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "TypeScript package development"
+    },
+    {
+      "url": "https://github.com/verdaccio/verdaccio.git",
+      "name": "verdaccio",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Private npm proxy registry"
+    },
+    {
+      "url": "https://github.com/semantic-release/semantic-release.git",
+      "name": "semantic-release",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Automated version management"
+    },
+    {
+      "url": "https://github.com/changesets/changesets.git",
+      "name": "changesets",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "Manage package versions"
+    },
+    {
+      "url": "https://github.com/lerna/lerna.git",
+      "name": "lerna",
+      "category": "tooling",
+      "language": "javascript",
+      "description": "Monorepo management tool"
+    },
+    {
+      "url": "https://github.com/nrwl/nx.git",
+      "name": "nx",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "Smart monorepo build system"
+    },
+    {
+      "url": "https://github.com/turborepo/turbo.git",
+      "name": "turbo",
+      "category": "tooling",
+      "language": "rust",
+      "description": "High-performance build system"
+    },
+    {
+      "url": "https://github.com/moonrepo/moon.git",
+      "name": "moon",
+      "category": "tooling",
+      "language": "rust",
+      "description": "Repository management tool"
+    },
+    {
+      "url": "https://github.com/dotansimha/graphql-code-generator.git",
+      "name": "graphql-codegen",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "Generate code from GraphQL schemas"
+    },
+    {
+      "url": "https://github.com/gqlgen/gqlgen.git",
+      "name": "gqlgen",
+      "category": "library",
+      "language": "go",
+      "description": "Go GraphQL server generator"
+    },
+    {
+      "url": "https://github.com/99designs/gqlgen.git",
+      "name": "gqlgen-99designs",
+      "category": "library",
+      "language": "go",
+      "description": "GraphQL server library"
+    },
+    {
+      "url": "https://github.com/grpc-ecosystem/grpc-gateway.git",
+      "name": "grpc-gateway",
+      "category": "library",
+      "language": "go",
+      "description": "gRPC to REST gateway"
+    },
+    {
+      "url": "https://github.com/99designs/aws-vault.git",
+      "name": "aws-vault",
+      "category": "security",
+      "language": "go",
+      "description": "AWS credential management"
+    },
+    {
+      "url": "https://github.com/hashicorp/vault.git",
+      "name": "vault",
+      "category": "security",
+      "language": "go",
+      "description": "Secrets management"
+    },
+    {
+      "url": "https://github.com/hashicorp/terraform.git",
+      "name": "terraform",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Infrastructure as code"
+    },
+    {
+      "url": "https://github.com/pulumi/pulumi.git",
+      "name": "pulumi",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Modern infrastructure as code"
+    },
+    {
+      "url": "https://github.com/grafana/grafana.git",
+      "name": "grafana",
+      "category": "observability",
+      "language": "go",
+      "description": "Observability and monitoring"
+    },
+    {
+      "url": "https://github.com/grafana/loki.git",
+      "name": "loki",
+      "category": "logging",
+      "language": "go",
+      "description": "Log aggregation system"
+    },
+    {
+      "url": "https://github.com/grafana/tempo.git",
+      "name": "tempo",
+      "category": "observability",
+      "language": "go",
+      "description": "Distributed tracing backend"
+    },
+    {
+      "url": "https://github.com/jaegertracing/jaeger.git",
+      "name": "jaeger",
+      "category": "observability",
+      "language": "go",
+      "description": "Distributed tracing platform"
+    },
+    {
+      "url": "https://github.com/open-telemetry/opentelemetry-go.git",
+      "name": "opentelemetry-go",
+      "category": "observability",
+      "language": "go",
+      "description": "OpenTelemetry Go implementation"
+    },
+    {
+      "url": "https://github.com/DataDog/datadog-agent.git",
+      "name": "datadog-agent",
+      "category": "observability",
+      "language": "go",
+      "description": "Datadog monitoring agent"
+    },
+    {
+      "url": "https://github.com/FiloSottile/age.git",
+      "name": "age",
+      "category": "security",
+      "language": "go",
+      "description": "Simple file encryption tool"
+    },
+    {
+      "url": "https://github.com/ory/hydra.git",
+      "name": "hydra",
+      "category": "security",
+      "language": "go",
+      "description": "OAuth 2.0 and OpenID Connect server"
+    },
+    {
+      "url": "https://github.com/ory/kratos.git",
+      "name": "kratos",
+      "category": "security",
+      "language": "go",
+      "description": "Identity and user management"
+    },
+    {
+      "url": "https://github.com/authelia/authelia.git",
+      "name": "authelia",
+      "category": "security",
+      "language": "go",
+      "description": "Authentication and authorization server"
+    },
+    {
+      "url": "https://github.com/tailscale/tailscale.git",
+      "name": "tailscale",
+      "category": "networking",
+      "language": "go",
+      "description": "Mesh VPN based on WireGuard"
+    },
+    {
+      "url": "https://github.com/syncthing/syncthing.git",
+      "name": "syncthing",
+      "category": "storage",
+      "language": "go",
+      "description": "Continuous file synchronization"
+    },
+    {
+      "url": "https://github.com/jesseduffield/lazygit.git",
+      "name": "lazygit",
+      "category": "cli",
+      "language": "go",
+      "description": "Simple terminal UI for git"
+    },
+    {
+      "url": "https://github.com/jesseduffield/lazydocker.git",
+      "name": "lazydocker",
+      "category": "cli",
+      "language": "go",
+      "description": "Terminal UI for Docker"
+    },
+    {
+      "url": "https://github.com/derailed/k9s.git",
+      "name": "k9s",
+      "category": "cli",
+      "language": "go",
+      "description": "Kubernetes CLI management"
+    },
+    {
+      "url": "https://github.com/wagoodman/dive.git",
+      "name": "dive",
+      "category": "cli",
+      "language": "go",
+      "description": "Docker image layer explorer"
+    },
+    {
+      "url": "https://github.com/charmbracelet/bubbletea.git",
+      "name": "bubbletea",
+      "category": "library",
+      "language": "go",
+      "description": "Terminal UI framework"
+    },
+    {
+      "url": "https://github.com/charmbracelet/gum.git",
+      "name": "gum",
+      "category": "cli",
+      "language": "go",
+      "description": "Glamorous shell scripts"
+    },
+    {
+      "url": "https://github.com/charmbracelet/lipgloss.git",
+      "name": "lipgloss",
+      "category": "library",
+      "language": "go",
+      "description": "Terminal styling library"
+    },
+    {
+      "url": "https://github.com/junegunn/fzf.git",
+      "name": "fzf",
+      "category": "cli",
+      "language": "go",
+      "description": "Command-line fuzzy finder"
+    },
+    {
+      "url": "https://github.com/cli/cli.git",
+      "name": "gh-cli",
+      "category": "cli",
+      "language": "go",
+      "description": "GitHub CLI tool"
+    },
+    {
+      "url": "https://github.com/github/gh-actions-cli.git",
+      "name": "act",
+      "category": "cli",
+      "language": "go",
+      "description": "Run GitHub Actions locally"
+    },
+    {
+      "url": "https://github.com/nektos/act.git",
+      "name": "nektos-act",
+      "category": "cli",
+      "language": "go",
+      "description": "Local GitHub Actions runner"
+    },
+    {
+      "url": "https://github.com/pallets/werkzeug.git",
+      "name": "werkzeug",
+      "category": "web_framework",
+      "language": "python",
+      "description": "WSGI utility library"
+    },
+    {
+      "url": "https://github.com/pypa/pip.git",
+      "name": "pip",
+      "category": "tooling",
+      "language": "python",
+      "description": "Python package installer"
+    },
+    {
+      "url": "https://github.com/pypa/setuptools.git",
+      "name": "setuptools",
+      "category": "tooling",
+      "language": "python",
+      "description": "Python build system"
+    },
+    {
+      "url": "https://github.com/pallets/markupsafe.git",
+      "name": "markupsafe",
+      "category": "library",
+      "language": "python",
+      "description": "Safe HTML markup string"
+    },
+    {
+      "url": "https://github.com/aio-libs/aiofiles.git",
+      "name": "aiofiles",
+      "category": "async",
+      "language": "python",
+      "description": "Async file operations"
+    },
+    {
+      "url": "https://github.com/aio-libs/aiomysql.git",
+      "name": "aiomysql",
+      "category": "database",
+      "language": "python",
+      "description": "Async MySQL driver"
+    },
+    {
+      "url": "https://github.com/encode/httpcore.git",
+      "name": "httpcore",
+      "category": "networking",
+      "language": "python",
+      "description": "Minimal async HTTP client"
+    },
+    {
+      "url": "https://github.com/robotframework/robotframework.git",
+      "name": "robotframework",
+      "category": "testing",
+      "language": "python",
+      "description": "Generic automation framework"
+    },
+    {
+      "url": "https://github.com/burnash/gspread.git",
+      "name": "gspread",
+      "category": "api_client",
+      "language": "python",
+      "description": "Google Sheets API wrapper"
+    },
+    {
+      "url": "https://github.com/slackapi/python-slack-sdk.git",
+      "name": "python-slack-sdk",
+      "category": "api_client",
+      "language": "python",
+      "description": "Slack API client"
+    },
+    {
+      "url": "https://github.com/un33k/python-slugify.git",
+      "name": "python-slugify",
+      "category": "library",
+      "language": "python",
+      "description": "Unicode slug generator"
+    },
+    {
+      "url": "https://github.com/sqlalchemy/mako.git",
+      "name": "mako",
+      "category": "library",
+      "language": "python",
+      "description": "Template library"
+    },
+    {
+      "url": "https://github.com/gorakhargosh/watchdog.git",
+      "name": "watchdog",
+      "category": "tooling",
+      "language": "python",
+      "description": "Filesystem event monitor"
+    },
+    {
+      "url": "https://github.com/pydantic/pydantic-settings.git",
+      "name": "pydantic-settings",
+      "category": "library",
+      "language": "python",
+      "description": "Settings management with pydantic"
+    },
+    {
+      "url": "https://github.com/Textualize/trogon.git",
+      "name": "trogon",
+      "category": "cli",
+      "language": "python",
+      "description": "Auto-generate TUI for CLI apps"
+    },
+    {
+      "url": "https://github.com/tokio-rs/mio.git",
+      "name": "mio",
+      "category": "async",
+      "language": "rust",
+      "description": "Metal I/O async runtime"
+    },
+    {
+      "url": "https://github.com/rayon-rs/rayon.git",
+      "name": "rayon",
+      "category": "library",
+      "language": "rust",
+      "description": "Data parallelism library"
+    },
+    {
+      "url": "https://github.com/dtolnay/syn.git",
+      "name": "syn",
+      "category": "compiler",
+      "language": "rust",
+      "description": "Rust syntax parser for macros"
+    },
+    {
+      "url": "https://github.com/dtolnay/anyhow.git",
+      "name": "anyhow",
+      "category": "library",
+      "language": "rust",
+      "description": "Flexible error handling"
+    },
+    {
+      "url": "https://github.com/serde-rs/json.git",
+      "name": "serde_json",
+      "category": "library",
+      "language": "rust",
+      "description": "JSON serialization for serde"
+    },
+    {
+      "url": "https://github.com/crossbeam-rs/crossbeam.git",
+      "name": "crossbeam",
+      "category": "library",
+      "language": "rust",
+      "description": "Concurrent programming tools"
+    },
+    {
+      "url": "https://github.com/rust-lang/regex.git",
+      "name": "regex-rust",
+      "category": "library",
+      "language": "rust",
+      "description": "Rust regex engine"
+    },
+    {
+      "url": "https://github.com/rustwasm/wasm-bindgen.git",
+      "name": "wasm-bindgen",
+      "category": "tooling",
+      "language": "rust",
+      "description": "Rust/Wasm interop"
+    },
+    {
+      "url": "https://github.com/getzola/zola.git",
+      "name": "zola",
+      "category": "tooling",
+      "language": "rust",
+      "description": "Static site generator"
+    },
+    {
+      "url": "https://github.com/helix-editor/helix.git",
+      "name": "helix",
+      "category": "tooling",
+      "language": "rust",
+      "description": "Terminal text editor"
+    },
+    {
+      "url": "https://github.com/hashicorp/consul.git",
+      "name": "consul",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Service mesh and discovery"
+    },
+    {
+      "url": "https://github.com/hashicorp/nomad.git",
+      "name": "nomad",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Workload orchestrator"
+    },
+    {
+      "url": "https://github.com/containerd/containerd.git",
+      "name": "containerd",
+      "category": "infrastructure",
+      "language": "go",
+      "description": "Container runtime"
+    },
+    {
+      "url": "https://github.com/grafana/mimir.git",
+      "name": "mimir",
+      "category": "observability",
+      "language": "go",
+      "description": "Metrics backend for Prometheus"
+    },
+    {
+      "url": "https://github.com/grpc/grpc-go.git",
+      "name": "grpc-go",
+      "category": "networking",
+      "language": "go",
+      "description": "Go gRPC implementation"
+    },
+    {
+      "url": "https://github.com/go-playground/validator.git",
+      "name": "validator",
+      "category": "library",
+      "language": "go",
+      "description": "Struct validation library"
+    },
+    {
+      "url": "https://github.com/stretchr/testify.git",
+      "name": "testify",
+      "category": "testing",
+      "language": "go",
+      "description": "Testing toolkit"
+    },
+    {
+      "url": "https://github.com/caddyserver/certmagic.git",
+      "name": "certmagic",
+      "category": "security",
+      "language": "go",
+      "description": "Automatic HTTPS"
+    },
+    {
+      "url": "https://github.com/TanStack/router.git",
+      "name": "tanstack-router",
+      "category": "library",
+      "language": "typescript",
+      "description": "Type-safe routing"
+    },
+    {
+      "url": "https://github.com/TanStack/table.git",
+      "name": "tanstack-table",
+      "category": "library",
+      "language": "typescript",
+      "description": "Headless table library"
+    },
+    {
+      "url": "https://github.com/pmndrs/jotai.git",
+      "name": "jotai",
+      "category": "library",
+      "language": "typescript",
+      "description": "Atomic state management"
+    },
+    {
+      "url": "https://github.com/t3-oss/create-t3-app.git",
+      "name": "create-t3-app",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "Full-stack TS app scaffold"
+    },
+    {
+      "url": "https://github.com/denoland/fresh.git",
+      "name": "fresh",
+      "category": "web_framework",
+      "language": "typescript",
+      "description": "Deno web framework"
+    },
+    {
+      "url": "https://github.com/remix-run/react-router.git",
+      "name": "react-router",
+      "category": "library",
+      "language": "typescript",
+      "description": "Declarative routing for React"
+    },
+    {
+      "url": "https://github.com/shadcn-ui/ui.git",
+      "name": "shadcn-ui",
+      "category": "library",
+      "language": "typescript",
+      "description": "Reusable UI components"
+    },
+    {
+      "url": "https://github.com/calcom/cal.com.git",
+      "name": "cal.com",
+      "category": "web_framework",
+      "language": "typescript",
+      "description": "Scheduling infrastructure"
+    },
+    {
+      "url": "https://github.com/triggerdotdev/trigger.dev.git",
+      "name": "trigger.dev",
+      "category": "infrastructure",
+      "language": "typescript",
+      "description": "Background job platform"
+    },
+    {
+      "url": "https://github.com/lucia-auth/lucia.git",
+      "name": "lucia",
+      "category": "security",
+      "language": "typescript",
+      "description": "Auth library"
+    },
+    {
+      "url": "https://github.com/unjs/nitro.git",
+      "name": "nitro",
+      "category": "web_framework",
+      "language": "typescript",
+      "description": "Universal web server framework"
+    },
+    {
+      "url": "https://github.com/hapijs/hapi.git",
+      "name": "hapi",
+      "category": "web_framework",
+      "language": "javascript",
+      "description": "Server framework"
+    },
+    {
+      "url": "https://github.com/koajs/koa-router.git",
+      "name": "koa-router",
+      "category": "web_framework",
+      "language": "javascript",
+      "description": "Koa routing middleware"
+    },
+    {
+      "url": "https://github.com/winstonjs/winston-transport.git",
+      "name": "winston-transport",
+      "category": "logging",
+      "language": "javascript",
+      "description": "Winston transport base"
+    },
+    {
+      "url": "https://github.com/highlightjs/highlight.js.git",
+      "name": "highlight.js",
+      "category": "library",
+      "language": "javascript",
+      "description": "Syntax highlighting"
+    },
+    {
+      "url": "https://github.com/motdotla/dotenv-expand.git",
+      "name": "dotenv-expand",
+      "category": "library",
+      "language": "javascript",
+      "description": "Dotenv variable expansion"
+    },
+    {
+      "url": "https://github.com/brianc/node-postgres.git",
+      "name": "node-postgres",
+      "category": "database",
+      "language": "javascript",
+      "description": "PostgreSQL client for Node"
+    },
+    {
+      "url": "https://github.com/rails/rails.git",
+      "name": "rails",
+      "category": "web_framework",
+      "language": "ruby",
+      "description": "Web application framework"
+    },
+    {
+      "url": "https://github.com/jekyll/jekyll.git",
+      "name": "jekyll",
+      "category": "tooling",
+      "language": "ruby",
+      "description": "Static site generator"
+    },
+    {
+      "url": "https://github.com/rspec/rspec-expectations.git",
+      "name": "rspec-expectations",
+      "category": "testing",
+      "language": "ruby",
+      "description": "RSpec matcher library"
+    },
+    {
+      "url": "https://github.com/faker-ruby/faker.git",
+      "name": "faker-ruby",
+      "category": "testing",
+      "language": "ruby",
+      "description": "Fake data generator"
+    },
+    {
+      "url": "https://github.com/ruby-grape/grape.git",
+      "name": "grape",
+      "category": "web_framework",
+      "language": "ruby",
+      "description": "REST API framework"
+    },
+    {
+      "url": "https://github.com/google/guava.git",
+      "name": "guava",
+      "category": "library",
+      "language": "java",
+      "description": "Core Java libraries by Google"
+    },
+    {
+      "url": "https://github.com/apache/kafka.git",
+      "name": "kafka",
+      "category": "messaging",
+      "language": "java",
+      "description": "Distributed event streaming"
+    },
+    {
+      "url": "https://github.com/JetBrains/kotlin.git",
+      "name": "kotlin",
+      "category": "compiler",
+      "language": "kotlin",
+      "description": "Kotlin programming language"
+    },
+    {
+      "url": "https://github.com/square/moshi.git",
+      "name": "moshi",
+      "category": "library",
+      "language": "kotlin",
+      "description": "JSON library for Kotlin/Java"
+    },
+    {
+      "url": "https://github.com/Kotlin/kotlinx.coroutines.git",
+      "name": "kotlinx-coroutines",
+      "category": "async",
+      "language": "kotlin",
+      "description": "Kotlin coroutines library"
+    },
+    {
+      "url": "https://github.com/Kotlin/kotlinx.serialization.git",
+      "name": "kotlinx-serialization",
+      "category": "library",
+      "language": "kotlin",
+      "description": "Kotlin serialization"
+    },
+    {
+      "url": "https://github.com/InsertKoinIO/koin.git",
+      "name": "koin",
+      "category": "library",
+      "language": "kotlin",
+      "description": "Kotlin dependency injection"
+    },
+    {
+      "url": "https://github.com/vapor/vapor.git",
+      "name": "vapor",
+      "category": "web_framework",
+      "language": "swift",
+      "description": "Swift web framework"
+    },
+    {
+      "url": "https://github.com/Alamofire/Alamofire.git",
+      "name": "alamofire",
+      "category": "networking",
+      "language": "swift",
+      "description": "Swift HTTP networking"
+    },
+    {
+      "url": "https://github.com/realm/SwiftLint.git",
+      "name": "swiftlint",
+      "category": "tooling",
+      "language": "swift",
+      "description": "Swift linter"
+    },
+    {
+      "url": "https://github.com/dart-lang/sdk.git",
+      "name": "dart-sdk",
+      "category": "compiler",
+      "language": "dart",
+      "description": "Dart SDK"
+    },
+    {
+      "url": "https://github.com/felangel/bloc.git",
+      "name": "bloc",
+      "category": "library",
+      "language": "dart",
+      "description": "State management for Dart"
+    },
+    {
+      "url": "https://github.com/typelevel/cats.git",
+      "name": "cats",
+      "category": "library",
+      "language": "scala",
+      "description": "FP abstractions for Scala"
+    },
+    {
+      "url": "https://github.com/http4s/http4s.git",
+      "name": "http4s",
+      "category": "web_framework",
+      "language": "scala",
+      "description": "Typeful HTTP for Scala"
+    },
+    {
+      "url": "https://github.com/haskell-servant/servant.git",
+      "name": "servant",
+      "category": "web_framework",
+      "language": "haskell",
+      "description": "Haskell web API framework"
+    },
+    {
+      "url": "https://github.com/PostgREST/postgrest.git",
+      "name": "postgrest",
+      "category": "database",
+      "language": "haskell",
+      "description": "REST API for PostgreSQL"
+    },
+    {
+      "url": "https://github.com/ocaml/ocaml.git",
+      "name": "ocaml",
+      "category": "compiler",
+      "language": "ocaml",
+      "description": "OCaml compiler"
+    },
+    {
+      "url": "https://github.com/pallets/quart.git",
+      "name": "quart",
+      "category": "web_framework",
+      "language": "python",
+      "description": "Async Flask-compatible framework"
+    },
+    {
+      "url": "https://github.com/tiangolo/sqlmodel.git",
+      "name": "sqlmodel-core",
+      "category": "database",
+      "language": "python",
+      "description": "SQL databases with Pydantic"
+    },
+    {
+      "url": "https://github.com/pyca/bcrypt.git",
+      "name": "bcrypt",
+      "category": "security",
+      "language": "python",
+      "description": "Bcrypt password hashing"
+    },
+    {
+      "url": "https://github.com/prompt-toolkit/python-prompt-toolkit.git",
+      "name": "python-prompt-toolkit",
+      "category": "cli",
+      "language": "python",
+      "description": "Interactive CLI toolkit"
+    },
+    {
+      "url": "https://github.com/charmbracelet/glow.git",
+      "name": "glow",
+      "category": "cli",
+      "language": "go",
+      "description": "Markdown renderer for terminal"
+    },
+    {
+      "url": "https://github.com/goreleaser/goreleaser.git",
+      "name": "goreleaser",
+      "category": "tooling",
+      "language": "go",
+      "description": "Release automation for Go"
+    },
+    {
+      "url": "https://github.com/BurntSushi/toml.git",
+      "name": "toml-go",
+      "category": "library",
+      "language": "go",
+      "description": "TOML parser for Go"
+    },
+    {
+      "url": "https://github.com/tokio-rs/tracing.git",
+      "name": "tracing",
+      "category": "observability",
+      "language": "rust",
+      "description": "Application tracing framework"
+    },
+    {
+      "url": "https://github.com/launchbadge/sqlx.git",
+      "name": "sqlx",
+      "category": "database",
+      "language": "rust",
+      "description": "Async SQL toolkit for Rust"
+    },
+    {
+      "url": "https://github.com/withastro/starlight.git",
+      "name": "starlight",
+      "category": "tooling",
+      "language": "typescript",
+      "description": "Documentation site builder"
+    },
+    {
+      "url": "https://github.com/nuxt/nuxt.git",
+      "name": "nuxt",
+      "category": "web_framework",
+      "language": "typescript",
+      "description": "Vue.js framework"
+    },
+    {
+      "url": "https://github.com/platformio/platformio-core.git",
+      "name": "platformio-core",
+      "category": "tooling",
+      "language": "python",
+      "description": "IoT development platform"
+    },
+    {
+      "url": "https://github.com/pelican-dev/panel.git",
+      "name": "pelican-panel",
+      "category": "web_framework",
+      "language": "typescript",
+      "description": "Server management panel"
+    },
+    {
+      "url": "https://github.com/samber/lo.git",
+      "name": "lo",
+      "category": "library",
+      "language": "go",
+      "description": "Lodash-style Go generics"
+    },
+    {
+      "url": "https://github.com/wailsapp/wails.git",
+      "name": "wails",
+      "category": "tooling",
+      "language": "go",
+      "description": "Go desktop app framework"
+    },
+    {
+      "url": "https://github.com/huggingface/transformers.git",
+      "name": "transformers",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\ud83e\udd17 Transformers: the model-definition framework for state-of-the-art machine l..."
+    },
+    {
+      "url": "https://github.com/pytorch/pytorch.git",
+      "name": "pytorch",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
+    },
+    {
+      "url": "https://github.com/d2l-ai/d2l-zh.git",
+      "name": "d2l-zh",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\u300a\u52a8\u624b\u5b66\u6df1\u5ea6\u5b66\u4e60\u300b\uff1a\u9762\u5411\u4e2d\u6587\u8bfb\u8005\u3001\u80fd\u8fd0\u884c\u3001\u53ef\u8ba8\u8bba\u3002\u4e2d\u82f1\u6587\u7248\u88ab70\u591a\u4e2a\u56fd\u5bb6\u7684500\u591a\u6240\u5927\u5b66\u7528\u4e8e\u6559\u5b66\u3002"
+    },
+    {
+      "url": "https://github.com/labmlai/annotated_deep_learning_paper_implementations.git",
+      "name": "annotated_deep_learning_paper_implementations",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\ud83e\uddd1\u200d\ud83c\udfeb 60+ Implementations/tutorials of deep learning papers with side-by-side n..."
+    },
+    {
+      "url": "https://github.com/scikit-learn/scikit-learn.git",
+      "name": "scikit-learn",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "scikit-learn: machine learning in Python"
+    },
+    {
+      "url": "https://github.com/OpenBB-finance/OpenBB.git",
+      "name": "OpenBB",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Financial data platform for analysts, quants and AI agents."
+    },
+    {
+      "url": "https://github.com/keras-team/keras.git",
+      "name": "keras",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Deep Learning for humans"
+    },
+    {
+      "url": "https://github.com/ultralytics/yolov5.git",
+      "name": "yolov5",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "YOLOv5 \ud83d\ude80 in PyTorch > ONNX > CoreML > TFLite"
+    },
+    {
+      "url": "https://github.com/ageitgey/face_recognition.git",
+      "name": "face_recognition",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "The world's simplest facial recognition api for Python and the command line"
+    },
+    {
+      "url": "https://github.com/ultralytics/ultralytics.git",
+      "name": "ultralytics",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Ultralytics YOLO \ud83d\ude80"
+    },
+    {
+      "url": "https://github.com/deepfakes/faceswap.git",
+      "name": "faceswap",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Deepfakes Software For All"
+    },
+    {
+      "url": "https://github.com/apache/airflow.git",
+      "name": "airflow",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Apache Airflow - A platform to programmatically author, schedule, and monitor..."
+    },
+    {
+      "url": "https://github.com/deepspeedai/DeepSpeed.git",
+      "name": "DeepSpeed",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "DeepSpeed is a deep learning optimization library that makes distributed trai..."
+    },
+    {
+      "url": "https://github.com/ray-project/ray.git",
+      "name": "ray",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Ray is an AI compute engine. Ray consists of a core distributed runtime and a..."
+    },
+    {
+      "url": "https://github.com/microsoft/qlib.git",
+      "name": "qlib",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Qlib is an AI-oriented Quant investment platform that aims to use AI tech to ..."
+    },
+    {
+      "url": "https://github.com/paperless-ngx/paperless-ngx.git",
+      "name": "paperless-ngx",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "A community-supported supercharged document management system: scan, index an..."
+    },
+    {
+      "url": "https://github.com/LAION-AI/Open-Assistant.git",
+      "name": "Open-Assistant",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "OpenAssistant is a chat-based assistant that understands tasks, can interact ..."
+    },
+    {
+      "url": "https://github.com/roboflow/supervision.git",
+      "name": "supervision",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "We write your reusable computer vision tools. \ud83d\udc9c"
+    },
+    {
+      "url": "https://github.com/eriklindernoren/ML-From-Scratch.git",
+      "name": "ML-From-Scratch",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Machine Learning From Scratch. Bare bones NumPy implementations of machine le..."
+    },
+    {
+      "url": "https://github.com/Lightning-AI/pytorch-lightning.git",
+      "name": "pytorch-lightning",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Pretrain, finetune ANY AI model of ANY size on 1 or 10,000+ GPUs with zero co..."
+    },
+    {
+      "url": "https://github.com/JaidedAI/EasyOCR.git",
+      "name": "EasyOCR",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Ready-to-use OCR with 80+ supported languages and all popular writing scripts..."
+    },
+    {
+      "url": "https://github.com/donnemartin/data-science-ipython-notebooks.git",
+      "name": "data-science-ipython-notebooks",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Data science Python notebooks: Deep learning (TensorFlow, Theano, Caffe, Kera..."
+    },
+    {
+      "url": "https://github.com/d2l-ai/d2l-en.git",
+      "name": "d2l-en",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Interactive deep learning book with multi-framework code, math, and discussio..."
+    },
+    {
+      "url": "https://github.com/sebastianruder/NLP-progress.git",
+      "name": "NLP-progress",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Repository to track the progress in Natural Language Processing (NLP), includ..."
+    },
+    {
+      "url": "https://github.com/serengil/deepface.git",
+      "name": "deepface",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "A Lightweight Face Recognition and Facial Attribute Analysis (Age, Gender, Em..."
+    },
+    {
+      "url": "https://github.com/jina-ai/serve.git",
+      "name": "serve",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\u2601\ufe0f Build multimodal AI applications with cloud-native stack"
+    },
+    {
+      "url": "https://github.com/Asabeneh/30-Days-Of-Python.git",
+      "name": "30-Days-Of-Python",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "The 30 Days of Python programming challenge is a step-by-step guide to learn ..."
+    },
+    {
+      "url": "https://github.com/pandas-dev/pandas.git",
+      "name": "pandas",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Flexible and powerful data analysis / manipulation library for Python, provid..."
+    },
+    {
+      "url": "https://github.com/plotly/dash.git",
+      "name": "dash",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Data Apps & Dashboards for Python. No JavaScript Required."
+    },
+    {
+      "url": "https://github.com/sinaptik-ai/pandas-ai.git",
+      "name": "pandas-ai",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Chat with your database or your datalake (SQL, CSV, parquet). PandasAI makes ..."
+    },
+    {
+      "url": "https://github.com/matplotlib/matplotlib.git",
+      "name": "matplotlib",
+      "category": "data_processing",
+      "language": "python",
+      "description": "matplotlib: plotting with Python"
+    },
+    {
+      "url": "https://github.com/PrefectHQ/prefect.git",
+      "name": "prefect",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Prefect is a workflow orchestration framework for building resilient data pip..."
+    },
+    {
+      "url": "https://github.com/recommenders-team/recommenders.git",
+      "name": "recommenders",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Best Practices on Recommendation Systems"
+    },
+    {
+      "url": "https://github.com/marimo-team/marimo.git",
+      "name": "marimo",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "A reactive notebook for Python \u2014 run reproducible experiments, query with SQL..."
+    },
+    {
+      "url": "https://github.com/akfamily/akshare.git",
+      "name": "akshare",
+      "category": "data_processing",
+      "language": "python",
+      "description": "AKShare is an elegant and simple financial data interface library for Python,..."
+    },
+    {
+      "url": "https://github.com/piskvorky/gensim.git",
+      "name": "gensim",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Topic Modelling for Humans"
+    },
+    {
+      "url": "https://github.com/treeverse/dvc.git",
+      "name": "dvc",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\ud83e\udd89 Data Versioning and ML Experiments"
+    },
+    {
+      "url": "https://github.com/dagster-io/dagster.git",
+      "name": "dagster",
+      "category": "data_processing",
+      "language": "python",
+      "description": "An orchestration platform for the development, production, and observation of..."
+    },
+    {
+      "url": "https://github.com/Data-Centric-AI-Community/ydata-profiling.git",
+      "name": "ydata-profiling",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "1 Line of code data quality profiling & exploratory data analysis for Pandas ..."
+    },
+    {
+      "url": "https://github.com/microsoft/RD-Agent.git",
+      "name": "RD-Agent",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Research and development (R&D) is crucial for the enhancement of industrial p..."
+    },
+    {
+      "url": "https://github.com/ludwig-ai/ludwig.git",
+      "name": "ludwig",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Low-code framework for building custom LLMs, neural networks, and other AI mo..."
+    },
+    {
+      "url": "https://github.com/cleanlab/cleanlab.git",
+      "name": "cleanlab",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Cleanlab's open-source library is the standard data-centric AI package for da..."
+    },
+    {
+      "url": "https://github.com/statsmodels/statsmodels.git",
+      "name": "statsmodels",
+      "category": "data_processing",
+      "language": "python",
+      "description": "Statsmodels: statistical modeling and econometrics in Python"
+    },
+    {
+      "url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui.git",
+      "name": "stable-diffusion-webui",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Stable Diffusion web UI"
+    },
+    {
+      "url": "https://github.com/CorentinJ/Real-Time-Voice-Cloning.git",
+      "name": "Real-Time-Voice-Cloning",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Clone a voice in 5 seconds to generate arbitrary speech in real-time"
+    },
+    {
+      "url": "https://github.com/coqui-ai/TTS.git",
+      "name": "TTS",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\ud83d\udc38\ud83d\udcac - a deep learning toolkit for Text-to-Speech, battle-tested in research an..."
+    },
+    {
+      "url": "https://github.com/hpcaitech/ColossalAI.git",
+      "name": "ColossalAI",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Making large AI models cheaper, faster and more accessible"
+    },
+    {
+      "url": "https://github.com/floodsung/Deep-Learning-Papers-Reading-Roadmap.git",
+      "name": "Deep-Learning-Papers-Reading-Roadmap",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Deep Learning papers reading roadmap for anyone who are eager to learn this a..."
+    },
+    {
+      "url": "https://github.com/TencentARC/GFPGAN.git",
+      "name": "GFPGAN",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "GFPGAN aims at developing Practical Algorithms for Real-world Face Restoration."
+    },
+    {
+      "url": "https://github.com/babysor/MockingBird.git",
+      "name": "MockingBird",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\ud83d\ude80Clone a voice in 5 seconds to generate arbitrary speech in real-time"
+    },
+    {
+      "url": "https://github.com/huggingface/diffusers.git",
+      "name": "diffusers",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "\ud83e\udd17 Diffusers: State-of-the-art diffusion models for image, video, and audio ge..."
+    },
+    {
+      "url": "https://github.com/yunjey/pytorch-tutorial.git",
+      "name": "pytorch-tutorial",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "PyTorch Tutorial for Deep Learning Researchers"
+    },
+    {
+      "url": "https://github.com/tatsu-lab/stanford_alpaca.git",
+      "name": "stanford_alpaca",
+      "category": "machine_learning",
+      "language": "python",
+      "description": "Code and documentation to train Stanford's Alpaca models, and generate the data."
+    },
+    {
+      "url": "https://github.com/bregman-arie/devops-exercises.git",
+      "name": "devops-exercises",
+      "category": "devops",
+      "language": "python",
+      "description": "Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernete..."
+    },
+    {
+      "url": "https://github.com/getsentry/sentry.git",
+      "name": "sentry",
+      "category": "devops",
+      "language": "python",
+      "description": "Developer-first error tracking and performance monitoring"
+    },
+    {
+      "url": "https://github.com/meolu/walle-web.git",
+      "name": "walle-web",
+      "category": "devops",
+      "language": "python",
+      "description": "walle - \u74e6\u529b Devops\u5f00\u6e90\u9879\u76ee\u4ee3\u7801\u90e8\u7f72\u5e73\u53f0"
+    },
+    {
+      "url": "https://github.com/bunkerity/bunkerweb.git",
+      "name": "bunkerweb",
+      "category": "devops",
+      "language": "python",
+      "description": "\ud83d\udee1\ufe0f Open-source and next-generation Web Application Firewall (WAF)"
+    },
+    {
+      "url": "https://github.com/healthchecks/healthchecks.git",
+      "name": "healthchecks",
+      "category": "devops",
+      "language": "python",
+      "description": "Open-source cron job and background task monitoring service, written in Pytho..."
+    },
+    {
+      "url": "https://github.com/geerlingguy/ansible-for-devops.git",
+      "name": "ansible-for-devops",
+      "category": "devops",
+      "language": "python",
+      "description": "Ansible for DevOps examples."
+    },
+    {
+      "url": "https://github.com/xonsh/xonsh.git",
+      "name": "xonsh",
+      "category": "devops",
+      "language": "python",
+      "description": "\ud83d\udc1a Python-powered shell. Full-featured, cross-platform and AI-friendly."
+    },
+    {
+      "url": "https://github.com/facebook/react.git",
+      "name": "react",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "The library for web and native user interfaces."
+    },
+    {
+      "url": "https://github.com/typicode/json-server.git",
+      "name": "json-server",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Get a full fake REST API with zero coding in less than 30 seconds (seriously)"
+    },
+    {
+      "url": "https://github.com/LeCoupa/awesome-cheatsheets.git",
+      "name": "awesome-cheatsheets",
+      "category": "devops",
+      "language": "javascript",
+      "description": "\ud83d\udc69\u200d\ud83d\udcbb\ud83d\udc68\u200d\ud83d\udcbb Awesome cheatsheets for popular programming languages, frameworks and ..."
+    },
+    {
+      "url": "https://github.com/NaiboWang/EasySpider.git",
+      "name": "EasySpider",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "A visual no-code/code-free web crawler/spider\u6613\u91c7\u96c6\uff1a\u4e00\u4e2a\u53ef\u89c6\u5316\u6d4f\u89c8\u5668\u81ea\u52a8\u5316\u6d4b\u8bd5/\u6570\u636e\u91c7\u96c6/\u722c\u866b\u8f6f\u4ef6\uff0c\u53ef\u4ee5\u65e0\u4ee3..."
+    },
+    {
+      "url": "https://github.com/ascoders/weekly.git",
+      "name": "weekly",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\u524d\u7aef\u7cbe\u8bfb\u5468\u520a\u3002\u5e2e\u4f60\u7406\u89e3\u6700\u524d\u6cbf\u3001\u5b9e\u7528\u7684\u6280\u672f\u3002"
+    },
+    {
+      "url": "https://github.com/haizlin/fe-interview.git",
+      "name": "fe-interview",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\u524d\u7aef\u9762\u8bd5\u6bcf\u65e5 3+1\uff0c\u4ee5\u9762\u8bd5\u9898\u6765\u9a71\u52a8\u5b66\u4e60\uff0c\u63d0\u5021\u6bcf\u65e5\u5b66\u4e60\u4e0e\u601d\u8003\uff0c\u6bcf\u5929\u8fdb\u6b65\u4e00\u70b9\uff01\u6bcf\u5929\u65e9\u4e0a5\u70b9\u7eaf\u624b\u5de5\u53d1\u5e03\u9762\u8bd5\u9898\uff08\u6b7b\u78d5\u81ea\u5df1\uff0c\u6109\u60a6\u5927\u5bb6\uff09\uff0c6000+\u9053\u524d\u7aef\u9762\u8bd5\u9898\u5168\u9762..."
+    },
+    {
+      "url": "https://github.com/marko-js/marko.git",
+      "name": "marko",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "A declarative, HTML-based language that makes building web apps fun"
+    },
+    {
+      "url": "https://github.com/mdbootstrap/TW-Elements.git",
+      "name": "TW-Elements",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\ud835\ude43\ud835\ude6a\ud835\ude5c\ud835\ude5a collection of Tailwind MIT licensed (free) components, sections and temp..."
+    },
+    {
+      "url": "https://github.com/mdbootstrap/material-design-for-bootstrap.git",
+      "name": "material-design-for-bootstrap",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Important! A new UI Kit version for Bootstrap 5 is available. Access the late..."
+    },
+    {
+      "url": "https://github.com/hiteshchoudhary/apihub.git",
+      "name": "apihub",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Your own API Hub to learn and master API interaction. Ideal for frontend, mob..."
+    },
+    {
+      "url": "https://github.com/marmelab/gremlins.js.git",
+      "name": "gremlins.js",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Monkey testing library for web apps and Node.js"
+    },
+    {
+      "url": "https://github.com/lgwebdream/FE-Interview.git",
+      "name": "FE-Interview",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\ud83d\udd25\ud83d\udd25\ud83d\udd25 \u524d\u7aef\u9762\u8bd5\uff0c\u72ec\u6709\u524d\u7aef\u9762\u8bd5\u9898\u8be6\u89e3\uff0c\u524d\u7aef\u9762\u8bd5\u5237\u9898\u5fc5\u5907\uff0c1000+\u524d\u7aef\u9762\u8bd5\u771f\u9898\uff0cHtml\u3001Css\u3001JavaScript\u3001Vue\u3001React\u3001Node\u3001Ty..."
+    },
+    {
+      "url": "https://github.com/marionettejs/backbone.marionette.git",
+      "name": "backbone.marionette",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "The Backbone Framework"
+    },
+    {
+      "url": "https://github.com/webhooksite/webhook.site.git",
+      "name": "webhook.site",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\u2693\ufe0f Easily test HTTP webhooks with this handy tool that displays requests inst..."
+    },
+    {
+      "url": "https://github.com/imba/imba.git",
+      "name": "imba",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\ud83d\udc24 The friendly full-stack language"
+    },
+    {
+      "url": "https://github.com/NervJS/nerv.git",
+      "name": "nerv",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "A blazing fast React alternative, compatible with IE8 and React 16."
+    },
+    {
+      "url": "https://github.com/baidu/san.git",
+      "name": "san",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "A fast, portable, flexible JavaScript component framework"
+    },
+    {
+      "url": "https://github.com/Clooos/Bubble-Card.git",
+      "name": "Bubble-Card",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Bubble Card is a minimalist card collection for Home Assistant with a nice po..."
+    },
+    {
+      "url": "https://github.com/neomjs/neo.git",
+      "name": "neo",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "The Application Engine for the AI Era. A multi-threaded, AI-native runtime wi..."
+    },
+    {
+      "url": "https://github.com/sl1673495/blogs.git",
+      "name": "blogs",
+      "category": "frontend",
+      "language": "javascript",
+      "description": ":book: \u5168\u7f51 100w+ \u9605\u8bfb\u91cf\u7684\u8fdb\u9636\u524d\u7aef\u6280\u672f\u535a\u5ba2\u4ed3\u5e93\uff0cVue \u6e90\u7801\u89e3\u6790\uff0cReact \u6df1\u5ea6\u5b9e\u8df5\uff0cTypeScript \u8fdb\u9636\u827a\u672f\uff0c\u5de5\u7a0b\u5316\uff0c\u6027\u80fd\u4f18\u5316\u5b9e\u8df5\u2026\u2026"
+    },
+    {
+      "url": "https://github.com/redux-orm/redux-orm.git",
+      "name": "redux-orm",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "NOT MAINTAINED \u2013 A small, simple and immutable ORM to manage relational data ..."
+    },
+    {
+      "url": "https://github.com/azl397985856/fe-interview.git",
+      "name": "fe-interview",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\u5b87\u5b99\u6700\u5f3a\u7684\u524d\u7aef\u9762\u8bd5\u6307\u5357 (https://lucifer.ren/fe-interview)"
+    },
+    {
+      "url": "https://github.com/liyupi/code-nav.git",
+      "name": "code-nav",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\ud83d\udc8e \u7a0b\u5e8f\u5458\u4e00\u7ad9\u5f0f\u7f16\u7a0b\u5b66\u4e60\u4ea4\u6d41\u793e\u533a\uff0c\u514d\u8d39\u7684\u7f16\u7a0b\u5b66\u4e60\u8def\u7ebf\u3001\u5165\u95e8\u6559\u7a0b\u3001\u539f\u521b\u9879\u76ee\u6559\u7a0b\u3001\u7a0b\u5e8f\u5458bug\u4fee\u590d\u624b\u518c\u3001\u4fdd\u59c6\u7ea7\u5199\u7b80\u5386\u6280\u5de7\uff0c\u5e2e\u4f60\u5b66\u597d\u7f16\u7a0b\u3001\u505a\u51fa\u9879\u76ee\u3001\u62ff\u5230\u6ee1\u610f\u7684 ..."
+    },
+    {
+      "url": "https://github.com/javierbyte/img2css.git",
+      "name": "img2css",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Convert any image to pure CSS. Recreates images using only box-shadows."
+    },
+    {
+      "url": "https://github.com/blenderskool/blaze.git",
+      "name": "blaze",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\u26a1 File sharing progressive web app built using WebTorrent and WebSockets"
+    },
+    {
+      "url": "https://github.com/sadanandpai/frontend-mini-challenges.git",
+      "name": "frontend-mini-challenges",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Collection of frontend challenges for learning and interviews"
+    },
+    {
+      "url": "https://github.com/FortAwesome/vue-fontawesome.git",
+      "name": "vue-fontawesome",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Font Awesome Vue component"
+    },
+    {
+      "url": "https://github.com/survivejs/webpack-book.git",
+      "name": "webpack-book",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "From apprentice to master (CC BY-NC-ND)"
+    },
+    {
+      "url": "https://github.com/smallbets/userbase.git",
+      "name": "userbase",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Create secure and private web apps using only static JavaScript, HTML, and CSS."
+    },
+    {
+      "url": "https://github.com/vercel/next.js.git",
+      "name": "next.js",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "The React Framework"
+    },
+    {
+      "url": "https://github.com/facebook/create-react-app.git",
+      "name": "create-react-app",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Set up a modern web app by running one command."
+    },
+    {
+      "url": "https://github.com/mui/material-ui.git",
+      "name": "material-ui",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Material UI: Comprehensive React component library that implements Google's M..."
+    },
+    {
+      "url": "https://github.com/leonardomso/33-js-concepts.git",
+      "name": "33-js-concepts",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\ud83d\udcdc 33 JavaScript concepts every developer should know."
+    },
+    {
+      "url": "https://github.com/gatsbyjs/gatsby.git",
+      "name": "gatsby",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "React-based framework with performance, scalability, and security built in."
+    },
+    {
+      "url": "https://github.com/typescript-cheatsheets/react.git",
+      "name": "react",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Cheatsheets for experienced React developers getting started with TypeScript"
+    },
+    {
+      "url": "https://github.com/Asabeneh/30-Days-Of-JavaScript.git",
+      "name": "30-Days-Of-JavaScript",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "30 days of JavaScript programming challenge is a step-by-step guide to learn ..."
+    },
+    {
+      "url": "https://github.com/meteor/meteor.git",
+      "name": "meteor",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "Meteor, the JavaScript App Platform"
+    },
+    {
+      "url": "https://github.com/sudheerj/reactjs-interview-questions.git",
+      "name": "reactjs-interview-questions",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "List of top 500 ReactJS Interview Questions & Answers....Coding exercise ques..."
+    },
+    {
+      "url": "https://github.com/preactjs/preact.git",
+      "name": "preact",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "\u269b\ufe0f Fast 3kB React alternative with the same modern API. Components & Virtual ..."
+    },
+    {
+      "url": "https://github.com/DavidHDev/react-bits.git",
+      "name": "react-bits",
+      "category": "frontend",
+      "language": "javascript",
+      "description": "An open source collection of animated, interactive & fully customizable React..."
+    },
+    {
+      "url": "https://github.com/cloudreve/cloudreve.git",
+      "name": "cloudreve",
+      "category": "cloud",
+      "language": "go",
+      "description": "\ud83c\udf29 Self-hosted file management and sharing system, supports multiple storage p..."
+    },
+    {
+      "url": "https://github.com/chai2010/advanced-go-programming-book.git",
+      "name": "advanced-go-programming-book",
+      "category": "cloud",
+      "language": "go",
+      "description": ":books: \u300aGo\u8bed\u8a00\u9ad8\u7ea7\u7f16\u7a0b\u300b\u5f00\u6e90\u56fe\u4e66\uff0c\u6db5\u76d6CGO\u3001Go\u6c47\u7f16\u8bed\u8a00\u3001RPC\u5b9e\u73b0\u3001Protobuf\u63d2\u4ef6\u5b9e\u73b0\u3001Web\u6846\u67b6\u5b9e\u73b0\u3001\u5206\u5e03\u5f0f\u7cfb\u7edf\u7b49\u9ad8\u9636\u4e3b\u9898(\u5b8c\u7a3f)"
+    },
+    {
+      "url": "https://github.com/loft-sh/devpod.git",
+      "name": "devpod",
+      "category": "devops",
+      "language": "go",
+      "description": "Codespaces but open-source, client-only and unopinionated: Works with any IDE..."
+    },
+    {
+      "url": "https://github.com/gotify/server.git",
+      "name": "server",
+      "category": "cloud",
+      "language": "go",
+      "description": "A simple server for sending and receiving messages in real-time per WebSocket..."
+    },
+    {
+      "url": "https://github.com/kopia/kopia.git",
+      "name": "kopia",
+      "category": "cloud",
+      "language": "go",
+      "description": "Cross-platform backup tool for Windows, macOS & Linux with fast, incremental ..."
+    },
+    {
+      "url": "https://github.com/infracost/infracost.git",
+      "name": "infracost",
+      "category": "devops",
+      "language": "go",
+      "description": "Cloud cost estimates for Terraform in pull requests\ud83d\udcb0\ud83d\udcc9 Shift FinOps Left!"
+    },
+    {
+      "url": "https://github.com/encoredev/encore.git",
+      "name": "encore",
+      "category": "devops",
+      "language": "go",
+      "description": "Open source framework for building robust type-safe distributed systems with ..."
+    },
+    {
+      "url": "https://github.com/gravitl/netmaker.git",
+      "name": "netmaker",
+      "category": "devops",
+      "language": "go",
+      "description": "Netmaker makes networks with WireGuard. Netmaker automates fast, secure, and ..."
+    },
+    {
+      "url": "https://github.com/google/go-cloud.git",
+      "name": "go-cloud",
+      "category": "cloud",
+      "language": "go",
+      "description": "The Go Cloud Development Kit (Go CDK): A library and tools for open cloud dev..."
+    },
+    {
+      "url": "https://github.com/linuxkit/linuxkit.git",
+      "name": "linuxkit",
+      "category": "cloud",
+      "language": "go",
+      "description": "A toolkit for building secure, portable and lean operating systems for contai..."
+    },
+    {
+      "url": "https://github.com/turbot/steampipe.git",
+      "name": "steampipe",
+      "category": "data_processing",
+      "language": "go",
+      "description": "Zero-ETL, infinite possibilities. Live query APIs, code & more with SQL. No D..."
+    },
+    {
+      "url": "https://github.com/alexellis/k3sup.git",
+      "name": "k3sup",
+      "category": "devops",
+      "language": "go",
+      "description": "bootstrap K3s over SSH in < 60s \ud83d\ude80"
+    },
+    {
+      "url": "https://github.com/jpillora/cloud-torrent.git",
+      "name": "cloud-torrent",
+      "category": "cloud",
+      "language": "go",
+      "description": "\u2601\ufe0f\u00a0Cloud Torrent: a self-hosted remote torrent client"
+    },
+    {
+      "url": "https://github.com/lxc/incus.git",
+      "name": "incus",
+      "category": "cloud",
+      "language": "go",
+      "description": "Powerful system container and virtual machine manager "
+    },
+    {
+      "url": "https://github.com/wallix/awless.git",
+      "name": "awless",
+      "category": "devops",
+      "language": "go",
+      "description": "A Mighty CLI for AWS"
+    },
+    {
+      "url": "https://github.com/wal-g/wal-g.git",
+      "name": "wal-g",
+      "category": "cloud",
+      "language": "go",
+      "description": "Archival and Restoration for databases in the Cloud"
+    },
+    {
+      "url": "https://github.com/spegel-org/spegel.git",
+      "name": "spegel",
+      "category": "devops",
+      "language": "go",
+      "description": "Stateless cluster local OCI registry mirror."
+    },
+    {
+      "url": "https://github.com/digitalocean/doctl.git",
+      "name": "doctl",
+      "category": "cloud",
+      "language": "go",
+      "description": "The official command line interface for the DigitalOcean API."
+    },
+    {
+      "url": "https://github.com/cyclops-ui/cyclops.git",
+      "name": "cyclops",
+      "category": "devops",
+      "language": "go",
+      "description": "Developer Friendly Kubernetes \ud83d\udc41\ufe0f"
+    },
+    {
+      "url": "https://github.com/zalando/skipper.git",
+      "name": "skipper",
+      "category": "devops",
+      "language": "go",
+      "description": "An HTTP router and reverse proxy for service composition, including use cases..."
+    },
+    {
+      "url": "https://github.com/hairyhenderson/gomplate.git",
+      "name": "gomplate",
+      "category": "devops",
+      "language": "go",
+      "description": "A flexible commandline tool for template rendering. Supports lots of local an..."
+    },
+    {
+      "url": "https://github.com/minio/minio-go.git",
+      "name": "minio-go",
+      "category": "cloud",
+      "language": "go",
+      "description": "MinIO Go client SDK for S3 compatible object storage"
+    },
+    {
+      "url": "https://github.com/yunionio/cloudpods.git",
+      "name": "cloudpods",
+      "category": "devops",
+      "language": "go",
+      "description": "A cloud-native open-source unified multi-cloud and hybrid-cloud platform. \u5f00\u6e90\u3001..."
+    },
+    {
+      "url": "https://github.com/frain-dev/convoy.git",
+      "name": "convoy",
+      "category": "cloud",
+      "language": "go",
+      "description": "The Cloud Native Webhooks Gateway"
+    },
+    {
+      "url": "https://github.com/cycloidio/terracognita.git",
+      "name": "terracognita",
+      "category": "devops",
+      "language": "go",
+      "description": "Reads from existing public and private cloud providers (reverse Terraform) an..."
+    },
+    {
+      "url": "https://github.com/BishopFox/cloudfox.git",
+      "name": "cloudfox",
+      "category": "cloud",
+      "language": "go",
+      "description": "Automating situational awareness for cloud penetration tests."
+    },
+    {
+      "url": "https://github.com/go-gitea/gitea.git",
+      "name": "gitea",
+      "category": "devops",
+      "language": "go",
+      "description": "Git with a cup of tea! Painless self-hosted all-in-one software development s..."
+    },
+    {
+      "url": "https://github.com/yeasy/docker_practice.git",
+      "name": "docker_practice",
+      "category": "devops",
+      "language": "go",
+      "description": "\u6700\u65b0Docker\u5bb9\u5668\u6280\u672f\uff0c\u4ece\u771f\u5b9e\u6848\u4f8b\u4e2d\u5b66\u4e60\u6700\u4f73\u5b9e\u8df5\uff01| Learn and understand Docker&Container technologie..."
+    },
+    {
+      "url": "https://github.com/getsops/sops.git",
+      "name": "sops",
+      "category": "devops",
+      "language": "go",
+      "description": "Simple and flexible tool for managing secrets"
+    },
+    {
+      "url": "https://github.com/dariubs/GoBooks.git",
+      "name": "GoBooks",
+      "category": "devops",
+      "language": "go",
+      "description": "List of Golang books"
+    },
+    {
+      "url": "https://github.com/vuejs/vue.git",
+      "name": "vue",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "This is the repo for Vue 2. For Vue 3, go to https://github.com/vuejs/core"
+    },
+    {
+      "url": "https://github.com/ionic-team/ionic-framework.git",
+      "name": "ionic-framework",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "A powerful cross-platform UI toolkit for building native-quality iOS, Android..."
+    },
+    {
+      "url": "https://github.com/expo/expo.git",
+      "name": "expo",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "An open-source framework for making universal native apps with React. Expo ru..."
+    },
+    {
+      "url": "https://github.com/fastapi/full-stack-fastapi-template.git",
+      "name": "full-stack-fastapi-template",
+      "category": "devops",
+      "language": "typescript",
+      "description": "Full stack, modern web application template. Using FastAPI, React, SQLModel, ..."
+    },
+    {
+      "url": "https://github.com/Dokploy/dokploy.git",
+      "name": "dokploy",
+      "category": "devops",
+      "language": "typescript",
+      "description": "Open Source Alternative to Vercel, Netlify and Heroku."
+    },
+    {
+      "url": "https://github.com/onlook-dev/onlook.git",
+      "name": "onlook",
+      "category": "machine_learning",
+      "language": "typescript",
+      "description": "The Cursor for Designers \u2022 An Open-Source AI-First Design tool \u2022 Visually bui..."
+    },
+    {
+      "url": "https://github.com/baidu/amis.git",
+      "name": "amis",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "\u524d\u7aef\u4f4e\u4ee3\u7801\u6846\u67b6\uff0c\u901a\u8fc7 JSON \u914d\u7f6e\u5c31\u80fd\u751f\u6210\u5404\u79cd\u9875\u9762\u3002"
+    },
+    {
+      "url": "https://github.com/nhn/tui.editor.git",
+      "name": "tui.editor",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "\ud83c\udf5e\ud83d\udcdd Markdown WYSIWYG Editor. GFM Standard + Chart & UML Extensible."
+    },
+    {
+      "url": "https://github.com/nhn/tui.calendar.git",
+      "name": "tui.calendar",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "\ud83c\udf5e\ud83d\udcc5A JavaScript calendar that has everything you need."
+    },
+    {
+      "url": "https://github.com/cs01/gdbgui.git",
+      "name": "gdbgui",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Browser-based frontend to gdb (gnu debugger). Add breakpoints, view the stack..."
+    },
+    {
+      "url": "https://github.com/NG-ZORRO/ng-zorro-antd.git",
+      "name": "ng-zorro-antd",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Angular UI Component Library based on Ant Design"
+    },
+    {
+      "url": "https://github.com/Stability-AI/StableStudio.git",
+      "name": "StableStudio",
+      "category": "machine_learning",
+      "language": "typescript",
+      "description": "Community interface for generative AI"
+    },
+    {
+      "url": "https://github.com/iib0011/omni-tools.git",
+      "name": "omni-tools",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Self-hosted collection of powerful web-based tools for everyday tasks. No ads..."
+    },
+    {
+      "url": "https://github.com/BuilderIO/builder.git",
+      "name": "builder",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Visual Development for React, Vue, Svelte, Qwik, and more"
+    },
+    {
+      "url": "https://github.com/webstudio-is/webstudio.git",
+      "name": "webstudio",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Open source website builder and Webflow alternative. Webstudio is an advanced..."
+    },
+    {
+      "url": "https://github.com/liyupi/codefather.git",
+      "name": "codefather",
+      "category": "machine_learning",
+      "language": "typescript",
+      "description": "\u7a0b\u5e8f\u5458\u9c7c\u76ae\u7684\u7f16\u7a0b\u5b9d\u5178 \u2b50\ufe0f 2026\u5e74\u6700\u5168\u7f16\u7a0b\u5b66\u4e60\u8def\u7ebf\u56fe\uff01\u5305\u542bJava\u5b66\u4e60\u8def\u7ebf\u3001\u524d\u7aef\u5b66\u4e60\u8def\u7ebf\u3001Python\u5b66\u4e60\u8def\u7ebf\u3001C++\u5b66\u4e60\u8def\u7ebf\u3001\u7b97\u6cd5\u5b66\u4e60\u8def\u7ebf\u3001\u8ba1\u7b97\u673a\u57fa..."
+    },
+    {
+      "url": "https://github.com/plasmicapp/plasmic.git",
+      "name": "plasmic",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Visual builder for React. Build apps, websites, and content. Integrate with y..."
+    },
+    {
+      "url": "https://github.com/home-assistant/frontend.git",
+      "name": "frontend",
+      "category": "frontend",
+      "language": "typescript",
+      "description": ":lollipop: Frontend for Home Assistant"
+    },
+    {
+      "url": "https://github.com/liyupi/mianshiya.git",
+      "name": "mianshiya",
+      "category": "machine_learning",
+      "language": "typescript",
+      "description": "\u6301\u7eed\u7ef4\u62a4\u7684\u4f01\u4e1a\u9762\u8bd5\u9898\u5e93\u7f51\u7ad9\uff0c\u5e2e\u4f60\u62ff\u5230\u6ee1\u610f offer\uff01\u2b50\ufe0f 2026\u5e74\u6700\u65b0Java\u9762\u8bd5\u9898\u3001\u524d\u7aef\u9762\u8bd5\u9898\u3001AI\u5927\u6a21\u578b\u9762\u8bd5\u9898\u3001AI Agent\u9762\u8bd5\u9898\u3001RAG\u9762\u8bd5..."
+    },
+    {
+      "url": "https://github.com/MCP-UI-Org/mcp-ui.git",
+      "name": "mcp-ui",
+      "category": "machine_learning",
+      "language": "typescript",
+      "description": "UI over MCP. Create next-gen UI experiences with the protocol and SDK!"
+    },
+    {
+      "url": "https://github.com/hepengwei/visualization-collection.git",
+      "name": "visualization-collection",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "\ud83c\udf08 \u4e00\u4e2a\u4e13\u6ce8\u4e8e\u524d\u7aef\u89c6\u89c9\u6548\u679c\u7684\u96c6\u5408\u5e94\u7528\uff0c\u5305\u542bCSS\u52a8\u6548\u3001Canvas\u52a8\u753b\u3001Three.js3D\u3001\u4eba\u5de5\u667a\u80fd\u5e94\u7528\u7b49\u4e0a\u767e\u4e2a\u6848\u4f8b\uff08\u6301\u7eed\u66f4\u65b0\uff09"
+    },
+    {
+      "url": "https://github.com/KingSora/OverlayScrollbars.git",
+      "name": "OverlayScrollbars",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "A javascript scrollbar plugin that hides the native scrollbars, provides cust..."
+    },
+    {
+      "url": "https://github.com/imcuttle/mometa.git",
+      "name": "mometa",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "\ud83d\udee0 [Beta] \u9762\u5411\u7814\u53d1\u7684\u4f4e\u4ee3\u7801\u5143\u7f16\u7a0b\uff0c\u4ee3\u7801\u53ef\u89c6\u7f16\u8f91\uff0c\u8f85\u52a9\u7f16\u7801\u5de5\u5177 The coding tools which is visual code edit..."
+    },
+    {
+      "url": "https://github.com/liyupi/sql-mother.git",
+      "name": "sql-mother",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "\u7a0b\u5e8f\u5458\u9c7c\u76ae\u539f\u521b\u9879\u76ee\uff0c\u514d\u8d39\u7684\u95ef\u5173\u4ea4\u4e92\u5f0f SQL \u81ea\u5b66\u6559\u7a0b\u7f51\u7ad9\uff0c\u4ece\u96f6\u57fa\u7840\u5230\u8fdb\u9636\uff0c\u5e26\u4f60\u638c\u63e1\u5e38\u7528 SQL \u8bed\u6cd5\uff08MySQL\u3001SQLite\u3001PostgreSQL\uff09\u3001..."
+    },
+    {
+      "url": "https://github.com/FortAwesome/react-fontawesome.git",
+      "name": "react-fontawesome",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Official React Component for Font Awesome Icons"
+    },
+    {
+      "url": "https://github.com/dolphin-wood/smooth-scrollbar.git",
+      "name": "smooth-scrollbar",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Customizable, Extendable, and High-Performance JavaScript-Based Scrollbar Sol..."
+    },
+    {
+      "url": "https://github.com/web-infra-dev/rsbuild.git",
+      "name": "rsbuild",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "Simple, fast, extensible build tool. Powered by Rspack \ud83e\udd80"
+    },
+    {
+      "url": "https://github.com/glitternetwork/pinme.git",
+      "name": "pinme",
+      "category": "devops",
+      "language": "typescript",
+      "description": "Deploy Your Frontend in a Single Command. Claude Code Skills supported."
+    },
+    {
+      "url": "https://github.com/rtivital/omatsuri.git",
+      "name": "omatsuri",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "PWA with 12 open source frontend focused tools"
+    },
+    {
+      "url": "https://github.com/freeCodeCamp/freeCodeCamp.git",
+      "name": "freeCodeCamp",
+      "category": "frontend",
+      "language": "typescript",
+      "description": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programmi..."
+    },
+    {
+      "url": "https://github.com/sxyazi/yazi.git",
+      "name": "yazi",
+      "category": "frontend",
+      "language": "rust",
+      "description": "\ud83d\udca5 Blazing fast terminal file manager written in Rust, based on async I/O."
+    },
+    {
+      "url": "https://github.com/sharkdp/hyperfine.git",
+      "name": "hyperfine",
+      "category": "cli",
+      "language": "rust",
+      "description": "A command-line benchmarking tool"
+    },
+    {
+      "url": "https://github.com/jj-vcs/jj.git",
+      "name": "jj",
+      "category": "cli",
+      "language": "rust",
+      "description": "A Git-compatible VCS that is both simple and powerful"
+    },
+    {
+      "url": "https://github.com/googleworkspace/cli.git",
+      "name": "cli",
+      "category": "automation",
+      "language": "rust",
+      "description": "Google Workspace CLI \u2014 one command-line tool for Drive, Gmail, Calendar, Shee..."
+    },
+    {
+      "url": "https://github.com/ratatui/ratatui.git",
+      "name": "ratatui",
+      "category": "cli",
+      "language": "rust",
+      "description": "A Rust crate for cooking up terminal user interfaces (TUIs) \ud83d\udc68\u200d\ud83c\udf73\ud83d\udc00 https://rata..."
+    },
+    {
+      "url": "https://github.com/Rigellute/spotify-tui.git",
+      "name": "spotify-tui",
+      "category": "cli",
+      "language": "rust",
+      "description": "Spotify for the terminal written in Rust \ud83d\ude80"
+    },
+    {
+      "url": "https://github.com/Orange-OpenSource/hurl.git",
+      "name": "hurl",
+      "category": "testing",
+      "language": "rust",
+      "description": "Hurl, run and test HTTP requests with plain text."
+    },
+    {
+      "url": "https://github.com/asciinema/asciinema.git",
+      "name": "asciinema",
+      "category": "cli",
+      "language": "rust",
+      "description": "Terminal session recorder, streamer and player \ud83d\udcf9"
+    },
+    {
+      "url": "https://github.com/denisidoro/navi.git",
+      "name": "navi",
+      "category": "cli",
+      "language": "rust",
+      "description": "An interactive cheatsheet tool for the command-line"
+    },
+    {
+      "url": "https://github.com/rtk-ai/rtk.git",
+      "name": "rtk",
+      "category": "cli",
+      "language": "rust",
+      "description": "CLI proxy that reduces LLM token consumption by 60-90% on common dev commands..."
+    },
+    {
+      "url": "https://github.com/XAMPPRocky/tokei.git",
+      "name": "tokei",
+      "category": "cli",
+      "language": "rust",
+      "description": "Count your code, quickly."
+    },
+    {
+      "url": "https://github.com/ClementTsang/bottom.git",
+      "name": "bottom",
+      "category": "monitoring",
+      "language": "rust",
+      "description": "Yet another cross-platform graphical process/system monitor."
+    },
+    {
+      "url": "https://github.com/orf/gping.git",
+      "name": "gping",
+      "category": "cli",
+      "language": "rust",
+      "description": "Ping, but with a graph"
+    },
+    {
+      "url": "https://github.com/svenstaro/genact.git",
+      "name": "genact",
+      "category": "cli",
+      "language": "rust",
+      "description": "\ud83c\udf00 A nonsense activity generator"
+    },
+    {
+      "url": "https://github.com/o2sh/onefetch.git",
+      "name": "onefetch",
+      "category": "cli",
+      "language": "rust",
+      "description": "Command-line Git information tool"
+    },
+    {
+      "url": "https://github.com/imsnif/bandwhich.git",
+      "name": "bandwhich",
+      "category": "cli",
+      "language": "rust",
+      "description": "Terminal bandwidth utilization tool"
+    },
+    {
+      "url": "https://github.com/GitoxideLabs/gitoxide.git",
+      "name": "gitoxide",
+      "category": "cli",
+      "language": "rust",
+      "description": "An idiomatic, lean, fast & safe pure Rust implementation of Git"
+    },
+    {
+      "url": "https://github.com/hatoo/oha.git",
+      "name": "oha",
+      "category": "cli",
+      "language": "rust",
+      "description": "Ohayou(\u304a\u306f\u3088\u3046), HTTP load generator, inspired by rakyll/hey with tui animation."
+    },
+    {
+      "url": "https://github.com/sigoden/aichat.git",
+      "name": "aichat",
+      "category": "machine_learning",
+      "language": "rust",
+      "description": "All-in-one LLM CLI tool featuring Shell Assistant, Chat-REPL, RAG, AI Tools &..."
+    },
+    {
+      "url": "https://github.com/vi/websocat.git",
+      "name": "websocat",
+      "category": "cli",
+      "language": "rust",
+      "description": "Command-line client for WebSockets, like netcat (or curl) for ws:// with adva..."
+    },
+    {
+      "url": "https://github.com/mfontanini/presenterm.git",
+      "name": "presenterm",
+      "category": "cli",
+      "language": "rust",
+      "description": "A markdown terminal slideshow tool"
+    },
+    {
+      "url": "https://github.com/pemistahl/grex.git",
+      "name": "grex",
+      "category": "cli",
+      "language": "rust",
+      "description": "A command-line tool and Rust library with Python bindings for generating regu..."
+    },
+    {
+      "url": "https://github.com/ducaale/xh.git",
+      "name": "xh",
+      "category": "cli",
+      "language": "rust",
+      "description": "Friendly and fast tool for sending HTTP requests"
+    },
+    {
+      "url": "https://github.com/svenstaro/miniserve.git",
+      "name": "miniserve",
+      "category": "cli",
+      "language": "rust",
+      "description": "\ud83c\udf1f For when you really just want to serve some files over HTTP right now!"
+    },
+    {
+      "url": "https://github.com/timvisee/ffsend.git",
+      "name": "ffsend",
+      "category": "cli",
+      "language": "rust",
+      "description": ":mailbox_with_mail: Easily and securely share files from the command line. A ..."
+    },
+    {
+      "url": "https://github.com/Snailclimb/JavaGuide.git",
+      "name": "JavaGuide",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Java \u9762\u8bd5 & \u540e\u7aef\u901a\u7528\u9762\u8bd5\u6307\u5357\uff0c\u8986\u76d6\u8ba1\u7b97\u673a\u57fa\u7840\u3001\u6570\u636e\u5e93\u3001\u5206\u5e03\u5f0f\u3001\u9ad8\u5e76\u53d1\u3001\u7cfb\u7edf\u8bbe\u8ba1\u4e0e AI \u5e94\u7528\u5f00\u53d1"
+    },
+    {
+      "url": "https://github.com/macrozheng/mall.git",
+      "name": "mall",
+      "category": "devops",
+      "language": "java",
+      "description": "mall\u9879\u76ee\u662f\u4e00\u5957\u7535\u5546\u7cfb\u7edf\uff0c\u5305\u62ec\u524d\u53f0\u5546\u57ce\u7cfb\u7edf\u53ca\u540e\u53f0\u7ba1\u7406\u7cfb\u7edf\uff0c\u57fa\u4e8eSpring Boot+MyBatis\u5b9e\u73b0\uff0c\u91c7\u7528Docker\u5bb9\u5668\u5316\u90e8\u7f72\u3002 \u524d\u53f0\u5546\u57ce\u7cfb\u7edf\u5305\u542b..."
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-boot.git",
+      "name": "spring-boot",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Spring Boot helps you to create Spring-powered, production-grade applications..."
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-framework.git",
+      "name": "spring-framework",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Spring Framework"
+    },
+    {
+      "url": "https://github.com/xkcoding/spring-boot-demo.git",
+      "name": "spring-boot-demo",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\ud83d\ude80\u4e00\u4e2a\u7528\u6765\u6df1\u5165\u5b66\u4e60\u5e76\u5b9e\u6218 Spring Boot \u7684\u9879\u76ee\u3002"
+    },
+    {
+      "url": "https://github.com/ityouknow/spring-boot-examples.git",
+      "name": "spring-boot-examples",
+      "category": "devops",
+      "language": "java",
+      "description": "about learning Spring Boot via examples. Spring Boot \u6559\u7a0b\u3001\u6280\u672f\u6808\u793a\u4f8b\u4ee3\u7801\uff0c\u5feb\u901f\u7b80\u5355\u4e0a\u624b\u6559\u7a0b\u3002 "
+    },
+    {
+      "url": "https://github.com/alibaba/spring-cloud-alibaba.git",
+      "name": "spring-cloud-alibaba",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Spring Cloud Alibaba provides a one-stop solution for application development..."
+    },
+    {
+      "url": "https://github.com/hollischuang/toBeTopJavaer.git",
+      "name": "toBeTopJavaer",
+      "category": "web_framework",
+      "language": "java",
+      "description": "To Be Top Javaer - Java\u5de5\u7a0b\u5e08\u6210\u795e\u4e4b\u8def"
+    },
+    {
+      "url": "https://github.com/redisson/redisson.git",
+      "name": "redisson",
+      "category": "messaging",
+      "language": "java",
+      "description": "Redisson - Valkey & Redis Java client. Real-Time Data Platform. Sync/Async/Rx..."
+    },
+    {
+      "url": "https://github.com/doocs/source-code-hunter.git",
+      "name": "source-code-hunter",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\ud83d\ude31 \u4ece\u6e90\u7801\u5c42\u9762\uff0c\u5256\u6790\u6316\u6398\u4e92\u8054\u7f51\u884c\u4e1a\u4e3b\u6d41\u6280\u672f\u7684\u5e95\u5c42\u5b9e\u73b0\u539f\u7406\uff0c\u4e3a\u5e7f\u5927\u5f00\u53d1\u8005 \u201c\u63d0\u5347\u6280\u672f\u6df1\u5ea6\u201d \u63d0\u4f9b\u4fbf\u5229\u3002\u76ee\u524d\u5f00\u653e Spring \u5168\u5bb6\u6876\uff0cMybatis\u3001Net..."
+    },
+    {
+      "url": "https://github.com/forezp/SpringCloudLearning.git",
+      "name": "SpringCloudLearning",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\u300a\u53f2\u4e0a\u6700\u7b80\u5355\u7684Spring Cloud\u6559\u7a0b\u6e90\u7801\u300b"
+    },
+    {
+      "url": "https://github.com/shuzheng/zheng.git",
+      "name": "zheng",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\u57fa\u4e8eSpring+SpringMVC+Mybatis\u5206\u5e03\u5f0f\u654f\u6377\u5f00\u53d1\u7cfb\u7edf\u67b6\u6784\uff0c\u63d0\u4f9b\u6574\u5957\u516c\u5171\u5fae\u670d\u52a1\u670d\u52a1\u6a21\u5757\uff1a\u96c6\u4e2d\u6743\u9650\u7ba1\u7406\uff08\u5355\u70b9\u767b\u5f55\uff09\u3001\u5185\u5bb9\u7ba1\u7406\u3001\u652f\u4ed8\u4e2d\u5fc3\u3001\u7528\u6237..."
+    },
+    {
+      "url": "https://github.com/seaswalker/spring-analysis.git",
+      "name": "spring-analysis",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Spring\u6e90\u7801\u9605\u8bfb"
+    },
+    {
+      "url": "https://github.com/codecentric/spring-boot-admin.git",
+      "name": "spring-boot-admin",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Admin UI for administration of spring boot applications"
+    },
+    {
+      "url": "https://github.com/Activiti/Activiti.git",
+      "name": "Activiti",
+      "category": "cloud",
+      "language": "java",
+      "description": "Activiti is a light-weight workflow and Business Process Management (BPM) Pla..."
+    },
+    {
+      "url": "https://github.com/xuchengsheng/spring-reading.git",
+      "name": "spring-reading",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\u6db5\u76d6\u4e86 Spring \u6846\u67b6\u7684\u6838\u5fc3\u6982\u5ff5\u548c\u5173\u952e\u529f\u80fd\uff0c\u5305\u62ec\u63a7\u5236\u53cd\u8f6c\uff08IOC\uff09\u5bb9\u5668\u7684\u4f7f\u7528\uff0c\u9762\u5411\u5207\u9762\u7f16\u7a0b\uff08AOP\uff09\u7684\u539f\u7406\u4e0e\u5b9e\u8df5\uff0c\u4e8b\u52a1\u7ba1\u7406\u7684\u65b9\u5f0f\u4e0e\u5b9e\u73b0\uff0cSpring ..."
+    },
+    {
+      "url": "https://github.com/spring-projects/spring-security.git",
+      "name": "spring-security",
+      "category": "security",
+      "language": "java",
+      "description": "Spring Security"
+    },
+    {
+      "url": "https://github.com/CoderLeixiaoshuai/java-eight-part.git",
+      "name": "java-eight-part",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\u300eJava\u516b\u80a1\u6587\u300fJava\u9762\u8bd5\u5957\u8def\uff0cJava\u8fdb\u9636\u5b66\u4e60\uff0c\u6253\u7834\u5185\u5377\u62ff\u5927\u5382Offer\uff0c\u5347\u804c\u52a0\u85aa\uff01"
+    },
+    {
+      "url": "https://github.com/DerekYRC/mini-spring.git",
+      "name": "mini-spring",
+      "category": "web_framework",
+      "language": "java",
+      "description": "mini-spring is a simplified version of the Spring framework that helps you qu..."
+    },
+    {
+      "url": "https://github.com/springfox/springfox.git",
+      "name": "springfox",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Automated JSON API documentation for API's built with Spring"
+    },
+    {
+      "url": "https://github.com/liyifeng1994/ssm.git",
+      "name": "ssm",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\u624b\u628a\u624b\u6559\u4f60\u6574\u5408\u6700\u4f18\u96c5SSM\u6846\u67b6\uff1aSpringMVC + Spring + MyBatis"
+    },
+    {
+      "url": "https://github.com/dromara/lamp-cloud.git",
+      "name": "lamp-cloud",
+      "category": "cloud",
+      "language": "java",
+      "description": "[\u706f\u706f]\u5fae\u670d\u52a1\u4e2d\u540e\u53f0\u5feb\u901f\u5f00\u53d1\u5e73\u53f0\uff0c\u652f\u6301jdk21\u3001jdk17\u3001jdk8\uff0c\u4e13\u6ce8\u4e8e\u591a\u79df\u6237\u3001\u5f00\u653e\u5e73\u53f0\u89e3\u51b3\u65b9\u6848\uff0c\u4ea6\u53ef\u4f5c\u4e3a\u666e\u901a\u9879\u76ee\uff08\u975eSaaS\u67b6\u6784\uff09\u7684\u57fa\u7840\u5f00\u53d1\u6846\u67b6\u4f7f..."
+    },
+    {
+      "url": "https://github.com/ZHENFENG13/spring-boot-projects.git",
+      "name": "spring-boot-projects",
+      "category": "frontend",
+      "language": "java",
+      "description": ":fire: \u8be5\u4ed3\u5e93\u4e2d\u4e3b\u8981\u662f Spring Boot \u7684\u5165\u95e8\u5b66\u4e60\u6559\u7a0b\u4ee5\u53ca\u4e00\u4e9b\u5e38\u7528\u7684 Spring Boot \u5b9e\u6218\u9879\u76ee\u6559\u7a0b\uff0c\u5305\u62ec Spring Boot \u4f7f..."
+    },
+    {
+      "url": "https://github.com/ddd-by-examples/library.git",
+      "name": "library",
+      "category": "web_framework",
+      "language": "java",
+      "description": "A comprehensive Domain-Driven Design example with problem space strategic ana..."
+    },
+    {
+      "url": "https://github.com/alibaba/jetcache.git",
+      "name": "jetcache",
+      "category": "web_framework",
+      "language": "java",
+      "description": "JetCache is a Java cache framework."
+    },
+    {
+      "url": "https://github.com/zhanglei-workspace/shopping-management-system.git",
+      "name": "shopping-management-system",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\u8be5\u9879\u76ee\u4e3a\u591a\u4e2a\u5c0f\u9879\u76ee\u7684\u96c6\u5408\uff08\u6301\u7eed\u66f4\u65b0\u4e2d...\uff09\u3002\u5185\u5bb9\u7c7b\u4f3c\u6dd8\u5b9d\u3001\u4eac\u4e1c\u7b49\u7f51\u8d2d\u7ba1\u7406\u7cfb\u7edf\u4ee5\u53ca\u56fe\u4e66\u7ba1\u7406\u3001\u8d85\u5e02\u7ba1\u7406\u7b49\u7cfb\u7edf\u3002\u76ee\u7684\u5728\u4e8e\u4fbf\u4e8eJava\u521d\u7ea7\u7231\u597d\u8005\u5728\u5b66\u4e60\u5b8c\u67d0\u4e00\u90e8\u5206..."
+    },
+    {
+      "url": "https://github.com/javastacks/spring-boot-best-practice.git",
+      "name": "spring-boot-best-practice",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Spring Boot \u6700\u4f73\u5b9e\u8df5\uff0c\u5df2\u9002\u914d Spring Boot 4.x\uff0c\u5305\u62ec\u81ea\u52a8\u914d\u7f6e\u3001\u6838\u5fc3\u539f\u7406\u3001\u6e90\u7801\u5206\u6790\u3001\u56fd\u9645\u5316\u652f\u6301\u3001\u8c03\u8bd5\u3001\u65e5\u5fd7\u96c6\u6210\u3001\u70ed\u90e8\u7f72\u7b49\u3002"
+    },
+    {
+      "url": "https://github.com/spring-cloud/spring-cloud-netflix.git",
+      "name": "spring-cloud-netflix",
+      "category": "web_framework",
+      "language": "java",
+      "description": "Integration with Netflix OSS components"
+    },
+    {
+      "url": "https://github.com/fuzhengwei/small-spring.git",
+      "name": "small-spring",
+      "category": "web_framework",
+      "language": "java",
+      "description": "\ud83c\udf31\u300a Spring \u624b\u64b8\u4e13\u680f\u300b\uff0c\u672c\u4e13\u680f\u4ee5 Spring \u6e90\u7801\u5b66\u4e60\u4e3a\u76ee\u7684\uff0c\u901a\u8fc7\u624b\u5199\u7b80\u5316\u7248 Spring \u6846\u67b6\uff0c\u4e86\u89e3 Spring \u6838\u5fc3\u539f\u7406\u3002\u5728\u624b\u5199\u7684\u8fc7\u7a0b\u4e2d\u4f1a..."
+    },
+    {
+      "url": "https://github.com/spring-cloud/spring-cloud-gateway.git",
+      "name": "spring-cloud-gateway",
+      "category": "networking",
+      "language": "java",
+      "description": "An API Gateway built on Spring Framework and Spring Boot providing routing an..."
+    },
+    {
+      "url": "https://github.com/busyloop/lolcat.git",
+      "name": "lolcat",
+      "category": "cli",
+      "language": "ruby",
+      "description": "Rainbows and unicorns!"
+    },
+    {
+      "url": "https://github.com/athityakumar/colorls.git",
+      "name": "colorls",
+      "category": "cli",
+      "language": "ruby",
+      "description": "A Ruby gem that beautifies the terminal's ls command, with color and font-awe..."
+    },
+    {
+      "url": "https://github.com/red-data-tools/YouPlot.git",
+      "name": "YouPlot",
+      "category": "cli",
+      "language": "ruby",
+      "description": "A command line tool that draw plots on the terminal."
+    },
+    {
+      "url": "https://github.com/piotrmurach/tty.git",
+      "name": "tty",
+      "category": "cli",
+      "language": "ruby",
+      "description": "Toolkit for developing sleek command line apps."
+    },
+    {
+      "url": "https://github.com/bashly-framework/bashly.git",
+      "name": "bashly",
+      "category": "cli",
+      "language": "ruby",
+      "description": "Bash command line framework and CLI generator"
+    },
+    {
+      "url": "https://github.com/Mark24Code/rime-auto-deploy.git",
+      "name": "rime-auto-deploy",
+      "category": "cli",
+      "language": "ruby",
+      "description": "Rime\u8f93\u5165\u6cd5\u5b89\u88c5\u811a\u672c\uff0c\u8ba9\u4e00\u5207\u66f4\u8f7b\u677e\u3002Make using Rime easy. "
+    },
+    {
+      "url": "https://github.com/twitter/twurl.git",
+      "name": "twurl",
+      "category": "cli",
+      "language": "ruby",
+      "description": "OAuth-enabled curl for the Twitter API"
+    },
+    {
+      "url": "https://github.com/jfelchner/ruby-progressbar.git",
+      "name": "ruby-progressbar",
+      "category": "cli",
+      "language": "ruby",
+      "description": "Ruby/ProgressBar is a text progress bar library for Ruby."
+    },
+    {
+      "url": "https://github.com/piotrmurach/tty-prompt.git",
+      "name": "tty-prompt",
+      "category": "cli",
+      "language": "ruby",
+      "description": "A beautiful and powerful interactive command line prompt"
+    },
+    {
+      "url": "https://github.com/bibendi/dip.git",
+      "name": "dip",
+      "category": "devops",
+      "language": "ruby",
+      "description": "The dip is a CLI dev\u2013tool that provides native-like interaction with a Docker..."
+    },
+    {
+      "url": "https://github.com/keepcosmos/terjira.git",
+      "name": "terjira",
+      "category": "cli",
+      "language": "ruby",
+      "description": "Terjira is a very interactive and easy to use CLI tool for Jira."
+    },
+    {
+      "url": "https://github.com/JacobEvelyn/friends.git",
+      "name": "friends",
+      "category": "cli",
+      "language": "ruby",
+      "description": "Spend time with the people you care about. Introvert-tested. Extrovert-approved."
+    },
+    {
+      "url": "https://github.com/dkhamsing/awesome_bot.git",
+      "name": "awesome_bot",
+      "category": "cli",
+      "language": "ruby",
+      "description": ":white_check_mark: Validate links in awesome projects"
+    },
+    {
+      "url": "https://github.com/grodowski/undercover.git",
+      "name": "undercover",
+      "category": "cli",
+      "language": "ruby",
+      "description": "undercover warns about methods, classes and blocks that were changed without ..."
+    },
+    {
+      "url": "https://github.com/ronin-rb/ronin.git",
+      "name": "ronin",
+      "category": "database",
+      "language": "ruby",
+      "description": "Ronin is a Free and Open Source Ruby Toolkit for Security Research and Develo..."
+    },
+    {
+      "url": "https://github.com/netdata/netdata.git",
+      "name": "netdata",
+      "category": "machine_learning",
+      "language": "c",
+      "description": "The fastest path to AI-powered full stack observability, even for lean teams."
+    },
+    {
+      "url": "https://github.com/redis/redis.git",
+      "name": "redis",
+      "category": "database",
+      "language": "c",
+      "description": "For developers, who are building real-time data-driven applications, Redis is..."
+    },
+    {
+      "url": "https://github.com/valkey-io/valkey.git",
+      "name": "valkey",
+      "category": "database",
+      "language": "c",
+      "description": "A flexible distributed key-value database that is optimized for caching and o..."
+    },
+    {
+      "url": "https://github.com/taosdata/TDengine.git",
+      "name": "TDengine",
+      "category": "monitoring",
+      "language": "c",
+      "description": "High-performance, scalable time-series database designed for Industrial IoT (..."
+    },
+    {
+      "url": "https://github.com/timescale/timescaledb.git",
+      "name": "timescaledb",
+      "category": "database",
+      "language": "c",
+      "description": "A time-series database for high-performance real-time analytics packaged as a..."
+    },
+    {
+      "url": "https://github.com/tursodatabase/libsql.git",
+      "name": "libsql",
+      "category": "database",
+      "language": "c",
+      "description": "libSQL is a fork of SQLite that is both Open Source, and Open Contributions."
+    },
+    {
+      "url": "https://github.com/citusdata/citus.git",
+      "name": "citus",
+      "category": "database",
+      "language": "c",
+      "description": "Distributed PostgreSQL as an extension"
+    },
+    {
+      "url": "https://github.com/Tencent/wcdb.git",
+      "name": "wcdb",
+      "category": "frontend",
+      "language": "c",
+      "description": "WCDB is a cross-platform database framework developed by WeChat."
+    },
+    {
+      "url": "https://github.com/dicedb/dicedb.git",
+      "name": "dicedb",
+      "category": "database",
+      "language": "c",
+      "description": "Open-source, low-latency key/value engine built on Valkey with query subscrip..."
+    },
+    {
+      "url": "https://github.com/cstack/db_tutorial.git",
+      "name": "db_tutorial",
+      "category": "database",
+      "language": "c",
+      "description": "Writing a sqlite clone from scratch in C"
+    },
+    {
+      "url": "https://github.com/ClickHouse/ClickHouse.git",
+      "name": "ClickHouse",
+      "category": "machine_learning",
+      "language": "cpp",
+      "description": "ClickHouse\u00ae is a real-time analytics database management system"
+    },
+    {
+      "url": "https://github.com/huihut/interview.git",
+      "name": "interview",
+      "category": "database",
+      "language": "cpp",
+      "description": "\ud83d\udcda C/C++ \u6280\u672f\u9762\u8bd5\u57fa\u7840\u77e5\u8bc6\u603b\u7ed3\uff0c\u5305\u62ec\u8bed\u8a00\u3001\u7a0b\u5e8f\u5e93\u3001\u6570\u636e\u7ed3\u6784\u3001\u7b97\u6cd5\u3001\u7cfb\u7edf\u3001\u7f51\u7edc\u3001\u94fe\u63a5\u88c5\u8f7d\u5e93\u7b49\u77e5\u8bc6\u53ca\u9762\u8bd5\u7ecf\u9a8c\u3001\u62db\u8058\u3001\u5185\u63a8\u7b49\u4fe1\u606f\u3002This reposit..."
+    },
+    {
+      "url": "https://github.com/duckdb/duckdb.git",
+      "name": "duckdb",
+      "category": "database",
+      "language": "cpp",
+      "description": "DuckDB is an analytical in-process SQL database management system"
+    },
+    {
+      "url": "https://github.com/facebook/rocksdb.git",
+      "name": "rocksdb",
+      "category": "database",
+      "language": "cpp",
+      "description": "A library that provides an embeddable, persistent key-value store for fast st..."
+    },
+    {
+      "url": "https://github.com/dragonflydb/dragonfly.git",
+      "name": "dragonfly",
+      "category": "database",
+      "language": "cpp",
+      "description": "A modern replacement for Redis and Memcached"
+    },
+    {
+      "url": "https://github.com/mongodb/mongo.git",
+      "name": "mongo",
+      "category": "database",
+      "language": "cpp",
+      "description": "The MongoDB Database"
+    },
+    {
+      "url": "https://github.com/sqlitebrowser/sqlitebrowser.git",
+      "name": "sqlitebrowser",
+      "category": "database",
+      "language": "cpp",
+      "description": "Official home of the DB Browser for SQLite (DB4S) project. Previously known a..."
+    },
+    {
+      "url": "https://github.com/scylladb/scylladb.git",
+      "name": "scylladb",
+      "category": "database",
+      "language": "cpp",
+      "description": "NoSQL data store using the Seastar framework, compatible with Apache Cassandr..."
+    },
+    {
+      "url": "https://github.com/arangodb/arangodb.git",
+      "name": "arangodb",
+      "category": "database",
+      "language": "cpp",
+      "description": "\ud83e\udd51 ArangoDB is a native multi-model database with flexible data models for doc..."
+    },
+    {
+      "url": "https://github.com/vesoft-inc/nebula.git",
+      "name": "nebula",
+      "category": "database",
+      "language": "cpp",
+      "description": "  A distributed, fast open-source graph database featuring horizontal scalabi..."
+    },
+    {
+      "url": "https://github.com/2dust/v2rayNG.git",
+      "name": "v2rayNG",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "A V2Ray client for Android, support Xray core and v2fly core"
+    },
+    {
+      "url": "https://github.com/android/architecture-samples.git",
+      "name": "architecture-samples",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "A collection of samples to discuss and showcase different architectural tools..."
+    },
+    {
+      "url": "https://github.com/gkd-kit/gkd.git",
+      "name": "gkd",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "\u57fa\u4e8e\u65e0\u969c\u788d\uff0c\u9ad8\u7ea7\u9009\u62e9\u5668\uff0c\u8ba2\u9605\u89c4\u5219\u7684\u81ea\u5b9a\u4e49\u5c4f\u5e55\u70b9\u51fb\u5b89\u5353\u5e94\u7528 | An Android APP with custom screen tapping base..."
+    },
+    {
+      "url": "https://github.com/shadowsocks/shadowsocks-android.git",
+      "name": "shadowsocks-android",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "A shadowsocks client for Android"
+    },
+    {
+      "url": "https://github.com/square/leakcanary.git",
+      "name": "leakcanary",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "A memory leak detection library for Android."
+    },
+    {
+      "url": "https://github.com/ReVanced/revanced-manager.git",
+      "name": "revanced-manager",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "\ud83d\udc8a Application to use ReVanced on Android "
+    },
+    {
+      "url": "https://github.com/kavishdevar/librepods.git",
+      "name": "librepods",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "AirPods liberated from Apple's ecosystem."
+    },
+    {
+      "url": "https://github.com/JunkFood02/Seal.git",
+      "name": "Seal",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "\ud83e\uddad Video/Audio Downloader for Android, based on yt-dlp"
+    },
+    {
+      "url": "https://github.com/pppscn/SmsForwarder.git",
+      "name": "SmsForwarder",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "\u77ed\u4fe1\u8f6c\u53d1\u5668\u2014\u2014\u76d1\u63a7Android\u624b\u673a\u77ed\u4fe1\u3001\u6765\u7535\u3001APP\u901a\u77e5\uff0c\u5e76\u6839\u636e\u6307\u5b9a\u89c4\u5219\u8f6c\u53d1\u5230\u5176\u4ed6\u624b\u673a\uff1a\u9489\u9489\u7fa4\u81ea\u5b9a\u4e49\u673a\u5668\u4eba\u3001\u9489\u9489\u4f01\u4e1a\u5185\u673a\u5668\u4eba\u3001\u4f01\u4e1a\u5fae\u4fe1\u7fa4\u673a\u5668\u4eba\u3001\u98de\u4e66\u673a\u5668..."
+    },
+    {
+      "url": "https://github.com/CymChad/BaseRecyclerViewAdapterHelper.git",
+      "name": "BaseRecyclerViewAdapterHelper",
+      "category": "frontend",
+      "language": "kotlin",
+      "description": "BRVAH:Powerful and flexible RecyclerAdapter"
+    },
+    {
+      "url": "https://github.com/vsouza/awesome-ios.git",
+      "name": "awesome-ios",
+      "category": "frontend",
+      "language": "swift",
+      "description": "A curated list of awesome iOS ecosystem, including Objective-C and Swift Proj..."
+    },
+    {
+      "url": "https://github.com/utmapp/UTM.git",
+      "name": "UTM",
+      "category": "frontend",
+      "language": "swift",
+      "description": "Virtual machines for iOS and macOS"
+    },
+    {
+      "url": "https://github.com/airbnb/lottie-ios.git",
+      "name": "lottie-ios",
+      "category": "frontend",
+      "language": "swift",
+      "description": "An iOS library to natively render After Effects vector animations"
+    },
+    {
+      "url": "https://github.com/ReactiveX/RxSwift.git",
+      "name": "RxSwift",
+      "category": "frontend",
+      "language": "swift",
+      "description": "Reactive Programming in Swift"
+    },
+    {
+      "url": "https://github.com/onevcat/Kingfisher.git",
+      "name": "Kingfisher",
+      "category": "frontend",
+      "language": "swift",
+      "description": "A lightweight, pure-Swift library for downloading and caching images from the..."
+    },
+    {
+      "url": "https://github.com/CodeEditApp/CodeEdit.git",
+      "name": "CodeEdit",
+      "category": "frontend",
+      "language": "swift",
+      "description": "\ud83d\udcdd CodeEdit App for macOS \u2013 Elevate your code editing experience. Open source,..."
+    },
+    {
+      "url": "https://github.com/HeroTransitions/Hero.git",
+      "name": "Hero",
+      "category": "frontend",
+      "language": "swift",
+      "description": "Elegant transition library for iOS & tvOS"
+    },
+    {
+      "url": "https://github.com/SwifterSwift/SwifterSwift.git",
+      "name": "SwifterSwift",
+      "category": "frontend",
+      "language": "swift",
+      "description": "A handy collection of more than 500 native Swift extensions to boost your pro..."
+    },
+    {
+      "url": "https://github.com/Juanpe/SkeletonView.git",
+      "name": "SkeletonView",
+      "category": "frontend",
+      "language": "swift",
+      "description": "\u2620\ufe0f An elegant way to show users that something is happening and also prepare ..."
+    },
+    {
+      "url": "https://github.com/CosmicMind/Material.git",
+      "name": "Material",
+      "category": "frontend",
+      "language": "swift",
+      "description": "A UI/UX framework for creating beautiful applications."
+    },
+    {
+      "url": "https://github.com/akka/akka-core.git",
+      "name": "akka-core",
+      "category": "distributed",
+      "language": "scala",
+      "description": "A platform to build and run apps that are elastic, agile, and resilient. SDK,..."
+    },
+    {
+      "url": "https://github.com/twitter/finagle.git",
+      "name": "finagle",
+      "category": "web_framework",
+      "language": "scala",
+      "description": "A fault tolerant, protocol-agnostic RPC system"
+    },
+    {
+      "url": "https://github.com/lagom/lagom.git",
+      "name": "lagom",
+      "category": "distributed",
+      "language": "scala",
+      "description": "Reactive Microservices for the JVM"
+    },
+    {
+      "url": "https://github.com/apache/pekko.git",
+      "name": "pekko",
+      "category": "distributed",
+      "language": "scala",
+      "description": "Build highly concurrent, distributed, and resilient message-driven applicatio..."
+    },
+    {
+      "url": "https://github.com/playframework/playframework.git",
+      "name": "playframework",
+      "category": "web_framework",
+      "language": "scala",
+      "description": "The Community Maintained High Velocity Web Framework For Java and Scala."
+    },
+    {
+      "url": "https://github.com/scalatra/scalatra.git",
+      "name": "scalatra",
+      "category": "web_framework",
+      "language": "scala",
+      "description": "Tiny Scala high-performance, async web framework, inspired by Sinatra"
+    },
+    {
+      "url": "https://github.com/ThoughtWorksInc/Binding.scala.git",
+      "name": "Binding.scala",
+      "category": "web_framework",
+      "language": "scala",
+      "description": "Reactive data-binding for Scala"
+    },
+    {
+      "url": "https://github.com/skinny-framework/skinny-framework.git",
+      "name": "skinny-framework",
+      "category": "database",
+      "language": "scala",
+      "description": ":monorail: \"Scala on Rails\" - A full-stack web app framework for rapid develo..."
+    },
+    {
+      "url": "https://github.com/grych/drab.git",
+      "name": "drab",
+      "category": "web_framework",
+      "language": "elixir",
+      "description": "Remote controlled frontend framework for Phoenix."
+    },
+    {
+      "url": "https://github.com/anoma/anoma.git",
+      "name": "anoma",
+      "category": "security",
+      "language": "elixir",
+      "description": "Reference implementation of Anoma"
+    },
+    {
+      "url": "https://github.com/supabase/realtime.git",
+      "name": "realtime",
+      "category": "distributed",
+      "language": "elixir",
+      "description": "Broadcast, Presence, and Postgres Changes via WebSockets"
+    },
+    {
+      "url": "https://github.com/whitfin/cachex.git",
+      "name": "cachex",
+      "category": "distributed",
+      "language": "elixir",
+      "description": "A powerful caching library for Elixir with support for transactions, fallback..."
+    },
+    {
+      "url": "https://github.com/i365dev/free4chat.git",
+      "name": "free4chat",
+      "category": "frontend",
+      "language": "elixir",
+      "description": "free4.chat is a real-time audio chat service.  It is designed by the local fi..."
+    },
+    {
+      "url": "https://github.com/sheharyarn/memento.git",
+      "name": "memento",
+      "category": "cloud",
+      "language": "elixir",
+      "description": "Simple + Powerful interface to the Mnesia Distributed Database \ud83d\udcbe"
+    },
+    {
+      "url": "https://github.com/discord/ex_hash_ring.git",
+      "name": "ex_hash_ring",
+      "category": "distributed",
+      "language": "elixir",
+      "description": "A fast consistent hash ring implementation in Elixir."
+    },
+    {
+      "url": "https://github.com/flutter/flutter.git",
+      "name": "flutter",
+      "category": "frontend",
+      "language": "dart",
+      "description": "Flutter makes it easy and fast to build beautiful apps for mobile and beyond"
+    },
+    {
+      "url": "https://github.com/localsend/localsend.git",
+      "name": "localsend",
+      "category": "frontend",
+      "language": "dart",
+      "description": "An open-source cross-platform alternative to AirDrop"
+    },
+    {
+      "url": "https://github.com/AppFlowy-IO/AppFlowy.git",
+      "name": "AppFlowy",
+      "category": "frontend",
+      "language": "dart",
+      "description": "Bring projects, wikis, and teams together with AI. AppFlowy is the AI collabo..."
+    },
+    {
+      "url": "https://github.com/Solido/awesome-flutter.git",
+      "name": "awesome-flutter",
+      "category": "frontend",
+      "language": "dart",
+      "description": "An awesome list that curates the best Flutter libraries, tools, tutorials, ar..."
+    },
+    {
+      "url": "https://github.com/KRTirtho/spotube.git",
+      "name": "spotube",
+      "category": "frontend",
+      "language": "dart",
+      "description": "\ud83c\udfa7 Open source music streaming app! Available for both desktop & mobile!"
+    },
+    {
+      "url": "https://github.com/elm/compiler.git",
+      "name": "compiler",
+      "category": "compiler",
+      "language": "haskell",
+      "description": "Compiler for Elm, a functional language for reliable webapps."
+    },
+    {
+      "url": "https://github.com/sdiehl/write-you-a-haskell.git",
+      "name": "write-you-a-haskell",
+      "category": "compiler",
+      "language": "haskell",
+      "description": "Building a modern functional compiler from first principles. (http://dev.step..."
+    },
+    {
+      "url": "https://github.com/diku-dk/futhark.git",
+      "name": "futhark",
+      "category": "compiler",
+      "language": "haskell",
+      "description": ":boom::computer::boom: A data-parallel functional programming language"
+    },
+    {
+      "url": "https://github.com/valderman/haste-compiler.git",
+      "name": "haste-compiler",
+      "category": "compiler",
+      "language": "haskell",
+      "description": "A GHC-based Haskell to JavaScript compiler"
+    },
+    {
+      "url": "https://github.com/austral/austral.git",
+      "name": "austral",
+      "category": "compiler",
+      "language": "ocaml",
+      "description": "Systems language with linear types and capability-based security."
+    },
+    {
+      "url": "https://github.com/leostera/caramel.git",
+      "name": "caramel",
+      "category": "compiler",
+      "language": "ocaml",
+      "description": ":candy: a functional language for building type-safe, scalable, and maintaina..."
+    },
+    {
+      "url": "https://github.com/ziglang/zig.git",
+      "name": "zig",
+      "category": "compiler",
+      "language": "zig",
+      "description": "Moved to Codeberg"
+    },
+    {
+      "url": "https://github.com/Vexu/arocc.git",
+      "name": "arocc",
+      "category": "compiler",
+      "language": "zig",
+      "description": "A modern fully featured C compiler."
+    },
+    {
+      "url": "https://github.com/lasp-lang/partisan.git",
+      "name": "partisan",
+      "category": "distributed",
+      "language": "erlang",
+      "description": "High-performance, high-scalability distributed computing for the BEAM."
+    },
+    {
+      "url": "https://github.com/rabbitmq/ra.git",
+      "name": "ra",
+      "category": "distributed",
+      "language": "erlang",
+      "description": "A Multi-Raft implementation for Erlang and Elixir that strives to be efficien..."
+    },
+    {
+      "url": "https://github.com/K-Dense-AI/claude-scientific-skills.git",
+      "name": "claude-scientific-skills",
+      "category": "scientific",
+      "language": "python",
+      "description": "A set of ready to use Agent Skills for research, science, engineering, analys..."
+    },
+    {
+      "url": "https://github.com/scipy/scipy.git",
+      "name": "scipy",
+      "category": "scientific",
+      "language": "python",
+      "description": "SciPy library main repository"
+    },
+    {
+      "url": "https://github.com/spack/spack.git",
+      "name": "spack",
+      "category": "scientific",
+      "language": "python",
+      "description": "A flexible package manager that supports multiple versions, configurations, p..."
+    },
+    {
+      "url": "https://github.com/inducer/pycuda.git",
+      "name": "pycuda",
+      "category": "scientific",
+      "language": "python",
+      "description": "CUDA integration for Python, plus shiny features"
+    },
+    {
+      "url": "https://github.com/deepcharles/ruptures.git",
+      "name": "ruptures",
+      "category": "scientific",
+      "language": "python",
+      "description": "ruptures: change point detection in Python"
+    },
+    {
+      "url": "https://github.com/nschloe/awesome-scientific-computing.git",
+      "name": "awesome-scientific-computing",
+      "category": "scientific",
+      "language": "python",
+      "description": ":sunglasses: Curated list of awesome software for numerical analysis and scie..."
+    },
+    {
+      "url": "https://github.com/itamarst/eliot.git",
+      "name": "eliot",
+      "category": "scientific",
+      "language": "python",
+      "description": "Eliot: the logging system that tells you *why* it happened"
+    }
+  ],
+  "metadata": {
+    "total_count": 800,
+    "last_updated": "2026-03-31",
+    "python_count": 266,
+    "other_count": 534,
+    "categories": [
+      "api_client",
+      "async",
+      "automation",
+      "backup",
+      "cli",
+      "cloud",
+      "compiler",
+      "data_processing",
+      "database",
+      "devops",
+      "distributed",
+      "frontend",
+      "infrastructure",
+      "library",
+      "logging",
+      "machine_learning",
+      "media",
+      "messaging",
+      "monitoring",
+      "networking",
+      "observability",
+      "runtime",
+      "scientific",
+      "security",
+      "storage",
+      "testing",
+      "tooling",
+      "visualization",
+      "web_framework",
+      "web_scraping",
+      "web_server"
+    ],
+    "languages": [
+      "c",
+      "cpp",
+      "dart",
+      "elixir",
+      "erlang",
+      "go",
+      "haskell",
+      "java",
+      "javascript",
+      "kotlin",
+      "ocaml",
+      "python",
+      "ruby",
+      "rust",
+      "scala",
+      "swift",
+      "typescript",
+      "zig"
+    ]
+  }
+}

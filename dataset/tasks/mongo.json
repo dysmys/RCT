@@ -1,0 +1,52 @@
+[
+  {
+    "id": "mongo_feature_1627",
+    "repo": "mongodb/mongo",
+    "task_type": "feature_impl",
+    "input": {
+      "pr_number": 1627,
+      "pr_title": "v4.4.30 changes",
+      "pr_body": "Anything in this description will be included in the commit message. Replace or delete this text before merging. Add links to testing in the comments of the PR.\r\n"
+    },
+    "ground_truth": {
+      "merged_at": "2025-12-22T23:06:05Z",
+      "diff": "diff --git a/buildscripts/resmokeconfig/loggers/evg.yml b/buildscripts/resmokeconfig/loggers/evg.yml\ndeleted file mode 100644\nindex 5774de4b0133e..0000000000000\n--- a/buildscripts/resmokeconfig/loggers/evg.yml\n+++ /dev/null\n@@ -1,27 +0,0 @@\n-logging:\n-  executor:\n-    format: '[%(name)s] %(asctime)s %(message)s'\n-    handlers:\n-      - class: logging.StreamHandler\n-  fixture:\n-    format: '[%(name)s] %(message)s'\n-    handlers:\n-      - class: evergreen\n-  tests:\n-    format: '[%(name)s] %(message)s'\n-    handlers:\n-      - class: evergreen\n-\n-shorten_logger_name:\n-  remove:\n-    - MongoDFixture\n-    - ReplicaSetFixture\n-    - ShardedClusterFixture\n-  replace:\n-    primary: prim\n-    secondary: sec\n-    node: n\n-    shard: s\n-    configsvr: c\n-    mongos: s\n-    job: j\ndiff --git a/buildscripts/resmokelib/config.py b/buildscripts/resmokelib/config.py\nindex d7577d843078e..15e3bee5fa25e 100644\n--- a/buildscripts/resmokelib/config.py\n+++ b/buildscripts/resmokelib/config.py\n@@ -111,7 +111,6 @@\n     \"task_name\": None,\n     \"variant_name\": None,\n     \"version_id\": None,\n-    \"work_dir\": None,\n \n     # WiredTiger options.\n     \"wt_coll_config\": None,\n@@ -287,9 +286,6 @@ def resolve(self):\n # the commit hash.\n EVERGREEN_VERSION_ID = None\n \n-# The Evergreen task's working directory.\n-EVERGREEN_WORK_DIR = None\n-\n # If set, then any jstests that have any of the specified tags will be excluded from the suite(s).\n EXCLUDE_WITH_ANY_TAGS = None\n \ndiff --git a/buildscripts/resmokelib/configure_resmoke.py b/buildscripts/resmokelib/configure_resmoke.py\nindex 2079d76310a15..fd8c5d5dcc7b6 100644\n--- a/buildscripts/resmokelib/configure_resmoke.py\n+++ b/buildscripts/resmokelib/configure_resmoke.py\n@@ -240,7 +240,6 @@ def _merge_set_params(param_list):\n     _config.EVERGREEN_TASK_NAME = config.pop(\"task_name\")\n     _config.EVERGREEN_VARIANT_NAME = config.pop(\"variant_name\")\n     _config.EVERGREEN_VERSION_ID = config.pop(\"version_id\")\n-    _config.EVERGREEN_WORK_DIR = config.pop(\"work_dir\")\n \n     # Archival options. Archival is enabled only when running on evergreen.\n     if not _config.EVERGREEN_TASK_ID:\ndiff --git a/buildscripts/resmokelib/logging/formatters.py b/buildscripts/resmokelib/logging/formatters.py\nindex 66a0691f0e712..b08e736ddccc5 100644\n--- a/buildscripts/resmokelib/logging/formatters.py\n+++ b/buildscripts/resmokelib/logging/formatters.py\n@@ -41,17 +41,3 @@ def _format_timezone_offset(converted_time):\n         utc_offset_mins = (utc_offset_secs / 60) % 60\n         utc_offset_hours = utc_offset_secs / 3600\n         return \"%s%02d%02d\" % (utc_offset_prefix, utc_offset_hours, utc_offset_mins)\n-\n-\n-class EvergreenLogFormatter(logging.Formatter):\n-    \"\"\"Log line formatter for Evergreen log messages.\n-\n-    See `https://docs.devprod.prod.corp.mongodb.com/evergreen/Project-Configuration/Task-Output-Directory#test-logs`\n-    for more info.\n-    \"\"\"\n-\n-    def format(self, record):\n-        \"\"\"Return the Evergreen formatted record.\"\"\"\n-        ts = int(record.created * 1e9)\n-\n-        return \"\\n\".join([f\"{ts} {line}\" for line in super().format(record).split(\"\\n\")])\ndiff --git a/buildscripts/resmokelib/logging/handlers.py b/buildscripts/resmokelib/logging/handlers.py\nindex ca23e8cfc9418..cd8e79437ab05 100644\n--- a/buildscripts/resmokelib/logging/handlers.py\n+++ b/buildscripts/resmokelib/logging/handlers.py\n@@ -162,29 +162,6 @@ def close(self):\n         logging.Handler.close(self)\n \n \n-class BufferedFileHandler(BufferedHandler):\n-    \"\"\"File handler with in-memory buffering.\"\"\"\n-\n-    def __init__(self, filename, capacity=2000, interval_secs=600):\n-        \"\"\"Initialize the handler with the filename and buffer capacity and flush interval.\"\"\"\n-        super().__init__(capacity, interval_secs)\n-        self.file = open(filename, \"a\")\n-\n-    def process_record(self, record):\n-        \"\"\"Return the formatted record message appended with a newline.\"\"\"\n-        return self.format(record) + \"\\n\"\n-\n-    def _flush_buffer_with_lock(self, buf, close_called):\n-        \"\"\"Write the buffered log lines to the destination file.\"\"\"\n-        self.file.writelines(buf)\n-\n-    def close(self):\n-        \"\"\"Close the handler and the file descriptor.\"\"\"\n-        super().close()\n-\n-        self.file.close()\n-\n-\n class HTTPHandler(object):\n     \"\"\"A class which sends data to a web server using POST requests.\"\"\"\n \ndiff --git a/buildscripts/resmokelib/logging/loggers.py b/buildscripts/resmokelib/logging/loggers.py\nindex 7df186f5fb5f8..4028925af5ab3 100644\n--- a/buildscripts/resmokelib/logging/loggers.py\n+++ b/buildscripts/resmokelib/logging/loggers.py\n@@ -1,14 +1,10 @@\n \"\"\"Module to hold the logger instances themselves.\"\"\"\n \n import logging\n-import os\n import sys\n-import yaml\n \n from . import buildlogger\n from . import formatters\n-from . import handlers\n-from .. import config\n from .. import errors\n \n _DEFAULT_FORMAT = \"[%(name)s] %(message)s\"\n@@ -48,13 +44,6 @@ def configure_loggers(logging_config):\n     EXECUTOR_LOGGER = ExecutorRootLogger(logging_config, build_logger_server, fixture_logger,\n                                          tests_logger)\n \n-    _write_evergreen_log_spec()\n-\n-\n-def get_evergreen_log_name(job_num, test_id=None):\n-    \"\"\"Return the log name, relative to the reserved test log directory, on the Evergreen task host.\"\"\"\n-    return f\"job{job_num}/\" + (f\"{test_id}.log\" if test_id else \"global.log\")\n-\n \n class BaseLogger(logging.Logger):\n     \"\"\"Base class for the custom loggers used in this library.\n@@ -138,8 +127,6 @@ def _add_handler(self, handler_info, formatter):\n             handler = logging.StreamHandler(sys.stdout)\n         elif handler_class == \"buildlogger\":\n             return  # Buildlogger handlers are applied when creating specific child loggers\n-        elif handler_class == \"evergreen\":\n-            return  # Evergreen handlers are applied when creating specific child loggers\n         else:\n             raise ValueError(\"Unknown handler class '%s'\" % handler_class)\n         handler.setFormatter(f"
+    },
+    "relevant_files": [
+      "buildscripts/resmokelib/config.py",
+      "buildscripts/resmokelib/configure_resmoke.py",
+      "buildscripts/resmokelib/logging/formatters.py",
+      "buildscripts/resmokelib/logging/handlers.py",
+      "buildscripts/resmokelib/logging/loggers.py",
+      "buildscripts/resmokelib/parser.py",
+      "buildscripts/resmokelib/testing/report.py",
+      "etc/evergreen.yml",
+      "etc/system_perf.yml",
+      "evergreen/garasign_jsign_sign.sh",
+      "src/mongo/transport/message_compressor_manager_test.cpp",
+      "src/mongo/transport/message_compressor_zlib.cpp",
+      "src/mongo/transport/service_state_machine.cpp",
+      "src/third_party/wiredtiger/dist/api_data.py",
+      "src/third_party/wiredtiger/dist/stat_data.py",
+      "src/third_party/wiredtiger/import.data",
+      "src/third_party/wiredtiger/src/btree/bt_sync.c",
+      "src/third_party/wiredtiger/src/config/config_def.c",
+      "src/third_party/wiredtiger/src/conn/conn_api.c",
+      "src/third_party/wiredtiger/src/conn/conn_reconfig.c",
+      "src/third_party/wiredtiger/src/evict/evict_page.c",
+      "src/third_party/wiredtiger/src/include/btree.h",
+      "src/third_party/wiredtiger/src/include/connection.h",
+      "src/third_party/wiredtiger/src/include/extern.h",
+      "src/third_party/wiredtiger/src/include/stat.h",
+      "src/third_party/wiredtiger/src/include/timestamp_inline.h",
+      "src/third_party/wiredtiger/src/include/wiredtiger.in",
+      "src/third_party/wiredtiger/src/include/wt_internal.h",
+      "src/third_party/wiredtiger/src/support/stat.c",
+      "src/third_party/wiredtiger/src/txn/txn_ckpt.c",
+      "src/third_party/wiredtiger/test/evergreen.yml"
+    ],
+    "snapshot_commit": "f827fbb617edc33b2b32694df88662ca80f3b969",
+    "belief_cutoff_timestamp": "2025-12-22T23:00:36Z",
+    "reference_commit_timestamp": "2025-12-22T23:06:05Z"
+  }
+]
