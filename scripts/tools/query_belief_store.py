@@ -166,19 +166,23 @@ class BeliefStore:
         return beliefs
 
     def _get_support_chain(self, belief_id: int, cutoff: Optional[str]) -> List[Belief]:
-        """Load supporting beliefs (belief graph edges)."""
+        """Load supporting beliefs via belief_edges table."""
         try:
             sql = """
-                SELECT eb.id, eb.statement, eb.confidence, eb.commit_timestamp
-                FROM belief_graph bg
-                JOIN extracted_beliefs eb ON bg.target_id = eb.id
-                WHERE bg.source_id = ? AND ABS(bg.alignment_score) >= ?
+                SELECT eb.id, eb.statement, eb.confidence, eb.commit_timestamp,
+                       be.alignment_score
+                FROM belief_edges be
+                JOIN extracted_beliefs eb
+                     ON (be.belief_id_b = eb.id AND be.belief_id_a = ?)
+                     OR (be.belief_id_a = eb.id AND be.belief_id_b = ?)
+                WHERE be.label = 'support'
+                  AND ABS(be.alignment_score) >= ?
             """
-            params: list = [belief_id, EDGE_THRESHOLD]
+            params: list = [belief_id, belief_id, EDGE_THRESHOLD]
             if cutoff:
                 sql += " AND eb.commit_timestamp <= ?"
                 params.append(cutoff)
-            sql += f" LIMIT {MAX_SUPPORT_LINKS}"
+            sql += f" ORDER BY be.alignment_score DESC LIMIT {MAX_SUPPORT_LINKS}"
             rows = self._conn.execute(sql, params).fetchall()
             return [
                 Belief(
@@ -187,7 +191,7 @@ class BeliefStore:
                     evidence="",
                     confidence=r["confidence"] or "medium",
                     commit_timestamp=r["commit_timestamp"] or "",
-                    similarity=0.0,
+                    similarity=round(float(r["alignment_score"]), 4),
                 )
                 for r in rows
             ]

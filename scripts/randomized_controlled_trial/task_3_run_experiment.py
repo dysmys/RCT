@@ -2,7 +2,7 @@
 task_3_run_experiment.py
 ========================
 
-Runs the experiment for a single repo using Claude Code or Codex CLI as the agent.
+Runs the experiment for a single repo using Claude Code, Codex, or OpenCode CLI as the agent.
 
 Architecture
 ------------
@@ -42,10 +42,11 @@ Usage:
 Options:
   --repo NAME          Repo name (required)
   --repo-dir PATH      Root dir for clones  (default: /mnt/repos or $REPO_DIR)
-  --agent CHOICE       claude | codex | both  (default: claude)
+  --agent CHOICE       claude | codex | opencode | both | all  (default: claude)
   --model MODEL        Model name for the chosen agent
-                         claude default: claude-sonnet-4-6
-                         codex  default: codex-1
+                         claude   default: claude-sonnet-4-6
+                         codex    default: gpt-5.4
+                         opencode default: glm-5.1
   --arm CHOICE         both | control | treatment  (default: both)
   --max-workers N      Max parallel agent sessions  (default: 4)
   --timeout SECS       Max seconds per session  (default: 240)
@@ -54,6 +55,7 @@ Options:
 Environment:
   ANTHROPIC_API_KEY  — required for claude agent
   OPENAI_API_KEY     — required for codex agent
+  OPENAI_API_KEY     — used by opencode agent (or configure via .opencode.json)
 """
 
 import json
@@ -91,9 +93,10 @@ load_dotenv(_PROJECT_ROOT / ".env")
 # Config
 # ---------------------------------------------------------------------------
 
-DEFAULT_CLAUDE_MODEL = "claude-sonnet-4-6"
-DEFAULT_CODEX_MODEL  = "gpt-5.4"
-DEFAULT_MODEL        = DEFAULT_CLAUDE_MODEL   # kept for backwards compat
+DEFAULT_CLAUDE_MODEL   = "claude-sonnet-4-6"
+DEFAULT_CODEX_MODEL    = "gpt-5.4"
+DEFAULT_OPENCODE_MODEL = "opencode/minimax-m2.5-free"
+DEFAULT_MODEL          = DEFAULT_CLAUDE_MODEL   # kept for backwards compat
 DEFAULT_REPO_DIR     = os.environ.get("REPO_DIR", "/mnt/repos")
 DEFAULT_TIMEOUT      = 360    # seconds per agent session
 DEFAULT_MAX_WORKERS  = 12
@@ -375,15 +378,12 @@ def build_task_prompt(task: dict, arm: str, wt_path: Path | None = None) -> str:
 # Claude Code CLI runner
 # ---------------------------------------------------------------------------
 
-def run_claude(worktree: Path, task_prompt: str, model: str, timeout: int) -> tuple[str, int]:
+def run_claude(worktree: Path, task_prompt: str, model: str, timeout: int) -> tuple[str, int, dict]:
     """
-    Run claude --print inside worktree.  Prompt is always sent via stdin to
-    avoid the OS ARG_MAX limit (~2MB on Linux) for large file-content prompts.
-    On timeout, kill the entire process group (including any Bash children
-    claude spawned) before raising.
+    Run claude --print inside worktree with --output-format json for token tracking.
+    Returns (output_text, exit_code, usage_dict).
+    usage_dict has keys: input_tokens, output_tokens (may be None on parse failure).
     """
-    # Use OAuth token if available (no per-token billing); ANTHROPIC_API_KEY takes
-    # precedence in claude CLI, so drop it when OAuth is set.
     oauth_token = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN", "")
     env = {
         **os.environ,
@@ -391,44 +391,56 @@ def run_claude(worktree: Path, task_prompt: str, model: str, timeout: int) -> tu
     }
     if oauth_token:
         env["CLAUDE_CODE_OAUTH_TOKEN"] = oauth_token
-        env.pop("ANTHROPIC_API_KEY", None)   # prevent API-key auth from shadowing OAuth
+        env.pop("ANTHROPIC_API_KEY", None)
     else:
         env["ANTHROPIC_API_KEY"] = os.environ.get("ANTHROPIC_API_KEY", "")
 
     proc = subprocess.Popen(
-        ["claude", "--print", "--dangerously-skip-permissions", "--model", model],
+        ["claude", "--print", "--dangerously-skip-permissions", "--model", model,
+         "--output-format", "json"],
         cwd=str(worktree),
         env=env,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
-        preexec_fn=os.setsid,   # put claude + its children in their own process group
+        preexec_fn=os.setsid,
     )
 
     try:
         stdout, stderr = proc.communicate(input=task_prompt, timeout=timeout)
     except subprocess.TimeoutExpired:
-        # Kill the entire process group so Bash children don't linger
         try:
             os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
         except ProcessLookupError:
             pass
-        proc.communicate()   # drain pipes
+        proc.communicate()
         raise
 
     if proc.returncode != 0:
         log.warning("claude exited %d in %s — stderr: %s",
                     proc.returncode, worktree.name, stderr[:300])
 
-    return stdout.strip(), proc.returncode
+    # Parse JSON output for result text and token usage
+    usage = {"input_tokens": None, "output_tokens": None}
+    output_text = stdout.strip()
+    try:
+        data = json.loads(stdout)
+        output_text = data.get("result", stdout.strip())
+        u = data.get("usage", {})
+        usage["input_tokens"] = u.get("input_tokens")
+        usage["output_tokens"] = u.get("output_tokens")
+    except (json.JSONDecodeError, AttributeError):
+        pass  # fallback: treat stdout as plain text
+
+    return output_text, proc.returncode, usage
 
 
-def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tuple[str, int]:
+def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tuple[str, int, dict]:
     """
     Run codex non-interactively inside worktree.
-    Prompt is sent via stdin to avoid ARG_MAX limits on large file-content prompts.
-    Uses --approval-mode full-auto so Codex applies edits without confirmation.
+    Returns (output_text, exit_code, usage_dict).
+    Token usage is parsed from stderr where Codex logs it.
     """
     env = {
         **os.environ,
@@ -437,10 +449,6 @@ def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tup
     }
 
     proc = subprocess.Popen(
-        # "codex exec" is the non-interactive subcommand.
-        # "--full-auto"          → workspace-write sandbox, no confirmation prompts.
-        # "--skip-git-repo-check"→ required for git worktrees.
-        # "-"                    → read prompt from stdin (avoids ARG_MAX limit).
         ["codex", "exec", "--full-auto", "--skip-git-repo-check", "--model", model, "-"],
         cwd=str(worktree),
         env=env,
@@ -465,7 +473,74 @@ def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tup
         log.warning("codex exited %d in %s — stderr: %s",
                     proc.returncode, worktree.name, stderr[:300])
 
-    return stdout.strip(), proc.returncode
+    # Parse token usage from stderr (Codex logs "input_tokens: N, output_tokens: N")
+    usage = {"input_tokens": None, "output_tokens": None}
+    for line in (stderr or "").splitlines():
+        m = re.search(r'input_tokens\D*(\d+)', line)
+        if m:
+            usage["input_tokens"] = int(m.group(1))
+        m = re.search(r'output_tokens\D*(\d+)', line)
+        if m:
+            usage["output_tokens"] = int(m.group(1))
+
+    return stdout.strip(), proc.returncode, usage
+
+
+def run_opencode(worktree: Path, task_prompt: str, model: str, timeout: int) -> tuple[str, int, dict]:
+    """
+    Run OpenCode non-interactively inside worktree.
+    Uses 'opencode run' subcommand with -m for model selection.
+    Returns (output_text, exit_code, usage_dict).
+    Token usage captured via 'opencode stats' after the run.
+    """
+    env = {
+        **os.environ,
+        "PYTHONPATH": str(_SCRIPTS_DIR),
+    }
+
+    proc = subprocess.Popen(
+        ["opencode", "run", task_prompt, "-m", model],
+        cwd=str(worktree),
+        env=env,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        preexec_fn=os.setsid,
+    )
+
+    try:
+        stdout, stderr = proc.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        proc.communicate()
+        raise
+
+    if proc.returncode != 0:
+        log.warning("opencode exited %d in %s — stderr: %s",
+                    proc.returncode, worktree.name, stderr[:300])
+
+    # Try to extract token usage from opencode stats
+    usage = {"input_tokens": None, "output_tokens": None}
+    try:
+        stats_result = subprocess.run(
+            ["opencode", "stats"],
+            cwd=str(worktree), capture_output=True, text=True, timeout=10,
+        )
+        for line in stats_result.stdout.splitlines():
+            m = re.search(r'input\D*(\d[\d,]*)', line, re.IGNORECASE)
+            if m:
+                usage["input_tokens"] = int(m.group(1).replace(",", ""))
+            m = re.search(r'output\D*(\d[\d,]*)', line, re.IGNORECASE)
+            if m:
+                usage["output_tokens"] = int(m.group(1).replace(",", ""))
+    except Exception:
+        pass
+
+    return stdout.strip(), proc.returncode, usage
 
 
 def read_beliefs_log(worktree: Path) -> list[dict]:
@@ -587,9 +662,11 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
         # ---- Run agent (long operation, no lock held) -----------------------
         try:
             if agent == "codex":
-                output, exit_code = run_codex(wt_path, task_prompt, model, timeout)
+                output, exit_code, usage = run_codex(wt_path, task_prompt, model, timeout)
+            elif agent == "opencode":
+                output, exit_code, usage = run_opencode(wt_path, task_prompt, model, timeout)
             else:
-                output, exit_code = run_claude(wt_path, task_prompt, model, timeout)
+                output, exit_code, usage = run_claude(wt_path, task_prompt, model, timeout)
         except subprocess.TimeoutExpired:
             with conn_lock:
                 database.fail_run(run_id, f"timeout after {timeout}s")
@@ -618,6 +695,10 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
         belief_calls_total = len(belief_calls)
 
         # ---- Collect results ------------------------------------------------
+        elapsed = time.monotonic() - _arm_start
+        input_tokens = usage.get("input_tokens")
+        output_tokens = usage.get("output_tokens")
+
         if exit_code == 0 and output:
             with conn_lock:
                 database.complete_run_agentic(
@@ -632,7 +713,9 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
                         else c.get("beliefs", "")
                         for c in belief_calls
                     ] if belief_calls else None,
-                    tokens_used=None,
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                    duration_seconds=round(elapsed, 2),
                 )
                 for call in belief_calls:
                     database.insert_belief_tool_call(
@@ -646,11 +729,13 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
                            run_id=run_id, status="completed",
                            agent_diff=agent_diff, belief_calls=belief_calls or None)
 
-            elapsed = time.monotonic() - _arm_start
             with _task_times_lock:
                 _task_times.append(elapsed)
-            log.info("  %s/%s/%s  run_id=%d  completed  output_len=%d  belief_calls=%d  time=%.1fs",
-                     task_id, arm, agent, run_id, len(output), belief_calls_total, elapsed)
+            total_tokens = (input_tokens or 0) + (output_tokens or 0) or None
+            log.info("  %s/%s/%s  run_id=%d  completed  output_len=%d  belief_calls=%d  "
+                     "time=%.1fs  tokens=%s (in=%s out=%s)",
+                     task_id, arm, agent, run_id, len(output), belief_calls_total,
+                     elapsed, total_tokens, input_tokens, output_tokens)
             return "completed"
         else:
             msg = f"{agent} exited {exit_code} with {'no output' if not output else 'output'}"
@@ -676,10 +761,10 @@ def main():
     )
     parser.add_argument("--repo",        required=True)
     parser.add_argument("--repo-dir",    default=DEFAULT_REPO_DIR)
-    parser.add_argument("--agent",       choices=["claude", "codex", "both"], default="claude",
-                        help="Agent to use: claude | codex | both (default: claude)")
+    parser.add_argument("--agent",       choices=["claude", "codex", "opencode", "both", "all"], default="claude",
+                        help="Agent to use: claude | codex | opencode | both | all (default: claude)")
     parser.add_argument("--model",       default=None,
-                        help="Model for chosen agent. Defaults: claude=claude-sonnet-4-6, codex=codex-1")
+                        help="Model for chosen agent. Defaults: claude=claude-sonnet-4-6, codex=gpt-5.4, opencode=glm-5.1")
     parser.add_argument("--arm",         choices=["both", "control", "treatment"], default="both")
     parser.add_argument("--max-workers", type=int, default=DEFAULT_MAX_WORKERS,
                         help="Max concurrent agent sessions (default: 4)")
@@ -688,7 +773,12 @@ def main():
     parser.add_argument("--dry-run",     action="store_true")
     args = parser.parse_args()
 
-    agents   = ["claude", "codex"] if args.agent == "both" else [args.agent]
+    if args.agent == "all":
+        agents = ["claude", "codex", "opencode"]
+    elif args.agent == "both":
+        agents = ["claude", "codex"]
+    else:
+        agents = [args.agent]
     arms     = ["control", "treatment"] if args.arm == "both" else [args.arm]
     repo_dir = Path(args.repo_dir)
     base_clones = {
@@ -704,13 +794,15 @@ def main():
     tasks = json.loads(tasks_file.read_text())
     tasks.sort(key=lambda t: (t["task_type"], t["id"]))
 
-    # Resolve model defaults per agent (when --agent both, use per-agent defaults)
+    # Resolve model defaults per agent (when --agent both/all, use per-agent defaults)
     model_for: dict[str, str] = {}
     for ag in agents:
         if args.model:
             model_for[ag] = args.model
         elif ag == "codex":
             model_for[ag] = DEFAULT_CODEX_MODEL
+        elif ag == "opencode":
+            model_for[ag] = DEFAULT_OPENCODE_MODEL
         else:
             model_for[ag] = DEFAULT_CLAUDE_MODEL
 
@@ -733,7 +825,7 @@ def main():
 
     # Verify agent CLIs are present
     for ag in agents:
-        cli = "claude" if ag == "claude" else "codex"
+        cli = {"claude": "claude", "codex": "codex", "opencode": "opencode"}[ag]
         result = subprocess.run([cli, "--version"], capture_output=True, text=True)
         if result.returncode != 0:
             log.error("%s CLI not found — install it before running with --agent %s", cli, ag)

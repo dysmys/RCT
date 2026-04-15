@@ -89,6 +89,9 @@ class Database:
             ("files_modified_json", "TEXT"),
             ("tool_calls_total",    "INTEGER"),
             ("belief_calls_total",  "INTEGER"),
+            ("input_tokens",        "INTEGER"),
+            ("output_tokens",       "INTEGER"),
+            ("duration_seconds",    "REAL"),
         ]:
             if col not in run_cols:
                 self._conn.execute(f"ALTER TABLE runs ADD COLUMN {col} {defn}")
@@ -245,8 +248,14 @@ class Database:
                              agent_diff: str, files_modified: list[str],
                              tool_calls_total: int | None, belief_calls_total: int,
                              beliefs_used: list | None = None,
-                             tokens_used: int | None = None):
-        """complete_run variant that also stores diff and agentic metadata."""
+                             tokens_used: int | None = None,
+                             input_tokens: int | None = None,
+                             output_tokens: int | None = None,
+                             duration_seconds: float | None = None):
+        """complete_run variant that also stores diff, agentic metadata, tokens, and timing."""
+        # Compute tokens_used as sum if not provided directly
+        if tokens_used is None and input_tokens is not None and output_tokens is not None:
+            tokens_used = input_tokens + output_tokens
         self._conn.execute("""
             UPDATE runs
             SET status = 'completed',
@@ -257,6 +266,9 @@ class Database:
                 belief_calls_total   = ?,
                 beliefs_used         = ?,
                 tokens_used          = ?,
+                input_tokens         = ?,
+                output_tokens        = ?,
+                duration_seconds     = ?,
                 completed_at         = ?
             WHERE run_id = ?
         """, (
@@ -267,6 +279,9 @@ class Database:
             belief_calls_total,
             json.dumps(beliefs_used) if beliefs_used else None,
             tokens_used,
+            input_tokens,
+            output_tokens,
+            duration_seconds,
             self._now_iso(),
             run_id,
         ))

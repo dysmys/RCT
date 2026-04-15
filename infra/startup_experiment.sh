@@ -44,8 +44,14 @@ apt-get install -y -qq nodejs
 
 npm install -g @openai/codex
 curl -fsSL https://claude.ai/install.sh | bash
+curl -fsSL https://opencode.ai/install | bash
 
-echo "[startup] Node $(node --version), Codex and Claude CLI installed"
+# Ensure opencode is on PATH for all users
+if [ -f "$HOME/.opencode/bin/opencode" ]; then
+    ln -sf "$HOME/.opencode/bin/opencode" /usr/local/bin/opencode
+fi
+
+echo "[startup] Node $(node --version), Codex, Claude, and OpenCode CLI installed"
 
 # ---------------------------------------------------------------------------
 # Mount persistent repo disk
