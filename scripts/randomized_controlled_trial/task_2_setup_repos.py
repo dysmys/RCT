@@ -166,7 +166,7 @@ def clone_repo(git_url: str, dest: Path):
         return
     dest.mkdir(parents=True, exist_ok=True)
     log.info("cloning %s → %s", git_url, dest)
-    run(["git", "clone", "--depth=1000", git_url, str(dest)])
+    run(["git", "clone", git_url, str(dest)])
 
 
 def write_claude_md(dest: Path, content: str, arm: str):
