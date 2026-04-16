@@ -421,30 +421,27 @@ def run_claude(worktree: Path, task_prompt: str, model: str, timeout: int) -> tu
         log.warning("claude exited %d in %s — stderr: %s",
                     proc.returncode, worktree.name, stderr[:300])
 
-    # Parse JSON output for result text and total token usage
-    usage = {"tokens_total": None}
+    # Parse JSON output for result text and token usage.
+    # Claude's input_tokens excludes cached tokens (they're in separate fields).
+    usage = {"input_tokens": None, "output_tokens": None}
     output_text = stdout.strip()
     try:
         data = json.loads(stdout)
         output_text = data.get("result", stdout.strip())
         u = data.get("usage", {})
-        usage["tokens_total"] = (
-            (u.get("input_tokens") or 0)
-            + (u.get("cache_creation_input_tokens") or 0)
-            + (u.get("cache_read_input_tokens") or 0)
-            + (u.get("output_tokens") or 0)
-        ) or None
+        usage["input_tokens"] = u.get("input_tokens")
+        usage["output_tokens"] = u.get("output_tokens")
     except (json.JSONDecodeError, AttributeError):
-        pass
+        pass  # fallback: treat stdout as plain text
 
     return output_text, proc.returncode, usage
 
 
 def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tuple[str, int, dict]:
     """
-    Run codex non-interactively inside worktree.
+    Run codex non-interactively inside worktree with --json for JSONL token events.
     Returns (output_text, exit_code, usage_dict).
-    Token usage is parsed from stderr where Codex logs it.
+    Parses turn.completed events; billable input = input_tokens - cached_input_tokens.
     """
     env = {
         **os.environ,
@@ -453,7 +450,8 @@ def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tup
     }
 
     proc = subprocess.Popen(
-        ["codex", "exec", "--full-auto", "--skip-git-repo-check", "--model", model, "-"],
+        ["codex", "exec", "--full-auto", "--skip-git-repo-check", "--json",
+         "--model", model, "-"],
         cwd=str(worktree),
         env=env,
         stdin=subprocess.PIPE,
@@ -477,33 +475,54 @@ def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tup
         log.warning("codex exited %d in %s — stderr: %s",
                     proc.returncode, worktree.name, stderr[:300])
 
-    # Parse token usage from stderr — Codex logs "tokens used\n12,427" at the end.
-    usage = {"tokens_total": None}
-    stderr_lines = (stderr or "").strip().splitlines()
-    for i, line in enumerate(stderr_lines):
-        if line.strip().lower() == "tokens used" and i + 1 < len(stderr_lines):
-            token_str = stderr_lines[i + 1].strip().replace(",", "")
-            try:
-                usage["tokens_total"] = int(token_str)
-            except ValueError:
-                pass
+    # Parse JSONL events from stdout for token usage and response text.
+    # turn.completed has usage: {input_tokens, cached_input_tokens, output_tokens}
+    # billable_input = input_tokens - cached_input_tokens
+    usage = {"input_tokens": None, "output_tokens": None}
+    total_input = 0
+    total_output = 0
+    saw_turn = False
+    response_text = ""
+    for line in (stdout or "").splitlines():
+        try:
+            ev = json.loads(line)
+        except (json.JSONDecodeError, ValueError):
+            continue
+        t = ev.get("type")
+        if t == "item.completed" and ev.get("item", {}).get("type") == "agent_message":
+            response_text = ev["item"].get("text", response_text)
+        elif t == "turn.completed":
+            saw_turn = True
+            u = ev.get("usage", {}) or {}
+            inp    = u.get("input_tokens", 0) or 0
+            cached = u.get("cached_input_tokens", 0) or 0
+            outp   = u.get("output_tokens", 0) or 0
+            total_input  += max(0, inp - cached)
+            total_output += outp
 
-    return stdout.strip(), proc.returncode, usage
+    if saw_turn:
+        usage["input_tokens"] = total_input
+        usage["output_tokens"] = total_output
+
+    output_text = response_text if response_text else stdout.strip()
+    return output_text, proc.returncode, usage
 
 
 def run_opencode(worktree: Path, task_prompt: str, model: str, timeout: int) -> tuple[str, int, dict]:
     """
     Run OpenCode non-interactively inside worktree.
-    Uses 'opencode run' with --format json to get per-step token data.
-    Parses step_finish events to sum input/output/cache tokens.
+    Token usage captured via 'opencode export <sessionID>' after the run,
+    which gives accurate per-session data (unlike opencode stats which is fleet-wide).
     """
     env = {
         **os.environ,
         "PYTHONPATH": str(_SCRIPTS_DIR),
     }
 
+    start_time = time.time()
+
     proc = subprocess.Popen(
-        ["opencode", "run", task_prompt, "-m", model, "--format", "json"],
+        ["opencode", "run", task_prompt, "-m", model],
         cwd=str(worktree),
         env=env,
         stdin=subprocess.PIPE,
@@ -527,31 +546,41 @@ def run_opencode(worktree: Path, task_prompt: str, model: str, timeout: int) -> 
         log.warning("opencode exited %d in %s — stderr: %s",
                     proc.returncode, worktree.name, stderr[:300])
 
-    # Parse JSON stream for step_finish events to sum total tokens across all steps.
-    usage = {"tokens_total": None}
-    session_total = 0
-    found_tokens = False
-    text_parts = []
-    for line in (stdout or "").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            event = json.loads(line)
-            if event.get("type") == "text":
-                text_parts.append(event.get("content", ""))
-            tokens = event.get("part", {}).get("tokens") if event.get("type") == "step_finish" else None
-            if tokens:
-                found_tokens = True
-                session_total += tokens.get("total", 0)
-        except (json.JSONDecodeError, AttributeError):
-            pass
+    # Extract per-session token usage via opencode export.
+    # 1. Find the session ID from the most recent log file.
+    # 2. Run opencode export <session_id> to get messages with token data.
+    usage = {"input_tokens": None, "output_tokens": None}
+    try:
+        log_dir = Path.home() / ".local/share/opencode/log"
+        session_id = None
+        if log_dir.is_dir():
+            recent = sorted(
+                (f for f in log_dir.glob("*.log") if f.stat().st_mtime >= start_time - 2),
+                key=lambda f: f.stat().st_mtime, reverse=True,
+            )
+            for lf in recent:
+                m = re.search(r'sessionID=(ses_[A-Za-z0-9]+)', lf.read_text(errors="replace"))
+                if m:
+                    session_id = m.group(1)
+                    break
+        if session_id:
+            r = subprocess.run(
+                ["opencode", "export", session_id],
+                cwd=str(worktree), capture_output=True, text=True, timeout=20,
+            )
+            if r.returncode == 0:
+                data = json.loads(r.stdout)
+                total_in = total_out = 0
+                for msg in data.get("messages", []):
+                    tok = (msg.get("info", {}) or {}).get("tokens", {}) or {}
+                    total_in  += tok.get("input",  0) or 0
+                    total_out += tok.get("output", 0) or 0
+                usage["input_tokens"]  = total_in or None
+                usage["output_tokens"] = total_out or None
+    except Exception:
+        pass
 
-    if found_tokens:
-        usage["tokens_total"] = session_total
-
-    output_text = "\n".join(text_parts) if text_parts else stdout.strip()
-    return output_text, proc.returncode, usage
+    return stdout.strip(), proc.returncode, usage
 
 
 def read_beliefs_log(worktree: Path) -> list[dict]:
@@ -707,7 +736,8 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
 
         # ---- Collect results ------------------------------------------------
         elapsed = time.monotonic() - _arm_start
-        tokens_total = usage.get("tokens_total")
+        input_tokens = usage.get("input_tokens")
+        output_tokens = usage.get("output_tokens")
 
         if exit_code == 0 and output:
             with conn_lock:
@@ -723,7 +753,8 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
                         else c.get("beliefs", "")
                         for c in belief_calls
                     ] if belief_calls else None,
-                    tokens_used=tokens_total,
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
                     duration_seconds=round(elapsed, 2),
                 )
                 for call in belief_calls:
@@ -740,10 +771,11 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
 
             with _task_times_lock:
                 _task_times.append(elapsed)
+            total_tokens = (input_tokens or 0) + (output_tokens or 0) or None
             log.info("  %s/%s/%s  run_id=%d  completed  output_len=%d  belief_calls=%d  "
-                     "time=%.1fs  tokens=%s",
+                     "time=%.1fs  tokens=%s (in=%s out=%s)",
                      task_id, arm, agent, run_id, len(output), belief_calls_total,
-                     elapsed, tokens_total)
+                     elapsed, total_tokens, input_tokens, output_tokens)
             return "completed"
         else:
             msg = f"{agent} exited {exit_code} with {'no output' if not output else 'output'}"
