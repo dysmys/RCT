@@ -421,22 +421,21 @@ def run_claude(worktree: Path, task_prompt: str, model: str, timeout: int) -> tu
         log.warning("claude exited %d in %s — stderr: %s",
                     proc.returncode, worktree.name, stderr[:300])
 
-    # Parse JSON output for result text and token usage
-    usage = {"input_tokens": None, "output_tokens": None}
+    # Parse JSON output for result text and total token usage
+    usage = {"tokens_total": None}
     output_text = stdout.strip()
     try:
         data = json.loads(stdout)
         output_text = data.get("result", stdout.strip())
         u = data.get("usage", {})
-        # input_tokens only counts non-cached tokens; add cache hits for true total
-        usage["input_tokens"] = (
+        usage["tokens_total"] = (
             (u.get("input_tokens") or 0)
             + (u.get("cache_creation_input_tokens") or 0)
             + (u.get("cache_read_input_tokens") or 0)
+            + (u.get("output_tokens") or 0)
         ) or None
-        usage["output_tokens"] = u.get("output_tokens")
     except (json.JSONDecodeError, AttributeError):
-        pass  # fallback: treat stdout as plain text
+        pass
 
     return output_text, proc.returncode, usage
 
@@ -479,8 +478,7 @@ def run_codex(worktree: Path, task_prompt: str, model: str, timeout: int) -> tup
                     proc.returncode, worktree.name, stderr[:300])
 
     # Parse token usage from stderr — Codex logs "tokens used\n12,427" at the end.
-    # Codex only reports a single total (no input/output split).
-    usage = {"input_tokens": None, "output_tokens": None, "tokens_total": None}
+    usage = {"tokens_total": None}
     stderr_lines = (stderr or "").strip().splitlines()
     for i, line in enumerate(stderr_lines):
         if line.strip().lower() == "tokens used" and i + 1 < len(stderr_lines):
@@ -529,15 +527,10 @@ def run_opencode(worktree: Path, task_prompt: str, model: str, timeout: int) -> 
         log.warning("opencode exited %d in %s — stderr: %s",
                     proc.returncode, worktree.name, stderr[:300])
 
-    # Parse JSON stream for step_finish events with token data.
-    # Each step_finish has: tokens.{input, output, cache.read, cache.write}
-    # Sum across all steps for total session usage.
-    usage = {"input_tokens": None, "output_tokens": None}
-    total_input = 0
-    total_output = 0
-    total_cache_read = 0
+    # Parse JSON stream for step_finish events to sum total tokens across all steps.
+    usage = {"tokens_total": None}
+    session_total = 0
     found_tokens = False
-    # Also extract the text output from assistant messages
     text_parts = []
     for line in (stdout or "").splitlines():
         line = line.strip()
@@ -545,28 +538,19 @@ def run_opencode(worktree: Path, task_prompt: str, model: str, timeout: int) -> 
             continue
         try:
             event = json.loads(line)
-            # Collect text output
             if event.get("type") == "text":
                 text_parts.append(event.get("content", ""))
-            # Collect token usage from step_finish events
             tokens = event.get("part", {}).get("tokens") if event.get("type") == "step_finish" else None
             if tokens:
                 found_tokens = True
-                total_input += tokens.get("input", 0)
-                total_output += tokens.get("output", 0)
-                cache = tokens.get("cache", {})
-                total_cache_read += cache.get("read", 0)
+                session_total += tokens.get("total", 0)
         except (json.JSONDecodeError, AttributeError):
             pass
 
     if found_tokens:
-        # Include cache reads in input total (same approach as Claude)
-        usage["input_tokens"] = total_input + total_cache_read
-        usage["output_tokens"] = total_output
+        usage["tokens_total"] = session_total
 
-    # Use text parts for output if available, otherwise fall back to raw stdout
     output_text = "\n".join(text_parts) if text_parts else stdout.strip()
-
     return output_text, proc.returncode, usage
 
 
@@ -723,10 +707,7 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
 
         # ---- Collect results ------------------------------------------------
         elapsed = time.monotonic() - _arm_start
-        input_tokens = usage.get("input_tokens")
-        output_tokens = usage.get("output_tokens")
-        # Codex reports a single total — store it directly as tokens_used
-        codex_total = usage.get("tokens_total")
+        tokens_total = usage.get("tokens_total")
 
         if exit_code == 0 and output:
             with conn_lock:
@@ -742,9 +723,7 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
                         else c.get("beliefs", "")
                         for c in belief_calls
                     ] if belief_calls else None,
-                    input_tokens=input_tokens,
-                    output_tokens=output_tokens,
-                    tokens_used=codex_total,  # Codex: total from stderr; Claude/OpenCode: computed by db.py
+                    tokens_used=tokens_total,
                     duration_seconds=round(elapsed, 2),
                 )
                 for call in belief_calls:
@@ -761,11 +740,10 @@ def run_arm(task: dict, arm: str, base_clone: Path, model: str,
 
             with _task_times_lock:
                 _task_times.append(elapsed)
-            total_tokens = codex_total or ((input_tokens or 0) + (output_tokens or 0)) or None
             log.info("  %s/%s/%s  run_id=%d  completed  output_len=%d  belief_calls=%d  "
-                     "time=%.1fs  tokens=%s (in=%s out=%s)",
+                     "time=%.1fs  tokens=%s",
                      task_id, arm, agent, run_id, len(output), belief_calls_total,
-                     elapsed, total_tokens, input_tokens, output_tokens)
+                     elapsed, tokens_total)
             return "completed"
         else:
             msg = f"{agent} exited {exit_code} with {'no output' if not output else 'output'}"
